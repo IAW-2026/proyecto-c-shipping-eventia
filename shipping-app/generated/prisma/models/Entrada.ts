@@ -29,18 +29,21 @@ export type AggregateEntrada = {
 export type EntradaAvgAggregateOutputType = {
   id_entrada: number | null
   id_pedido: number | null
+  id_usuario: number | null
   cantidad: number | null
 }
 
 export type EntradaSumAggregateOutputType = {
   id_entrada: bigint | null
   id_pedido: number | null
+  id_usuario: number | null
   cantidad: number | null
 }
 
 export type EntradaMinAggregateOutputType = {
   id_entrada: bigint | null
   id_pedido: number | null
+  id_usuario: number | null
   nombre_evento: string | null
   cantidad: number | null
   estado: string | null
@@ -50,6 +53,7 @@ export type EntradaMinAggregateOutputType = {
 export type EntradaMaxAggregateOutputType = {
   id_entrada: bigint | null
   id_pedido: number | null
+  id_usuario: number | null
   nombre_evento: string | null
   cantidad: number | null
   estado: string | null
@@ -59,6 +63,7 @@ export type EntradaMaxAggregateOutputType = {
 export type EntradaCountAggregateOutputType = {
   id_entrada: number
   id_pedido: number
+  id_usuario: number
   nombre_evento: number
   cantidad: number
   estado: number
@@ -70,18 +75,21 @@ export type EntradaCountAggregateOutputType = {
 export type EntradaAvgAggregateInputType = {
   id_entrada?: true
   id_pedido?: true
+  id_usuario?: true
   cantidad?: true
 }
 
 export type EntradaSumAggregateInputType = {
   id_entrada?: true
   id_pedido?: true
+  id_usuario?: true
   cantidad?: true
 }
 
 export type EntradaMinAggregateInputType = {
   id_entrada?: true
   id_pedido?: true
+  id_usuario?: true
   nombre_evento?: true
   cantidad?: true
   estado?: true
@@ -91,6 +99,7 @@ export type EntradaMinAggregateInputType = {
 export type EntradaMaxAggregateInputType = {
   id_entrada?: true
   id_pedido?: true
+  id_usuario?: true
   nombre_evento?: true
   cantidad?: true
   estado?: true
@@ -100,6 +109,7 @@ export type EntradaMaxAggregateInputType = {
 export type EntradaCountAggregateInputType = {
   id_entrada?: true
   id_pedido?: true
+  id_usuario?: true
   nombre_evento?: true
   cantidad?: true
   estado?: true
@@ -196,6 +206,7 @@ export type EntradaGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type EntradaGroupByOutputType = {
   id_entrada: bigint
   id_pedido: number
+  id_usuario: number
   nombre_evento: string
   cantidad: number
   estado: string
@@ -228,6 +239,7 @@ export type EntradaWhereInput = {
   NOT?: Prisma.EntradaWhereInput | Prisma.EntradaWhereInput[]
   id_entrada?: Prisma.BigIntFilter<"Entrada"> | bigint | number
   id_pedido?: Prisma.IntFilter<"Entrada"> | number
+  id_usuario?: Prisma.IntFilter<"Entrada"> | number
   nombre_evento?: Prisma.StringFilter<"Entrada"> | string
   cantidad?: Prisma.IntFilter<"Entrada"> | number
   estado?: Prisma.StringFilter<"Entrada"> | string
@@ -237,6 +249,7 @@ export type EntradaWhereInput = {
 export type EntradaOrderByWithRelationInput = {
   id_entrada?: Prisma.SortOrder
   id_pedido?: Prisma.SortOrder
+  id_usuario?: Prisma.SortOrder
   nombre_evento?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
   estado?: Prisma.SortOrder
@@ -249,6 +262,7 @@ export type EntradaWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.EntradaWhereInput | Prisma.EntradaWhereInput[]
   OR?: Prisma.EntradaWhereInput[]
   NOT?: Prisma.EntradaWhereInput | Prisma.EntradaWhereInput[]
+  id_usuario?: Prisma.IntFilter<"Entrada"> | number
   nombre_evento?: Prisma.StringFilter<"Entrada"> | string
   cantidad?: Prisma.IntFilter<"Entrada"> | number
   estado?: Prisma.StringFilter<"Entrada"> | string
@@ -258,6 +272,7 @@ export type EntradaWhereUniqueInput = Prisma.AtLeast<{
 export type EntradaOrderByWithAggregationInput = {
   id_entrada?: Prisma.SortOrder
   id_pedido?: Prisma.SortOrder
+  id_usuario?: Prisma.SortOrder
   nombre_evento?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
   estado?: Prisma.SortOrder
@@ -275,6 +290,7 @@ export type EntradaScalarWhereWithAggregatesInput = {
   NOT?: Prisma.EntradaScalarWhereWithAggregatesInput | Prisma.EntradaScalarWhereWithAggregatesInput[]
   id_entrada?: Prisma.BigIntWithAggregatesFilter<"Entrada"> | bigint | number
   id_pedido?: Prisma.IntWithAggregatesFilter<"Entrada"> | number
+  id_usuario?: Prisma.IntWithAggregatesFilter<"Entrada"> | number
   nombre_evento?: Prisma.StringWithAggregatesFilter<"Entrada"> | string
   cantidad?: Prisma.IntWithAggregatesFilter<"Entrada"> | number
   estado?: Prisma.StringWithAggregatesFilter<"Entrada"> | string
@@ -284,6 +300,7 @@ export type EntradaScalarWhereWithAggregatesInput = {
 export type EntradaCreateInput = {
   id_entrada: bigint | number
   id_pedido: number
+  id_usuario: number
   nombre_evento: string
   cantidad: number
   estado: string
@@ -293,6 +310,7 @@ export type EntradaCreateInput = {
 export type EntradaUncheckedCreateInput = {
   id_entrada: bigint | number
   id_pedido: number
+  id_usuario: number
   nombre_evento: string
   cantidad: number
   estado: string
@@ -302,6 +320,7 @@ export type EntradaUncheckedCreateInput = {
 export type EntradaUpdateInput = {
   id_entrada?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   id_pedido?: Prisma.IntFieldUpdateOperationsInput | number
+  id_usuario?: Prisma.IntFieldUpdateOperationsInput | number
   nombre_evento?: Prisma.StringFieldUpdateOperationsInput | string
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
   estado?: Prisma.StringFieldUpdateOperationsInput | string
@@ -311,6 +330,7 @@ export type EntradaUpdateInput = {
 export type EntradaUncheckedUpdateInput = {
   id_entrada?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   id_pedido?: Prisma.IntFieldUpdateOperationsInput | number
+  id_usuario?: Prisma.IntFieldUpdateOperationsInput | number
   nombre_evento?: Prisma.StringFieldUpdateOperationsInput | string
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
   estado?: Prisma.StringFieldUpdateOperationsInput | string
@@ -320,6 +340,7 @@ export type EntradaUncheckedUpdateInput = {
 export type EntradaCreateManyInput = {
   id_entrada: bigint | number
   id_pedido: number
+  id_usuario: number
   nombre_evento: string
   cantidad: number
   estado: string
@@ -329,6 +350,7 @@ export type EntradaCreateManyInput = {
 export type EntradaUpdateManyMutationInput = {
   id_entrada?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   id_pedido?: Prisma.IntFieldUpdateOperationsInput | number
+  id_usuario?: Prisma.IntFieldUpdateOperationsInput | number
   nombre_evento?: Prisma.StringFieldUpdateOperationsInput | string
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
   estado?: Prisma.StringFieldUpdateOperationsInput | string
@@ -338,6 +360,7 @@ export type EntradaUpdateManyMutationInput = {
 export type EntradaUncheckedUpdateManyInput = {
   id_entrada?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   id_pedido?: Prisma.IntFieldUpdateOperationsInput | number
+  id_usuario?: Prisma.IntFieldUpdateOperationsInput | number
   nombre_evento?: Prisma.StringFieldUpdateOperationsInput | string
   cantidad?: Prisma.IntFieldUpdateOperationsInput | number
   estado?: Prisma.StringFieldUpdateOperationsInput | string
@@ -347,6 +370,7 @@ export type EntradaUncheckedUpdateManyInput = {
 export type EntradaCountOrderByAggregateInput = {
   id_entrada?: Prisma.SortOrder
   id_pedido?: Prisma.SortOrder
+  id_usuario?: Prisma.SortOrder
   nombre_evento?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
   estado?: Prisma.SortOrder
@@ -356,12 +380,14 @@ export type EntradaCountOrderByAggregateInput = {
 export type EntradaAvgOrderByAggregateInput = {
   id_entrada?: Prisma.SortOrder
   id_pedido?: Prisma.SortOrder
+  id_usuario?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
 }
 
 export type EntradaMaxOrderByAggregateInput = {
   id_entrada?: Prisma.SortOrder
   id_pedido?: Prisma.SortOrder
+  id_usuario?: Prisma.SortOrder
   nombre_evento?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
   estado?: Prisma.SortOrder
@@ -371,6 +397,7 @@ export type EntradaMaxOrderByAggregateInput = {
 export type EntradaMinOrderByAggregateInput = {
   id_entrada?: Prisma.SortOrder
   id_pedido?: Prisma.SortOrder
+  id_usuario?: Prisma.SortOrder
   nombre_evento?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
   estado?: Prisma.SortOrder
@@ -380,6 +407,7 @@ export type EntradaMinOrderByAggregateInput = {
 export type EntradaSumOrderByAggregateInput = {
   id_entrada?: Prisma.SortOrder
   id_pedido?: Prisma.SortOrder
+  id_usuario?: Prisma.SortOrder
   cantidad?: Prisma.SortOrder
 }
 
@@ -412,6 +440,7 @@ export type DateTimeFieldUpdateOperationsInput = {
 export type EntradaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id_entrada?: boolean
   id_pedido?: boolean
+  id_usuario?: boolean
   nombre_evento?: boolean
   cantidad?: boolean
   estado?: boolean
@@ -421,6 +450,7 @@ export type EntradaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type EntradaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id_entrada?: boolean
   id_pedido?: boolean
+  id_usuario?: boolean
   nombre_evento?: boolean
   cantidad?: boolean
   estado?: boolean
@@ -430,6 +460,7 @@ export type EntradaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type EntradaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id_entrada?: boolean
   id_pedido?: boolean
+  id_usuario?: boolean
   nombre_evento?: boolean
   cantidad?: boolean
   estado?: boolean
@@ -439,13 +470,14 @@ export type EntradaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type EntradaSelectScalar = {
   id_entrada?: boolean
   id_pedido?: boolean
+  id_usuario?: boolean
   nombre_evento?: boolean
   cantidad?: boolean
   estado?: boolean
   creado?: boolean
 }
 
-export type EntradaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id_entrada" | "id_pedido" | "nombre_evento" | "cantidad" | "estado" | "creado", ExtArgs["result"]["entrada"]>
+export type EntradaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id_entrada" | "id_pedido" | "id_usuario" | "nombre_evento" | "cantidad" | "estado" | "creado", ExtArgs["result"]["entrada"]>
 
 export type $EntradaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Entrada"
@@ -453,6 +485,7 @@ export type $EntradaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id_entrada: bigint
     id_pedido: number
+    id_usuario: number
     nombre_evento: string
     cantidad: number
     estado: string
@@ -882,6 +915,7 @@ export interface Prisma__EntradaClient<T, Null = never, ExtArgs extends runtime.
 export interface EntradaFieldRefs {
   readonly id_entrada: Prisma.FieldRef<"Entrada", 'BigInt'>
   readonly id_pedido: Prisma.FieldRef<"Entrada", 'Int'>
+  readonly id_usuario: Prisma.FieldRef<"Entrada", 'Int'>
   readonly nombre_evento: Prisma.FieldRef<"Entrada", 'String'>
   readonly cantidad: Prisma.FieldRef<"Entrada", 'Int'>
   readonly estado: Prisma.FieldRef<"Entrada", 'String'>
