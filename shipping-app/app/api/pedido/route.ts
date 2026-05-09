@@ -1,11 +1,25 @@
-import {NextResponse } from 'next/server';
+import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server"; 
+import { generarIdEntrada } from "@/lib/util";
 
 export async function POST(request: Request) {
-    const body = await request.json();
+    const {id_pedido, cantidad} = await request.json();
+    
+    const id_generado = generarIdEntrada();
 
-    const estado = body.estado;
+    try {
+        const nuevoPedido = await prisma.pedido.create({
+            data: {
+                id_entrada: id_generado,
+                id_pedido: id_pedido,
+                cantidad: cantidad,
+                estado: "pendiente",
+            },
+        });
+        return NextResponse.json(id_generado.toString(), { status: 201 });
 
-    return NextResponse.json({
-        estado: estado
-    });
+    } catch (error) {
+        console.error("Error creando pedido:", error);
+        return NextResponse.json({ error: "Error creando pedido" }, { status: 500 });
+    }
 }
