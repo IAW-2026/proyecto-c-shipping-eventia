@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const id_generado = generarIdEntrada();
 
     try {
-        const nuevoPedido = await prisma.pedido.create({
+        const nuevaEntrada= await prisma.entrada.create({
             data: {
                 id_entrada: id_generado,
                 id_pedido: id_pedido,
