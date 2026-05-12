@@ -12,7 +12,7 @@ export default async function Home() {
           Eventia
         </h1>
         <p className="text-lg text-gray-600 mt-4">
-          Gestión de entradas para eventos 
+          Gestión de entradas para eventos
         </p>
       </main>|
     </div>
