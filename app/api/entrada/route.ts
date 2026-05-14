@@ -6,7 +6,7 @@ export async function POST(request: Request) {
         const { id_pedido, estado } = await request.json();
 
         const entradaPendiente = await prisma.entrada.update({
-            where : { id_pedido: id_pedido},
+            where : { id_pedido: Number(id_pedido)},
             data : { estado: estado }
         })
 
