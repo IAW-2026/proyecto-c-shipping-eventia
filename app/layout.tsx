@@ -36,7 +36,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        layout: {
+          displayLinkExternalId: "none", 
+          hideExternalLinks: true,
+        },
+        elements: {
+          footerAction: { display: 'none' }
+        }
+      }}
+    >
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${playfair.variable} h-full antialiased`}
