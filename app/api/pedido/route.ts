@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { generarIdEntrada } from "@/lib/util";
 
 export async function POST(request: Request) {
-    const {id_pedido, cantidad} = await request.json();
+    const {id_pedido, cantidad, nombre_evento, id_usuario} = await request.json();
     
     const id_generado = generarIdEntrada();
 
@@ -13,6 +13,8 @@ export async function POST(request: Request) {
                 id_entrada: id_generado,
                 id_pedido: id_pedido,
                 cantidad: cantidad,
+                nombre_evento: nombre_evento,
+                id_usuario: id_usuario,
                 estado: "pendiente",
             },
         });
