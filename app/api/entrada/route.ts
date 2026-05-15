@@ -1,12 +1,14 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
     try {
         const { id_pedido, estado } = await request.json();
 
         const entradaPendiente = await prisma.entrada.update({
-            where : { id_pedido: Number(id_pedido)},
+            where : { id_pedido: id_pedido},
             data : { estado: estado }
         })
 
