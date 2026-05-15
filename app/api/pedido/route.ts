@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server"; 
 import { generarIdEntrada } from "@/lib/util";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
     const {id_pedido, cantidad, nombre_evento, id_usuario} = await request.json();
     
