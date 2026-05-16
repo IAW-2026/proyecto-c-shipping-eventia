@@ -5,7 +5,7 @@ const MOCK_ENTRADAS = [
   {
     id_entrada: "9223372036854775807", // Simulación de BigInt como string
     id_pedido: 450,
-    nombre_evento: "Festival de Jazz 2026",
+    nombre_evento: "Evento 1",
     cantidad: 2,
     estado: "Confirmado",
     creado: new Date("2026-05-10T14:30:00Z"),
@@ -14,7 +14,7 @@ const MOCK_ENTRADAS = [
   {
     id_entrada: "102030405060708090",
     id_pedido: 451,
-    nombre_evento: "Final Copa Libertadores",
+    nombre_evento: "Evento 2",
     cantidad: 1,
     estado: "Pendiente",
     creado: new Date("2026-05-12T09:15:00Z"),

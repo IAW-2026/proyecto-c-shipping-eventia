@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import Navbar from "./components/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +40,7 @@ export default function RootLayout({
     <ClerkProvider
       appearance={{
         layout: {
-          displayLinkExternalId: "none", 
+          displayLinkExternalId: "none",
           hideExternalLinks: true,
         },
         elements: {
@@ -47,12 +48,16 @@ export default function RootLayout({
         }
       }}
     >
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${playfair.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
+      <html
+        lang="en"
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${playfair.variable} h-full antialiased`}
+      >
+        <body className="min-h-full flex flex-col">
+          <Navbar />
+          {/* El pt-16 evita que la barra tape tu contenido */}
+          <main className="pt-16"></main>
+          {children}</body>
+      </html>
     </ClerkProvider>
   );
 }
