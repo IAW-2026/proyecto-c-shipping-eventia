@@ -13,14 +13,6 @@ model Entrada {
   cantidad      Int
   estado        String
   creado        DateTime @default(now())
-  id_usuario    Int
-  Usuario       Usuario  @relation(fields: [id_usuario], references: [id])
+  id_usuario    String
 }
 
-model Usuario {
-  id       Int       @id
-  id_clerk String    @unique
-  nombre   String
-  email    String    @unique
-  Entrada  Entrada[]
-}
