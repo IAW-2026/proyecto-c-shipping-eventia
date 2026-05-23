@@ -2,7 +2,11 @@
 import { SignInButton, UserButton, Show, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 
-export default function Navbar() {
+interface NavbarProps {
+  children?: React.ReactNode;
+}
+
+export default function Navbar({children}: NavbarProps) {
     const { isSignedIn } = useAuth();
     return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm backdrop-blur-md bg-white/90">
@@ -13,6 +17,7 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center space-x-6">
+          {children}
           <div className="flex items-center pl-2">
             {isSignedIn ? (
               <div className="flex items-center border-l border-gray-200 pl-4 h-6">

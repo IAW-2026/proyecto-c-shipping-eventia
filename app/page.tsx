@@ -1,8 +1,10 @@
 import Link from "next/link";
+import Navbar from "./components/NavBar";
 
 export default async function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Navbar/>
       <main className="flex-grow flex flex-col items-center justify-center">
         <h1 className="text-5xl font-extrabold text-gray-900">Eventia</h1>
 
