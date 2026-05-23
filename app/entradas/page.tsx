@@ -1,28 +1,17 @@
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { EntradaList } from '../components/EntradaList';
+import { entradasUsuarioID } from "@/services/entradas";
 
-// DATOS DE PRUEBA
-const MOCK_ENTRADAS = [
-  {
-    id_entrada: "9223372036854775807", // Simulación de BigInt como string
-    id_pedido: 450,
-    nombre_evento: "Evento 1",
-    cantidad: 2,
-    estado: "Confirmado",
-    creado: new Date("2026-05-10T14:30:00Z"),
-    id_usuario: 1
-  },
-  {
-    id_entrada: "102030405060708090",
-    id_pedido: 451,
-    nombre_evento: "Evento 2",
-    cantidad: 1,
-    estado: "Pendiente",
-    creado: new Date("2026-05-12T09:15:00Z"),
-    id_usuario: 1
+export default async function EntradasPage() {
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect("/sign-in");
   }
-];
+   
+  const misEntradas = await entradasUsuarioID(userId);
 
-export default function EntradasPage() {
   return (
     <main className="min-h-screen bg-slate-50">
       {/* Header del Dashboard */}
@@ -40,12 +29,12 @@ export default function EntradasPage() {
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-xl font-bold text-slate-800">Próximos Eventos</h2>
           <span className="bg-indigo-50 text-indigo-700 text-sm px-3 py-1 rounded-full font-semibold">
-            {MOCK_ENTRADAS.length} Entradas activas
+            {misEntradas.length} Entradas activas
           </span>
         </div>
 
         {/* Listado de Componentes */}
-        <EntradaList tickets={MOCK_ENTRADAS} />
+        <EntradaList tickets={misEntradas} />
       </div>
     </main>
   );
