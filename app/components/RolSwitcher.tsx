@@ -1,39 +1,109 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function RolSwitcher() {
   const pathname = usePathname();
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Detectamos si la URL actual empieza con /seller
-  const isSellerMode = pathname.startsWith("/seller");
+  // Detectamos si la URL actual empieza con /seller o /dashboard/seller
+  const isSellerMode = pathname.startsWith("/seller") || pathname.includes("/seller");
+
+  // Cerramos el dropdown automáticamente si el usuario hace click afuera de él
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleModeChange = (route: string) => {
+    setIsOpen(false); // Cerramos el menú
+    router.push(route); // Redirigimos
+  };
 
   return (
-    <div className="flex items-center gap-3 bg-slate-100 p-1.5 rounded-lg border border-slate-200">
-      {/* BOTÓN MODO COMPRADOR */}
+    <div className="relative inline-block text-left" ref={dropdownRef}>
+      
+      {/* BOTÓN PRINCIPAL (Muestra el modo activo actual) */}
       <button
-        onClick={() => router.push("/buyer")} // Te manda directo a tus entradas
-        className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
-          !isSellerMode 
-            ? "bg-white text-indigo-600 shadow-sm font-semibold" // Activo (Hacemos juego con tu color de Eventia)
-            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50" // Inactivo
-        }`}
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+        className="inline-flex items-center justify-between w-44 px-4 py-2 text-xs font-bold rounded-xl transition-all border border-purple-200/60 bg-white text-purple-950 hover:bg-purple-50/50 shadow-sm focus:outline-none"
       >
-        Modo Comprador
+        <span className="flex items-center gap-2">
+          {isSellerMode ? (
+            <>
+              <span className="text-fuchsia-600"></span> Vendedor
+            </>
+          ) : (
+            <>
+              <span className="text-violet-600"></span> Comprador
+            </>
+          )}
+        </span>
+        
+        {/* Flechita dinámica que gira si está abierto */}
+        <svg
+          className={`w-4 h-4 ml-2 transition-transform duration-200 text-purple-400 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+        </svg>
       </button>
 
-      {/* BOTÓN MODO VENDEDOR */}
-      <button
-        onClick={() => router.push("/seller")} // Te manda directo al escáner
-        className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
-          isSellerMode 
-            ? "bg-white text-emerald-600 shadow-sm font-semibold" // Activo
-            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50" // Inactivo
-        }`}
-      >
-        Modo Vendedor
-      </button>
+      {/* MENÚ DESPLEGABLE (Opciones flotantes) */}
+      {isOpen && (
+        <div className="absolute right-0 z-50 w-48 mt-2 origin-top-right bg-white border border-purple-100 rounded-2xl shadow-xl shadow-purple-950/5 focus:outline-none overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150">
+          <div className="py-1.5 bg-white">
+            <p className="px-4 py-1.5 text-[10px] font-bold text-purple-300 uppercase tracking-wider">
+              Cambio de rol
+            </p>
+            
+            {/* Opción Comprador */}
+            <button
+              onClick={() => handleModeChange("/buyer")}
+              className={`w-full text-left px-4 py-2.5 text-xs font-semibold flex items-center gap-2.5 transition-colors ${
+                !isSellerMode
+                  ? "bg-gradient-to-r from-purple-50 to-fuchsia-50 text-purple-700"
+                  : "text-slate-600 hover:bg-purple-50/40 hover:text-purple-700"
+              }`}
+            >
+              <span className={`text-sm ${!isSellerMode ? "opacity-100" : "opacity-50"}`}></span>
+              <div className="flex flex-col">
+                <span>Comprador</span>
+                <span className="text-[10px] text-slate-400 font-normal">Ver mis entradas</span>
+              </div>
+            </button>
+
+            {/* Opción Vendedor */}
+            <button
+              onClick={() => handleModeChange("/seller")}
+              className={`w-full text-left px-4 py-2.5 text-xs font-semibold flex items-center gap-2.5 transition-colors ${
+                isSellerMode
+                  ? "bg-gradient-to-r from-purple-50 to-fuchsia-50 text-purple-700"
+                  : "text-slate-600 hover:bg-purple-50/40 hover:text-purple-700"
+              }`}
+            >
+              <span className={`text-sm ${isSellerMode ? "opacity-100" : "opacity-50"}`}></span>
+              <div className="flex flex-col">
+                <span>Vendedor</span>
+                <span className="text-[10px] text-slate-400 font-normal">Escanear entradas</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
