@@ -1,6 +1,5 @@
 import { EntradaCard } from './EntradaCard';
 
-// Definimos la interfaz basada en tu modelo de Prisma
 interface Entrada {
   id_entrada: bigint | string;
   id_pedido: number;

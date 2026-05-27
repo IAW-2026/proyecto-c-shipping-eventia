@@ -20,3 +20,25 @@ export async function entradasUsuarioID(userId: string) {
     throw new Error("No se pudieron recuperar las entradas de la base de datos.");
   }
 }
+
+export async function entradaPorID(idEntrada: string) {
+  try {
+    const entradaOriginal = await prisma.entrada.findUnique({
+      where: {
+        id_entrada: BigInt(idEntrada), 
+      },
+    });
+
+    if (!entradaOriginal) return null;
+
+    const entradaConvertida = {
+      ...entradaOriginal,
+      id_entrada: entradaOriginal.id_entrada.toString(), 
+    };
+
+    return entradaConvertida;
+  } catch (error) {
+    console.error("Error en obtenerEntradaPorID:", error);
+    return null; 
+  }
+}
