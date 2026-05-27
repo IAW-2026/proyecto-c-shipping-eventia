@@ -3,14 +3,16 @@ import Link from "next/link";
 interface EntradaProps {
   id_entrada: bigint | string;
   id_pedido: number;
-  nombre_evento: string;
+  id_evento: number;
   cantidad: number;
   estado: string;
-  creado: Date | string;
+  nombre_evento: string
+  ubicacion: string;
+  fecha_evento: string;
 }
 
-export const EntradaCard = ({ id_entrada, nombre_evento, cantidad, estado, creado, id_pedido }: EntradaProps) => {
-  const fechaFormateada = new Date(creado).toLocaleDateString('es-AR', {
+export const EntradaCard = ({ id_entrada, nombre_evento, cantidad, estado, ubicacion, fecha_evento, id_pedido }: EntradaProps) => {
+  const fechaFormateada = new Date(fecha_evento).toLocaleDateString('es-AR', {
     day: '2-digit',
     month: 'long',
     year: 'numeric'
@@ -27,7 +29,8 @@ export const EntradaCard = ({ id_entrada, nombre_evento, cantidad, estado, cread
 
       <div className="space-y-2 text-gray-600">
         <p>Cantidad: <span className="font-semibold text-gray-900">{cantidad}</span></p>
-        <p>Fecha de compra: {fechaFormateada}</p>
+        <p>Fecha del evento: {fechaFormateada}</p>
+        <p>Ubicación: {ubicacion}</p> 
       </div>
 
       <div className="mt-6 flex justify-between items-center">
