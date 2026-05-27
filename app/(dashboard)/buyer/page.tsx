@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { EntradaList } from '../components/EntradaList';
+import { EntradaList } from '../../components/EntradaList';
 import { entradasUsuarioID } from "@/services/entradas";
 
 export default async function EntradasPage() {
