@@ -52,8 +52,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${playfair.variable} h-full antialiased`}
       >
         <body className="min-h-full flex flex-col">
-          <main className="pt-16"></main>
-          {children}</body>
+            {children}</body>
       </html>
     </ClerkProvider>
   );
