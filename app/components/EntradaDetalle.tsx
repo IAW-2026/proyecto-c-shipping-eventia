@@ -7,7 +7,7 @@ interface EntradaDetalleProps {
   entrada: {
     id_entrada: bigint | string;
     id_pedido: number;
-    nombre_evento: string;
+    id_evento: number;
     cantidad: number;
     estado: string;
   };
@@ -34,9 +34,6 @@ export const EntradaDetalle = ({ entrada }: EntradaDetalleProps) => {
           <span className="text-xs uppercase tracking-widest bg-indigo-500/50 px-2.5 py-1 rounded-full font-semibold">
             Entrada Digital
           </span>
-          <h1 className="text-2xl font-extrabold tracking-tight mt-3">
-            {entrada.nombre_evento}
-          </h1>
           <p className="text-xs text-indigo-200 mt-1 font-mono">
             Pedido #{entrada.id_pedido}
           </p>
