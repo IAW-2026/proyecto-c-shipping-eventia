@@ -9,7 +9,7 @@ datasource db {
 model Entrada {
   id_entrada    BigInt   @id
   id_pedido     Int      @unique
-  nombre_evento String
+  id_evento     Int
   cantidad      Int
   estado        String
   creado        DateTime @default(now())
