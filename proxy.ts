@@ -2,7 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
 //Rutas publicas
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/'])
+const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/', '/api(.*)'])
 
 //Rutas con roles
 const esRutaVendedor = createRouteMatcher(["/seller(.*)"]);
