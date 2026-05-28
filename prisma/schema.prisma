@@ -15,4 +15,3 @@ model Entrada {
   creado        DateTime @default(now())
   id_usuario    String
 }
-

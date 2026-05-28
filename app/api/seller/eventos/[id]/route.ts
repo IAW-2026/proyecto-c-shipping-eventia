@@ -2,29 +2,24 @@ import { NextResponse } from 'next/server';
 import { eventos } from '@/data/eventos';
 
 type Params = {
-  params: Promise<{
-    id: string;
-  }>;
+    params: Promise<{
+        id: string;
+    }>;
 };
 
-export async function GET(
-  _request: Request,
-  { params }: Params
-) {
-  const { id } = await params;
+export async function GET(_request: Request, { params }: Params) {
+    const { id } = await params;
 
-  const idEvento = Number(id);
+    const idEvento = Number(id);
 
-  const evento = eventos.find(
-    (e) => e.idEvento === idEvento
-  );
+    const evento = eventos.find((e) => e.idEvento === idEvento);
 
-  if (!evento) {
-    return NextResponse.json(
-      { error: 'Evento no encontrado' },
-      { status: 404 }
-    );
-  }
+    if (!evento) {
+        return NextResponse.json(
+            { error: 'Evento no encontrado' },
+            { status: 404 }
+        );
+    }
 
-  return NextResponse.json(evento);
+    return NextResponse.json(evento);
 }
