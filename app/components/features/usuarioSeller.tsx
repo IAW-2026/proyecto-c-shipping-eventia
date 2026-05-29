@@ -22,7 +22,7 @@ export default function UsuarioSeller() {
 
       if (response.status === 200) {
         setEstado('valido');
-        setTicketInfo(data.ticket);
+        setTicketInfo(data.entrada);
       } else if (response.status === 409) {
         setEstado('usado');
       } else {
