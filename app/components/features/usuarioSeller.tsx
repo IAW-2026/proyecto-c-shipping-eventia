@@ -12,7 +12,7 @@ export default function UsuarioSeller() {
   const handleQrScan = async (qrData: string) => {
     setEstado('cargando');
     try {
-      const response = await fetch('/api/tickets/validate', {
+      const response = await fetch('/api/entrada/validacion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: qrData }),
@@ -30,6 +30,7 @@ export default function UsuarioSeller() {
       }
     } catch (error) {
       setEstado('invalido');
+      console.error("🚨 ERROR EN FRONTEND:", error);
     }
   };
 
