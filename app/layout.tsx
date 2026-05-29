@@ -1,7 +1,7 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins, Playfair_Display } from "next/font/google";
 import { Climate_Crisis, Bricolage_Grotesque, Manrope } from 'next/font/google';
-import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
@@ -56,24 +56,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        layout: {
-          displayLinkExternalId: "none",
-          hideExternalLinks: true,
-        },
-        elements: {
-          footerAction: { display: 'none' }
-        }
-      }}
-    >
-      <html
-        lang="es"
-       className={`${climateCrisis.variable} ${bricolage.variable} ${manrope.variable} h-full antialiased`}
+      <ClerkProvider
+        appearance={{
+          layout: {
+            displayLinkExternalId: "none",
+            hideExternalLinks: true,
+          },
+          elements: {
+            footerAction: { display: 'none' }
+          }
+        }}
       >
+        <html
+      lang="es"
+      className={`${climateCrisis.variable} ${bricolage.variable} ${manrope.variable} h-full antialiased`}> 
         <body className="min-h-full flex flex-col">
-            {children}</body>
-      </html>
-    </ClerkProvider>
+          {children}</body>
+           </html>
+    </ClerkProvider > 
   );
-  }
+}
