@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const {id} = await request.json();
 
     const entradaEscaneada = await prisma.entrada.findUnique({
-      where: { id_entrada: id },
+      where: { id_entrada: BigInt(id) },
     });
 
     if (!entradaEscaneada) {
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
     // Caso D: Todo perfecto ("disponible") -> Cambiamos el estado de inmediato
     const entradaActualizada = await prisma.entrada.update({
-      where: { id_entrada: id },
+      where: { id_entrada: BigInt(id) },
       data: { 
         estado: 'Usado',
       },
