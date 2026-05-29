@@ -20,7 +20,7 @@ export async function POST(request: Request) {
                 estado: "pendiente",
             },
         });
-        return NextResponse.json(id_generado.toString(), { status: 201 });
+        return NextResponse.json({ status: 201 });
 
     } catch (error) {
         console.error("Error creando pedido:", error);

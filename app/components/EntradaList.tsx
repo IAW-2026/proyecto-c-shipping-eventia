@@ -31,13 +31,19 @@ async function getEvento(id: string) {
 
   const sellerUrl = process.env.URL_SELLER ?? 'http://localhost:3000';
 
-  const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`,{cache: 'no-store',});
+  try {
+    
+    const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`,{cache: 'no-store',});
 
-  if (!res.ok) {
+    if (!res.ok) {
+      return null;
+    }
+
+    const data = await res.json();
+    return data as Evento;
+  } catch (error) {
     return null;
   }
-
-  return res.json() as Promise<Evento>;
 }
 
 export const EntradaList = async ({ tickets }: { tickets: Entrada[] }) => {
