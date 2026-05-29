@@ -27,30 +27,18 @@ interface Evento{
   stock: number;
 }
 
-async function getEvento(id: string) {
-  // Para desarrollo usa localhost, para producción usa VERCEL_URL o tu dominio
-  let baseUrl = process.env.NEXT_PUBLIC_SELLER_API_URL;
-  
-  if (!baseUrl) {
-    if (process.env.VERCEL_URL) {
-      baseUrl = `https://${process.env.VERCEL_URL}`;
-    } else {
-      baseUrl = 'http://localhost:3000';
-    }
-  }
-  
+async function getEvento(id: string): Promise<Evento | null> {
+  // Si estás en producción usa URL_SELLER, si estás en tu compu usa localhost
+  const baseUrl = process.env.URL_SELLER || 'http://localhost:3000';
   const url = `${baseUrl}/api/seller/eventos/${id}`;
 
   try {
     const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) return null;
 
-    if (!res.ok) {
-      return null;
-    }
-
-    const data = await res.json();
-    return data as Evento;
+    return await res.json() as Evento;
   } catch (error) {
+    console.error("Error al traer evento:", error);
     return null;
   }
 }
