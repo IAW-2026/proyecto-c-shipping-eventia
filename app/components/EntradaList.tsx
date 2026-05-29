@@ -28,21 +28,12 @@ interface Evento{
 }
 
 async function getEvento(id: string) {
-  // Para desarrollo usa localhost, para producción usa VERCEL_URL o tu dominio
-  let baseUrl = process.env.NEXT_PUBLIC_SELLER_API_URL;
-  
-  if (!baseUrl) {
-    if (process.env.VERCEL_URL) {
-      baseUrl = `https://${process.env.VERCEL_URL}`;
-    } else {
-      baseUrl = 'http://localhost:3000';
-    }
-  }
-  
-  const url = `${baseUrl}/api/seller/eventos/${id}`;
+
+  const sellerUrl = process.env.URL_SELLER ?? 'http://localhost:3000';
 
   try {
-    const res = await fetch(url, { cache: 'no-store' });
+    
+    const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`,{cache: 'no-store',});
 
     if (!res.ok) {
       return null;
