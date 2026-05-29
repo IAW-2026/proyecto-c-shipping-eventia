@@ -1,60 +1,82 @@
 // src/app/page.tsx
 import Link from "next/link";
+import Image from "next/image";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col md:flex-row relative overflow-hidden bg-white">
+    // Reemplazamos bg-white por layout-container para heredar el fondo crema y tipografía base
+    <div className="min-h-screen flex flex-col md:flex-row relative overflow-hidden bg-background">
       
-      {/* Logo eventia */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none hidden md:flex flex-col items-center">
-        <div className="px-6 py-3">
-          <h1 className="text-4xl font-black tracking-tight text-slate-900">
+      {/* 👑 LOGO CENTRAL EVENTIA (Visible en Desktop) */}
+      {/* Usamos text-headline-lg (Climate Crisis) para un impacto de póster underground */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none hidden md:flex flex-col items-center">
+        {/*<div className="bg-background border border-primary/20 px-8 py-4 rounded-xl shadow-soft-ambient">*/}
+          <h1 className="text-headline-lg text-primary tracking-tighter uppercase">
             Eventia
           </h1>
-        </div>
+        {/*</div>*/}
       </div>
 
-      <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative border-b md:border-b-0 md:border-r border-slate-200 min-h-[50vh] md:min-h-screen bg-white">
+      {/* ==========================================================================
+         SECCIÓN COMPRADOR (Izquierda)
+         ========================================================================== */}
+     <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative border-b md:border-b-0 md:border-r border-primary/10 min-h-[50vh] md:min-h-screen bg-transparent z-10 overflow-hidden">
         
-        {/* Nombre de la app visible solo en celular arriba */}
+        {/* 🖼️ IMAGEN DE FONDO EXCLUSIVA PARA ESTA COLUMNA */}
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-multiply">
+          <Image
+            src="/fondo.jpg" // Asegurate de que esté en /public con este mismo nombre y extensión
+            alt="Fondo sección compradores"
+            fill
+            className="object-cover object-center"
+            priority
+          />
+        </div>
+        
+        {/* Nombre de la app para mobile */}
         <div className="md:hidden absolute top-6 left-6">
-          <span className="text-xl font-extrabold text-slate-900">Eventia</span>
+          <span className="text-headline-md text-primary tracking-tight uppercase">Eventia</span>
         </div>
 
-        <div className="max-w-sm text-center">
-          <div className="text-4xl mb-4 inline-block md:block"></div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="max-w-sm text-center space-y-4">
+          
+          <h2 className="text-headline-md text-primary tracking-tight">
             Accedé a tus entradas
           </h2>
-          <p className="mt-3 text-slate-600 text-sm leading-relaxed">
-            Accede a tus QR troquelados y gestioná tus accesos a los mejores eventos en un solo lugar.
+          
+          <p className="text-body-md text-on-surface-variant leading-relaxed">
+            Accedé a tus QR troquelados y gestioná tus accesos a los mejores eventos en un solo lugar.
           </p>
-          <div className="mt-8 flex justify-center">
-            <Link 
-              href="/buyer" 
-              className="inline-flex items-center justify-center bg-slate-900 text-white font-bold px-6 py-3 rounded-lg hover:bg-slate-800 transition-colors active:scale-95 text-sm"
-            >
+          
+          <div className="pt-4 flex justify-center">
+            <Link href="/buyer" className="btn-retro-primary">
               Comenzar
             </Link>
           </div>
         </div>
       </div>
-      <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative min-h-[50vh] md:min-h-screen bg-slate-50">
+
+      {/* ==========================================================================
+         SECCIÓN VENDEDOR (Derecha)
+         Usamos un fondo de capa tonal (surface-container-low) para generar contraste suave
+         ========================================================================== */}
+      <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative min-h-[50vh] md:min-h-screen bg-surface-container-low">
         
-        <div className="max-w-sm text-center">
-          <div className="text-4xl mb-4 inline-block md:block"></div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="max-w-sm text-center space-y-4">
+  
+          
+          <h2 className="text-headline-md text-primary tracking-tight">
             Gestioná tus eventos
           </h2>
-          <p className="mt-3 text-slate-600 text-sm leading-relaxed">
+          
+          <p className="text-body-md text-on-surface-variant leading-relaxed">
             Realizá el seguimiento de ventas y escaneá entradas en tiempo real con nuestra app móvil.
           </p>
-          <div className="mt-8 flex justify-center">
-            <Link 
-              href="/seller" 
-              className="inline-flex items-center justify-center bg-slate-900 text-white font-bold px-6 py-3 rounded-lg hover:bg-slate-800 transition-colors active:scale-95 text-sm"
-            >
-              Comenzar 
+          
+          <div className="pt-4 flex justify-center">
+            {/* Usamos el botón secundario (Dusty Rose) para diferenciar los flujos */}
+            <Link href="/seller" className="btn-retro-secondary">
+              Comenzar
             </Link>
           </div>
         </div>
