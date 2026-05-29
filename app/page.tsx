@@ -23,9 +23,9 @@ export default function LandingPage() {
      <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative border-b md:border-b-0 md:border-r border-primary/10 min-h-[50vh] md:min-h-screen bg-transparent z-10 overflow-hidden">
         
         {/* 🖼️ IMAGEN DE FONDO EXCLUSIVA PARA ESTA COLUMNA */}
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-multiply">
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-50 mix-blend-multiply">
           <Image
-            src="/fondo.jpg" // Asegurate de que esté en /public con este mismo nombre y extensión
+            src="/imgHome.jpeg" // Asegurate de que esté en /public con este mismo nombre y extensión
             alt="Fondo sección compradores"
             fill
             className="object-cover object-center"

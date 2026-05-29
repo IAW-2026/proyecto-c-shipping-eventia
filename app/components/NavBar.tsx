@@ -1,5 +1,5 @@
 'use client';
-import { SignInButton, UserButton, Show, useAuth } from "@clerk/nextjs";
+import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 
 interface NavbarProps {
@@ -7,12 +7,14 @@ interface NavbarProps {
 }
 
 export default function Navbar({children}: NavbarProps) {
-    const { isSignedIn } = useAuth();
-    return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm backdrop-blur-md bg-white/90">
+  const { isSignedIn } = useAuth();
+  
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-primary/15 backdrop-blur-md bg-surface/90 shadow-soft-ambient">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
 
-        <Link href="/" className="text-xl font-extrabold text-indigo-600 tracking-tight transition-opacity hover:opacity-90">
+        {/* Logo mitigado con font-display controlado para que no rompa */}
+        <Link href="/" className="text-xl font-normal text-primary-container tracking-tight transition-opacity hover:opacity-90 font-display">
           Eventia
         </Link>
 
@@ -20,18 +22,18 @@ export default function Navbar({children}: NavbarProps) {
           {children}
           <div className="flex items-center pl-2">
             {isSignedIn ? (
-              <div className="flex items-center border-l border-gray-200 pl-4 h-6">
+              <div className="flex items-center border-l border-primary/15 pl-4 h-6">
                 <UserButton 
                   appearance={{
                     elements: {
-                      avatarBox: "w-8 h-8 hover:scale-105 transition-transform"
+                      avatarBox: "w-8 h-8 hover:scale-105 transition-transform rounded-xl"
                     }
                   }}
                 />
               </div>
             ) : (
               <SignInButton mode="modal">
-                <button className="bg-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-indigo-700 active:scale-95 transition-all duration-200 shadow-sm shadow-indigo-100">
+                <button className="btn-retro-primary !py-2 !px-4 text-label-sm">
                   Iniciar Sesión
                 </button>
               </SignInButton>
