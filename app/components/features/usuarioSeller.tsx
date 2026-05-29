@@ -15,7 +15,7 @@ export default function UsuarioSeller() {
       const response = await fetch('/api/tickets/validate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ticketId: qrData }),
+        body: JSON.stringify({ id: qrData }),
       });
 
       const data = await response.json();
