@@ -17,7 +17,7 @@ export async function POST(request: Request) {
                 cantidad: cantidad,
                 id_evento: id_evento,
                 id_usuario: id_usuario,
-                estado: "pendiente",
+                estado: "Pendiente",
             },
         });
         return NextResponse.json({ status: 201 });

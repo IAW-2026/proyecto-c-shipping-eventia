@@ -72,7 +72,7 @@ export default function SimuladorPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id_pedido: Number(pedidoId),
-          estado: "confirmado", // Payload de confirmación
+          estado: "Confirmado", // Payload de confirmación
         }),
       });
 
