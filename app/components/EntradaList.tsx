@@ -27,14 +27,13 @@ interface Evento{
   stock: number;
 }
 
-async function getEvento(id: string): Promise<Evento | null> {
-  // Si estás en producción usa URL_SELLER, si estás en tu compu usa localhost
-  const baseUrl = process.env.URL_SELLER || 'http://localhost:3000';
-  const url = `${baseUrl}/api/seller/eventos/${id}`;
+async function getEvento(id: string) {
+
+  const sellerUrl = process.env.URL_SELLER ?? 'http://localhost:3000';
 
   try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) return null;
+    
+    const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`,{cache: 'no-store',});
 
     return await res.json() as Evento;
   } catch (error) {
