@@ -35,13 +35,9 @@ async function getEvento(id: string) {
     
     const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`,{cache: 'no-store',});
 
-    if (!res.ok) {
-      return null;
-    }
-
-    const data = await res.json();
-    return data as Evento;
+    return await res.json() as Evento;
   } catch (error) {
+    console.error("Error al traer evento:", error);
     return null;
   }
 }
