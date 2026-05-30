@@ -1,3 +1,5 @@
+import { NextResponse } from 'next/server';
+
 export function generarIdEntrada(): bigint {
 
     const EPOCH = 1767225600000; // 2025-01-01T00:00:00.000Z
@@ -7,4 +9,13 @@ export function generarIdEntrada(): bigint {
     const id = (timestamp * BigInt(1000)) + random;
    
     return id;
+}
+
+
+export function validarApiKey(request: Request, expectedKey: string | undefined): boolean {
+    if (!expectedKey) {
+        return false;
+    }
+    const apiKeyProporcionada = request.headers.get('x-api-key');
+    return apiKeyProporcionada === expectedKey;
 }

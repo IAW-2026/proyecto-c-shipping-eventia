@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { eventos } from '@/data/eventos';
+import { validarApiKey } from "@/lib/util";
 
 type Params = {
     params: Promise<{
@@ -8,6 +9,11 @@ type Params = {
 };
 
 export async function GET(_request: Request, { params }: Params) {
+    const sellerKey = process.env.SELLER_API_KEY;
+    if (!validarApiKey(_request, sellerKey)) {
+        return new NextResponse("Unauthorized", { status: 401 });
+    }
+
     const { id } = await params;
 
     const idEvento = Number(id);
