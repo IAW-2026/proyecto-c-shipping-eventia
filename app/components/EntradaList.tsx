@@ -48,6 +48,7 @@ async function getEvento(id: string) {
     const data = await res.json();
     return data as Evento;
   } catch (error) {
+    console.error("Error al traer evento:", error);
     return null;
   }
 }
