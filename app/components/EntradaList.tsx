@@ -30,12 +30,23 @@ interface Evento{
 async function getEvento(id: string) {
 
   const sellerUrl = process.env.URL_SELLER ?? 'http://localhost:3000';
+  const sellerKey = process.env.SELLER_API_KEY;
 
   try {
     
-    const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`,{cache: 'no-store',});
+    const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`, {
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': sellerKey ?? ''
+      }
+    });
+    if (!res.ok) {
+      return null;
+    }
 
-    return await res.json() as Evento;
+    const data = await res.json();
+    return data as Evento;
   } catch (error) {
     console.error("Error al traer evento:", error);
     return null;

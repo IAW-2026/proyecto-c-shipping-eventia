@@ -1,7 +1,8 @@
-'use client'; // <-- ¡Crucial aquí!
+'use client';
 
 import { useState } from "react";
 import EscanerQR from "../EscanerQR"; 
+import { validarQrAction } from "@/app/actions/validacion"; 
 
 type EstadoEntrada = 'escanerActivo' | 'cargando' | 'valido' | 'usado' | 'invalido';
 
@@ -12,20 +13,16 @@ export default function UsuarioSeller() {
   const handleQrScan = async (qrData: string) => {
     setEstado('cargando');
     try {
-      const response = await fetch('/api/entrada/validacion', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: qrData }),
-      });
+      // ⚡ Llamamos directo a la Server Action de Prisma
+      const resultado = await validarQrAction(qrData);
 
-      const data = await response.json();
-
-      if (response.status === 200) {
+      if (resultado.status === 200 && resultado.entrada) {
         setEstado('valido');
-        setTicketInfo(data.entrada);
-      } else if (response.status === 409) {
+        setTicketInfo(resultado.entrada); // Guarda tu entradaConvertida
+      } else if (resultado.status === 409) {
         setEstado('usado');
       } else {
+        // Acá maneja tanto el 404 (No encontrada) como el 403 (Cancelada) o fallos de catch
         setEstado('invalido');
       }
     } catch (error) {
@@ -62,16 +59,29 @@ export default function UsuarioSeller() {
           <h2 className="text-2xl font-extrabold tracking-wide">
             {estado === 'valido' && '✅ ACCESO PERMITIDO'}
             {estado === 'usado' && '⚠️ ENTRADA YA USADA'}
-            {estado === 'invalido' && '❌ ENTRADA INVÁLIDA'}
+            {estado === 'invalido' && '❌ ENTRADA INVÁLIDA O CANCELADA'}
           </h2>
 
+          {/* Ajustado para mapear tus datos reales de la BD */}
           {ticketInfo && (
-            <div className="bg-white/50 p-4 rounded-xl inline-block min-w-[200px]">
-              <p className="text-sm uppercase text-gray-500 font-bold tracking-wider">Asistente</p>
-              <p className="text-lg font-bold text-gray-900">{ticketInfo.guestName}</p>
-              <span className="inline-block mt-1 px-2.5 py-0.5 bg-indigo-100 text-indigo-800 rounded-full text-xs font-bold uppercase">
-                {ticketInfo.type}
-              </span>
+            <div className="bg-white/50 p-4 rounded-xl inline-block min-w-[240px] text-left space-y-1">
+              <p className="text-[10px] uppercase text-gray-500 font-bold tracking-wider text-center border-b border-gray-300/30 pb-1 mb-2">
+                Datos del Ticket
+              </p>
+              <p className="text-xs text-gray-700">
+                <span className="font-bold">Ticket ID:</span> <span className="font-mono">{ticketInfo.id_entrada}</span>
+              </p>
+              <p className="text-xs text-gray-700">
+                <span className="font-bold">Evento ID:</span> {ticketInfo.id_evento}
+              </p>
+              <p className="text-xs text-gray-700">
+                <span className="font-bold">Pedido ID:</span> {ticketInfo.id_pedido}
+              </p>
+              <div className="text-center pt-2">
+                <span className="inline-block px-2.5 py-0.5 bg-green-200 text-green-800 rounded-full text-[10px] font-bold uppercase">
+                  {ticketInfo.estado}
+                </span>
+              </div>
             </div>
           )}
 

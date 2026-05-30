@@ -1,10 +1,16 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server"; 
-import { generarIdEntrada } from "@/lib/util";
+import { generarIdEntrada, validarApiKey } from "@/lib/util";
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
+
+    const shippingKey = process.env.SHIPPING_API_KEY;
+    if (!validarApiKey(request, shippingKey)) {
+        return new NextResponse("Unauthorized", { status: 401 });
+    }
+    
     const {id_pedido, cantidad, id_evento, id_usuario} = await request.json();
     
     const id_generado = generarIdEntrada();
