@@ -1,35 +1,58 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server"; 
+import { NextResponse } from "next/server";
 import { generarIdEntrada, validarApiKey } from "@/lib/util";
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
-
     const shippingKey = process.env.SHIPPING_API_KEY;
     if (!validarApiKey(request, shippingKey)) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
-    
-    const {id_pedido, cantidad, id_evento, id_usuario} = await request.json();
-    
-    const id_generado = generarIdEntrada();
 
     try {
-        const nuevaEntrada= await prisma.entrada.create({
+        const { id_pedido, cantidad, id_evento, id_usuario } = await request.json();
+        const id_generado = generarIdEntrada();
+
+        const sellerUrl = process.env.URL_SELLER ?? 'http://localhost:3000';
+        const sellerKey = process.env.SELLER_API_KEY;
+
+        const res = await fetch(`${sellerUrl}/api/seller/eventos/${id_evento}`, {
+            cache: 'no-store',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': sellerKey ?? ''
+            }
+        });
+
+        if (!res.ok) {
+            return NextResponse.json({ error: "No se encontró el evento en Seller" }, { status: 404 });
+        }
+
+        const evento = await res.json();
+
+        const idOrganizador = evento.idOrganizador;
+
+        if (!idOrganizador) {
+            return NextResponse.json({ error: "El evento no posee un organizador asignado" }, { status: 400 });
+        }
+
+        const nuevaEntrada = await prisma.entrada.create({
             data: {
                 id_entrada: id_generado,
-                id_pedido: id_pedido,
+                id_pedido: id_pedido, 
                 cantidad: cantidad,
                 id_evento: id_evento,
                 id_usuario: id_usuario,
+                id_organizador: idOrganizador,
                 estado: "Pendiente",
             },
         });
-        return NextResponse.json({ status: 201 });
+
+        return NextResponse.json({ message: "Pedido creado con éxito", entrada: nuevaEntrada }, { status: 201 });
 
     } catch (error) {
-        console.error("Error creando pedido:", error);
-        return NextResponse.json({ error: "Error creando pedido" }, { status: 500 });
+        console.error("Error procesando pedido:", error);
+        return NextResponse.json({ error: "Error interno creando pedido" }, { status: 500 });
     }
 }
