@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import {useUser} from '@clerk/nextjs'
+import { useUser } from '@clerk/nextjs';
 
 export default function RolSwitcher() {
   const pathname = usePathname();
@@ -12,11 +12,9 @@ export default function RolSwitcher() {
   const { user, isLoaded } = useUser();
   const roles = (user?.publicMetadata?.roles as string[]) || [];
 
-  // Detectamos si la URL actual empieza con /seller o /dashboard/seller
   const isSellerMode = pathname.startsWith("/seller") || pathname.includes("/seller");
   const isAdminMode = pathname.startsWith("/admin") || pathname.includes("/admin");
 
-  // Cerramos el dropdown automáticamente si el usuario hace click afuera de él
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -28,59 +26,41 @@ export default function RolSwitcher() {
   }, []);
 
   const handleModeChange = (route: string) => {
-    setIsOpen(false); // Cerramos el menú
-    router.push(route); // Redirigimos
+    setIsOpen(false);
+    router.push(route);
   };
 
-  // Si Clerk todavía no cargó los metadatos, mostramos un esqueleto sutil para evitar parpadeos
   if (!isLoaded) {
-    return <div className="w-44 h-9 bg-slate-100/80 animate-pulse rounded-xl border border-slate-200/40" />;
+    return <div className="w-44 h-9 bg-surface-container-high/60 animate-pulse rounded-xl border border-primary/10" />;
   }
 
-  // Función auxiliar para renderizar el texto del botón principal dinámicamente
   const renderActiveModeLabel = () => {
-    if (isAdminMode) {
-      return (
-        <>
-          <span className="text-violet-600"></span> Admin
-        </>
-      );
-    }
-    if (isSellerMode) {
-      return (
-        <>
-          <span className="text-fuchsia-600"></span> Vendedor
-        </>
-      );
-    }
-    return (
-      <>
-        <span className="text-purple-600"></span> Comprador
-      </>
-    );
+    if (isAdminMode) return <>Admin</>;
+    if (isSellerMode) return <>Vendedor</>;
+    return <>Comprador</>;
   };
 
-  return <div className="relative inline-block text-left" ref={dropdownRef}>
+  return (
+    <div className="relative inline-block text-left" ref={dropdownRef}>
       
-      {/* BOTÓN PRINCIPAL (Muestra el modo activo actual) */}
+      {/* BOTÓN PRINCIPAL (Tonalidades adaptadas al tema orgánico) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         type="button"
-        className={`inline-flex items-center justify-between w-44 px-4 py-2 text-xs font-bold rounded-xl transition-all border shadow-sm focus:outline-none ${
+        className={`inline-flex items-center justify-between w-44 px-4 py-2 font-label text-label-sm rounded-xl transition-all border shadow-soft-ambient focus:outline-none ${
           isAdminMode 
-            ? "border-violet-300 bg-violet-50/50 text-violet-950 hover:bg-violet-50" 
-            : "border-purple-200/60 bg-white text-purple-950 hover:bg-purple-50/50"
+            ? "border-primary bg-primary-container text-background hover:bg-primary" 
+            : "border-primary/15 bg-surface-container-low text-on-surface hover:bg-surface-container"
         }`}
       >
-        <span className="flex items-center gap-2">
+        <span className="flex items-center gap-2 uppercase tracking-wider">
           {renderActiveModeLabel()}
         </span>
         
-        {/* Flechita dinámica que gira si está abierto */}
         <svg
-          className={`w-4 h-4 ml-2 transition-transform duration-200 text-purple-400 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`w-4 h-4 ml-2 transition-transform duration-200 ${
+            isAdminMode ? "text-background/70" : "text-primary/50"
+          } ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -89,67 +69,58 @@ export default function RolSwitcher() {
         </svg>
       </button>
 
-      {/* MENÚ DESPLEGABLE (Opciones flotantes) */}
+      {/* MENÚ DESPLEGABLE (Contenedores Retro Tonal) */}
       {isOpen && (
-        <div className="absolute right-0 z-50 w-48 mt-2 origin-top-right bg-white border border-purple-100 rounded-2xl shadow-xl shadow-purple-950/5 focus:outline-none overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150">
-          <div className="py-1.5 bg-white">
-            <p className="px-4 py-1.5 text-[10px] font-bold text-purple-300 uppercase tracking-wider">
+        <div className="absolute right-0 z-50 w-48 mt-2 origin-top-right bg-surface-container-lowest border border-primary/15 rounded-xl shadow-soft-ambient focus:outline-none overflow-hidden transition-all">
+          <div className="py-1.5">
+            <p className="px-4 py-1.5 text-[10px] font-bold text-on-surface-variant/40 uppercase tracking-widest font-label">
               Cambio de rol
             </p>
             
             {/* Opción Comprador */}
             <button
               onClick={() => handleModeChange("/buyer")}
-              className={`w-full text-left px-4 py-2.5 text-xs font-semibold flex items-center gap-2.5 transition-colors ${
+              className={`w-full text-left px-4 py-2 text-label-sm flex flex-col transition-colors ${
                 !isSellerMode && !isAdminMode
-                  ? "bg-gradient-to-r from-purple-50 to-fuchsia-50 text-purple-700"
-                  : "text-slate-600 hover:bg-purple-50/40 hover:text-purple-700"
+                  ? "bg-secondary-container text-on-secondary-container font-bold"
+                  : "text-on-surface-variant hover:bg-surface-container-low"
               }`}
             >
-              <span className="text-sm"></span>
-              <div className="flex flex-col">
-                <span>Comprador</span>
-                <span className="text-[10px] text-slate-400 font-normal">Ver mis entradas</span>
-              </div>
+              <span>Comprador</span>
+              <span className="text-[10px] opacity-70 font-normal normal-case">Ver mis entradas</span>
             </button>
 
             {/* Opción Vendedor */}
             <button
               onClick={() => handleModeChange("/seller")}
-              className={`w-full text-left px-4 py-2.5 text-xs font-semibold flex items-center gap-2.5 transition-colors ${
+              className={`w-full text-left px-4 py-2 text-label-sm flex flex-col transition-colors ${
                 isSellerMode
-                  ? "bg-gradient-to-r from-purple-50 to-fuchsia-50 text-purple-700"
-                  : "text-slate-600 hover:bg-purple-50/40 hover:text-purple-700"
+                  ? "bg-secondary-container text-on-secondary-container font-bold"
+                  : "text-on-surface-variant hover:bg-surface-container-low"
               }`}
             >
-              <span className="text-sm"></span>
-              <div className="flex flex-col">
-                <span>Vendedor</span>
-                <span className="text-[10px] text-slate-400 font-normal">Escanear entradas</span>
-              </div>
+              <span>Vendedor</span>
+              <span className="text-[10px] opacity-70 font-normal normal-case">Escanear entradas</span>
             </button>
 
+            {/* Opción Administrador */}
             {roles.includes("adminShipping") && (
-              <>
               <button
-              onClick={() => handleModeChange("/admin")}
-              className={`w-full text-left px-4 py-2.5 text-xs font-semibold flex items-center gap-2.5 transition-colors ${
-                isAdminMode
-                  ? "bg-gradient-to-r from-violet-100 to-purple-50 text-violet-700"
-                  : "text-violet-600 hover:bg-violet-50/50"
-              }`}
-            >
-              <span className="text-sm"></span>
-              <div className="flex flex-col">
+                onClick={() => handleModeChange("/admin")}
+                className={`w-full text-left px-4 py-2 text-label-sm flex flex-col transition-colors ${
+                  isAdminMode
+                    ? "bg-primary text-background font-bold"
+                    : "text-primary-container hover:bg-primary-container/10"
+                }`}
+              >
                 <span>Administrador</span>
-                <span className="text-[10px] text-slate-400 font-normal">Panel central</span>
-              </div>
-            </button>
-              </>
+                <span className="text-[10px] opacity-70 font-normal normal-case">Panel central</span>
+              </button>
             )}
 
           </div>
         </div>
       )}
-    </div>;
+    </div>
+  );
 }

@@ -12,25 +12,28 @@ export default async function EntradasPage() {
   if (!userId) {
     redirect('/sign-in');
   }
-  
-  
 
-  if(!roles.includes("buyer")) {
+  // Vista de Acceso Restringido adaptada al estilo Retro Tonal
+  if (!roles.includes("buyer")) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center animate-fadeIn min-h-[60vh]">
-        <div className="bg-red-50 text-red-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4 font-bold shadow-sm">
-          !
+      <div className="min-h-screen bg-background text-on-background flex flex-col items-center justify-center p-6 text-center">
+        <div className="card-retro-tonal max-w-md flex flex-col items-center">
+          <div className="bg-primary-container text-background w-16 h-16 rounded-xl flex items-center justify-center font-display text-headline-md mb-4 shadow-soft-ambient">
+            !
+          </div>
+          <h1 className="text-headline-md text-primary-container mb-2">
+            Acceso Restringido
+          </h1>
+          <p className="text-body-md text-on-surface-variant/80 max-w-sm mb-6 leading-relaxed">
+            Tu cuenta actual no tiene permisos de comprador para acceder al escáner de entradas de Eventia.
+          </p>
+          <Link 
+            href="/seller" 
+            className="btn-retro-primary inline-block"
+          >
+            Volver a Escanear Entradas
+          </Link>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Acceso Restringido</h1>
-        <p className="text-gray-500 max-w-sm mb-6 text-sm leading-relaxed">
-          Tu cuenta actual no tiene permisos de comprador para acceder al escáner de entradas de Eventia.
-        </p>
-        <Link 
-          href="/seller" 
-          className="bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-indigo-700 transition-all shadow-md active:scale-95"
-        >
-          Volver a Escanear Entradas
-        </Link>
       </div>
     );
   }
@@ -38,28 +41,34 @@ export default async function EntradasPage() {
   const misEntradas = await entradasUsuarioID(userId);
 
   return (
-    <main className="min-h-screen bg-slate-50">
-      {/* Header del Dashboard */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <h1 className="text-3xl font-extrabold text-slate-900">Mis Entradas</h1>
-          <p className="text-slate-500 mt-2">
+    <main className="layout-container">
+      {/* Header del Dashboard - Estilo Retro-Flow */}
+      <div className="border-b border-primary/15 pb-8 mb-10">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary-container">
+            Mis Entradas
+          </h1>
+          <p className="text-body-lg text-on-surface-variant mt-2 max-w-2xl">
             Gestiona tus tickets y accede a los códigos QR de ingreso.
           </p>
         </div>
       </div>
 
       {/* Contenido Principal */}
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-xl font-bold text-slate-800">Próximos Eventos</h2>
-          <span className="bg-indigo-50 text-indigo-700 text-sm px-3 py-1 rounded-full font-semibold">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <h2 className="text-headline-md text-on-background">
+            Próximos Eventos
+          </h2>
+          <span className="chip-retro">
             {misEntradas.length} Entradas activas
           </span>
         </div>
 
         {/* Listado de Componentes */}
-        <EntradaList tickets={misEntradas} />
+        <div className="mt-6">
+          <EntradaList tickets={misEntradas} />
+        </div>
       </div>
     </main>
   );
