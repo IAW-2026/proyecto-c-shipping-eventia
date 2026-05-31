@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     try {
         const { id_pedido, cantidad, id_evento, id_usuario } = await request.json();
-        const id_generado = generarIdEntrada();
+        const cantidadEntradas= Number(cantidad);
 
         const sellerUrl = process.env.URL_SELLER ?? 'http://localhost:3000';
         const sellerKey = process.env.SELLER_API_KEY;
@@ -37,19 +37,26 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "El evento no posee un organizador asignado" }, { status: 400 });
         }
 
-        const nuevaEntrada = await prisma.entrada.create({
-            data: {
-                id_entrada: id_generado,
-                id_pedido: id_pedido, 
-                cantidad: cantidad,
-                id_evento: id_evento,
-                id_usuario: id_usuario,
-                id_organizador: idOrganizador,
-                estado: "Pendiente",
-            },
+        const datosEntradas = Array.from({ length: cantidadEntradas }, () => ({
+            id_entrada: generarIdEntrada(),
+            id_pedido,
+            id_evento,
+            id_usuario,
+            id_organizador: idOrganizador,
+            estado: "Pendiente",
+        }));
+
+        await prisma.entrada.createMany({
+            data: datosEntradas,
         });
 
-        return NextResponse.json({ message: "Pedido creado con éxito", entrada: nuevaEntrada }, { status: 201 });
+        const entradasCreadasSerializadas = datosEntradas.map(entrada => ({
+            ...entrada,
+            id_entrada: entrada.id_entrada.toString(),
+            id_pedido: entrada.id_pedido.toString(),
+        }));
+
+        return NextResponse.json({ message: "Pedido creado con éxito", entrada: entradasCreadasSerializadas }, { status: 201 });
 
     } catch (error) {
         console.error("Error procesando pedido:", error);

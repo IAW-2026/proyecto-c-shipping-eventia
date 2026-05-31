@@ -1,17 +1,15 @@
 import Link from "next/link";
 
 interface EntradaProps {
-  id_entrada: bigint | string;
-  id_pedido: number;
+  id_pedido: number | string;
   id_evento: number;
   cantidad: number;
-  estado: string;
-  nombre_evento: string;
+  nombre_evento: string
   ubicacion: string;
   fecha_evento: string;
 }
 
-export const EntradaCard = ({ id_entrada, nombre_evento, cantidad, estado, ubicacion, fecha_evento, id_pedido }: EntradaProps) => {
+export const EntradaCard = ({nombre_evento, cantidad, ubicacion, fecha_evento, id_pedido }: EntradaProps) => {
   const fechaFormateada = new Date(fecha_evento).toLocaleDateString('es-AR', {
     day: '2-digit',
     month: 'long',
@@ -62,24 +60,11 @@ export const EntradaCard = ({ id_entrada, nombre_evento, cantidad, estado, ubica
         </div>
       </div>
 
-      {/* Footer de la tarjeta */}
-      <div className="mt-4 flex justify-between items-center pt-3 border-t border-primary/10">
-        <span className={`chip-retro !text-[10px] !px-2.5 !py-0.5 !lowercase first-letter:uppercase font-label ${
-          estado === 'Confirmado' 
-            ? '!bg-primary/10 !text-primary' 
-            : '!bg-secondary-container !text-on-secondary-container'
-        }`}>
-          {estado}
-        </span>
-        
+      <div className="mt-6 flex justify-between items-center">
         <Link 
-          href={`/buyer/${id_entrada}`}
-          className="text-xs font-label font-bold text-primary-container hover:text-primary flex items-center gap-1 transition-colors tracking-wide uppercase"
-        >
-          Detalles
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-3 h-3">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7M21 12H3" />
-          </svg>
+          href={`/buyer/${id_pedido}`}
+          className="text-indigo-600 font-bold hover:underline">
+          Ver detalles
         </Link>
       </div>
     </div>

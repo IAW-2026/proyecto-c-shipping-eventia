@@ -24,5 +24,5 @@ export default async function SellerPage() {
   }
 
   // Si tiene el rol, le pasamos el control al componente de cliente
-  return <UsuarioSeller />;
+  return <UsuarioSeller usuarioClerk={{id:user?.id}} />;
 }

@@ -1,21 +1,30 @@
-import React from 'react';
+'use client'; 
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
 
-interface EntradaDetalleProps {
-  entrada: {
-    id_entrada: bigint | string;
-    id_pedido: number;
-    id_evento: number;
-    cantidad: number;
-    estado: string; // 'Confirmado' | 'Usado' | 'Pendiente'
-  };
+interface EntradaIndividual {
+  id_entrada: bigint | string;
+  id_pedido: number;
+  id_evento: number;
+  estado: string; // 'Confirmado' | 'Usado' | 'Pendiente'
 }
 
-export const EntradaDetalle = ({ entrada }: EntradaDetalleProps) => {
-  const estaConfirmada = entrada.estado === 'Confirmado';
-  const estaUsada = entrada.estado === 'Usado';
-  const estaPendiente = entrada.estado === 'Pendiente';
+interface EntradaDetalleProps {
+  id_pedido: string | number;
+  entradas: EntradaIndividual[]; 
+}
+
+export const EntradaDetalle = ({ id_pedido, entradas }: EntradaDetalleProps) => {
+  const [indexActual, setIndexActual] = useState(0);
+
+  const entradaActual = entradas[indexActual] || entradas[0];
+  const totalEntradas = entradas.length;
+
+  const estaConfirmada = entradaActual.estado === 'Confirmado';
+  const estaUsada = entradaActual.estado === 'Usado';
+  const estaPendiente = entradaActual.estado === 'Pendiente';
 
   return (
     <div className="max-w-md mx-auto py-8 px-4">
@@ -36,8 +45,35 @@ export const EntradaDetalle = ({ entrada }: EntradaDetalleProps) => {
             Entrada Digital
           </span>
           <p className="text-xs text-indigo-200 mt-1 font-mono">
-            Pedido #{entrada.id_pedido}
+            Pedido #{id_pedido}
           </p>
+
+          {/* SELECTOR DEL CARRUSEL (Solo se renderiza si hay más de 1 ticket) */}
+          {totalEntradas > 1 && (
+            <div className="mt-4 flex items-center justify-between bg-black/20 p-1.5 rounded-xl border border-white/10">
+              <button
+                type="button"
+                onClick={() => setIndexActual(prev => Math.max(0, prev - 1))}
+                disabled={indexActual === 0}
+                className="px-2.5 py-1 bg-white text-indigo-700 rounded-lg text-xs font-bold disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
+              >
+                ◀
+              </button>
+              
+              <span className="text-xs font-semibold text-indigo-100">
+                Pase {indexActual + 1} de {totalEntradas}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => setIndexActual(prev => Math.min(totalEntradas - 1, prev + 1))}
+                disabled={indexActual === totalEntradas - 1}
+                className="px-2.5 py-1 bg-white text-indigo-700 rounded-lg text-xs font-bold disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
+              >
+                ▶
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Cuerpo del Ticket: Control condicional del QR */}
@@ -49,13 +85,13 @@ export const EntradaDetalle = ({ entrada }: EntradaDetalleProps) => {
           {/* CASO 1: ENTRADA YA UTILIZADA */}
           {estaUsada ? (
             <div className="flex flex-col items-center justify-center p-6 text-center bg-gray-50 rounded-2xl border border-gray-200 max-w-xs w-full py-8 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gray-100/40 backdrop-blur-[1px] flex items-center justify-center">
-                <span className="text-red-500 font-black tracking-widest uppercase border-4 border-red-500 px-4 py-2 rounded-xl text-2xl rotate-12 opacity-80 shadow-md">
+              <div className="absolute inset-0 bg-gray-100/40 backdrop-blur-[1px] flex items-center justify-center z-20">
+                <span className="text-red-500 font-black tracking-widest uppercase border-4 border-red-500 px-4 py-2 rounded-xl text-2xl rotate-12 opacity-80 shadow-md bg-white">
                   UTILIZADO
                 </span>
               </div>
-              <div className="opacity-20 blur-[1px]">
-                <QRCodeSVG value={String(entrada.id_entrada)} size={160} level="M" />
+              <div className="opacity-10 blur-[1px]">
+                <QRCodeSVG value={String(entradaActual.id_entrada)} size={160} level="M" />
               </div>
               <p className="text-xs text-gray-500 mt-4 font-medium z-10">
                 Este pase ya fue validado en los controles de acceso.
@@ -66,13 +102,13 @@ export const EntradaDetalle = ({ entrada }: EntradaDetalleProps) => {
             <>
               <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-inner mb-4">
                 <QRCodeSVG 
-                  value={String(entrada.id_entrada)}
+                  value={String(entradaActual.id_entrada)}
                   size={220}
                   level="H"
                 />
               </div>
               <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider select-all">
-                ID: {String(entrada.id_entrada)}
+                ID TICKET: {String(entradaActual.id_entrada)}
               </p>
             </>
           ) : (
@@ -83,7 +119,7 @@ export const EntradaDetalle = ({ entrada }: EntradaDetalleProps) => {
                 Código QR no disponible
               </h3>
               <p className="text-xs text-amber-700 mt-2 px-2">
-                Tu entrada se encuentra en estado <span className="font-semibold">"{entrada.estado}"</span>. El código de acceso se habilitará una vez que el pago sea procesado.
+                Tu entrada se encuentra en estado <span className="font-semibold">"{entradaActual.estado}"</span>. El código de acceso se habilitará una vez que el pago sea procesado.
               </p>
             </div>
           )}
@@ -92,8 +128,8 @@ export const EntradaDetalle = ({ entrada }: EntradaDetalleProps) => {
         {/* Detalles adicionales abajo del corte de ticket */}
         <div className="bg-gray-50 p-6 space-y-3 text-sm text-gray-600">
           <div className="flex justify-between">
-            <span>Cantidad de accesos:</span>
-            <span className="font-semibold text-gray-900">{entrada.cantidad} u.</span>
+            <span>Ubicación en este pedido:</span>
+            <span className="font-semibold text-gray-900">Pase {indexActual + 1} de {totalEntradas}</span>
           </div>
           <div className="flex justify-between">
             <span>Estado del pase:</span>
@@ -101,7 +137,7 @@ export const EntradaDetalle = ({ entrada }: EntradaDetalleProps) => {
               estaConfirmada ? 'bg-green-100 text-green-700' : 
               estaUsada ? 'bg-gray-200 text-gray-700 line-through' : 'bg-blue-100 text-blue-700'
             }`}>
-              {entrada.estado}
+              {entradaActual.estado}
             </span>
           </div>
           
