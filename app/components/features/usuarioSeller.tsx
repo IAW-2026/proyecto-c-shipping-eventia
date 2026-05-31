@@ -3,18 +3,18 @@
 import { useState } from "react";
 import EscanerQR from "../EscanerQR"; 
 import { validarQrAction } from "@/app/actions/validacion"; 
+import { AnyAaaaRecord } from "dns";
 
 type EstadoEntrada = 'escanerActivo' | 'cargando' | 'valido' | 'usado' | 'invalido';
 
-export default function UsuarioSeller() {
+export default function UsuarioSeller(usuarioClerk: any) {
   const [estado, setEstado] = useState<EstadoEntrada>('escanerActivo');
   const [ticketInfo, setTicketInfo] = useState<any>(null);
 
   const handleQrScan = async (qrData: string) => {
     setEstado('cargando');
     try {
-      // ⚡ Llamamos directo a la Server Action de Prisma
-      const resultado = await validarQrAction(qrData);
+      const resultado = await validarQrAction(qrData, usuarioClerk);
 
       if (resultado.status === 200 && resultado.entrada) {
         setEstado('valido');
@@ -27,7 +27,7 @@ export default function UsuarioSeller() {
       }
     } catch (error) {
       setEstado('invalido');
-      console.error("🚨 ERROR EN FRONTEND:", error);
+      console.error("ERROR EN FRONTEND:", error);
     }
   };
 

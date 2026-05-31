@@ -15,7 +15,7 @@ interface ValidarQrResponse {
   };
 }
 
-export async function validarQrAction(qrData: string): Promise<ValidarQrResponse> {
+export async function validarQrAction(qrData: string, usuarioClerk: string): Promise<ValidarQrResponse> {
   try {
     const entradaEscaneada = await prisma.entrada.findUnique({
       where: { id_entrada: BigInt(qrData) },
@@ -26,6 +26,14 @@ export async function validarQrAction(qrData: string): Promise<ValidarQrResponse
         success: false, 
         status: 404, 
         message: 'Entrada no encontrada' 
+      };
+    }
+    
+    if(entradaEscaneada.id_organizador !== usuarioClerk) {
+      return {
+        success: false, 
+        status: 403, 
+        message: 'Esta entrada no pertenece a este organizador' 
       };
     }
 
