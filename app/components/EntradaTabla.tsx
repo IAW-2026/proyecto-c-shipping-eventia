@@ -1,4 +1,4 @@
-  import Link from "next/link";
+import Link from "next/link";
 
 export interface TicketData {
   id_entrada: string;
@@ -14,6 +14,7 @@ interface TablaEntradasProps {
   paginaActual: number;
   totalPaginas: number;
   rutaBase: string; 
+  ocultarIdEntrada?: boolean;
 }
 
 export default function TablaEntradas({
@@ -22,7 +23,8 @@ export default function TablaEntradas({
   subtitulo = "Listado de movimientos en tiempo real",
   paginaActual,
   totalPaginas,
-  rutaBase
+  rutaBase,
+  ocultarIdEntrada = false
 }: TablaEntradasProps) {
   
   const paginasTotales = Math.max(totalPaginas, 1);
@@ -56,9 +58,9 @@ export default function TablaEntradas({
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50 text-slate-500 text-xs uppercase font-bold tracking-wider border-b border-slate-100">
-              <th className="py-4 px-6">ID Entrada</th>
-              <th className="py-4 px-6">ID Pedido</th>
-              <th className="py-4 px-6">ID Evento</th>
+              {!ocultarIdEntrada && <th className="py-4 px-6">ID Entrada</th>}
+              <th className="py-4 px-6">Pedido</th>
+              <th className="py-4 px-6">Evento</th>
               <th className="py-4 px-6 text-center">Estado</th>
             </tr>
           </thead>
@@ -72,9 +74,11 @@ export default function TablaEntradas({
             ) : (
               entradas.map((ticket) => (
                 <tr key={ticket.id_entrada} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="py-4 px-6 font-mono font-medium text-xs text-slate-900">
-                    #{ticket.id_entrada}
-                  </td>
+                  {!ocultarIdEntrada && (
+                    <td className="py-4 px-6 font-mono font-medium text-xs text-slate-900">
+                      #{ticket.id_entrada}
+                    </td>
+                  )}
                   <td className="py-4 px-6 text-xs text-slate-500">
                     {ticket.id_pedido?.toString() || 'N/A'}
                   </td>
