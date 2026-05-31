@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { eventos } from "@/data/eventos"; // Conectado a tu data real con idEvento y precio
+import { eventos } from "@/data/eventos"; // Conectado a tu data real
+import { simularPagoAction, simularPedidoAction } from "../../../actions/simulacion"; // Importamos las Server Actions para simular pedido y pago"
 
 export default function SimuladorPage() {
   // Estados para el formulario de simulación
@@ -9,7 +10,7 @@ export default function SimuladorPage() {
   const [cantidad, setCantidad] = useState(1);
   const [clerkKey, setClerkKey] = useState("");
 
-  // 🔑 Modificación: Manejamos el ID del pedido como un string editable de forma libre
+  // ID del pedido como string editable de forma libre
   const [pedidoId, setPedidoId] = useState("");
   const [loadingPedido, setLoadingPedido] = useState(false);
   const [loadingPago, setLoadingPago] = useState(false);
@@ -20,7 +21,7 @@ export default function SimuladorPage() {
     setConsolaLog((prev) => [`[${new Date().toLocaleTimeString()}] ${mensaje}`, ...prev]);
   };
 
-
+  // 1️⃣ PASO 1: Simular pedido enviando datos a la Server Action
   const handleSimularPedido = async () => {
     if (!eventoSeleccionado || !clerkKey) {
       registrarLog("Tenes que seleccionar un evento e ingresar la Clerk Key");
@@ -30,25 +31,17 @@ export default function SimuladorPage() {
     registrarLog("Simulando nuevo pedido de Buyer");
 
     try {
-      const id_pedido = Math.floor(Date.now() / 1000); // Número único basado en timestamp
-      const response = await fetch("/api/pedido", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id_pedido: id_pedido,
-          cantidad: Number(cantidad),
-          id_evento: Number(eventoSeleccionado),
-          id_usuario: clerkKey,
-        }),
+      const resultado = await simularPedidoAction({
+        cantidad: Number(cantidad),
+        id_evento: Number(eventoSeleccionado),
+        id_usuario: clerkKey
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setPedidoId(id_pedido.toString()); // Se autocompleta para agilizar el flujo continuo
-        registrarLog(`Pedido creado con éxito. ID: ${id_pedido}`);
+      if (resultado.success && resultado.id_pedido) {
+        setPedidoId(resultado.id_pedido.toString());
+        registrarLog(`Pedido creado con éxito. ID: ${resultado.id_pedido}`);
       } else {
-        registrarLog(`Error en API /pedido: ${data.error || "Error desconocido"}`);
+        registrarLog(`Error en API /pedido: ${resultado.error || "Error desconocido"}`);
       }
     } catch (error) {
       registrarLog("Error de red al conectar con la API de pedidos.");
@@ -67,34 +60,17 @@ export default function SimuladorPage() {
     registrarLog(`Simulando pago de pedido ID: "${pedidoId || "VACÍO"}"...`);
 
     try {
-      const response = await fetch("/api/entrada", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id_pedido: Number(pedidoId),
-          estado: "confirmado", // Payload de confirmación
-        }),
+      const resultado = await simularPagoAction({
+        id_pedido: Number(pedidoId),
+        estado: "Confirmado"
       });
 
-      if (response.ok) {
-        const data = response.status !== 204 ? await response.json() : {};
-
+      if (resultado.success) {
         registrarLog("Pago Confirmado exitosamente");
       } else {
-        // Si falló (ej: un 404 o 500), intentamos leer el error si viene en formato JSON
-        let errorMsg = "Error al procesar";
-        try {
-          const errorData = await response.json();
-          errorMsg = errorData.message || errorData.error || errorMsg;
-        } catch {
-          // Si el error tampoco era JSON (era texto plano), leemos el texto
-          errorMsg = await response.text();
-        }
-
-        registrarLog(`Error en API /entrada: ${errorMsg}`);
+        registrarLog(`Error en API /entrada: ${resultado.error || "Error desconocido"}`);
       }
     } catch (error) {
-      // Ahora acá solo va a entrar si de verdad se cayó el servidor o no hay internet
       registrarLog("Error de red al conectar con la API de pagos.");
       console.error(error);
     } finally {
@@ -116,7 +92,7 @@ export default function SimuladorPage() {
         <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm space-y-4">
           <h3 className="font-bold text-sm uppercase text-slate-400 tracking-wider">Parámetros del Pedido</h3>
 
-          {/* Selector de Eventos cargados desde Data */}
+          {/* Selector de Eventos */}
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1">Seleccionar Evento</label>
             <select
@@ -155,7 +131,7 @@ export default function SimuladorPage() {
             </div>
           </div>
 
-          {/* 🆕 NUEVO INPUT: ID de pedido manual libre para el Paso 2 */}
+          {/* Input ID Pedido Manual */}
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1">
               ID del Pedido para Confirmar Pago (Manual o Autocompletado)
@@ -173,7 +149,6 @@ export default function SimuladorPage() {
 
           {/* ACCIONES / BOTONES DEL FLUJO */}
           <div className="space-y-3">
-            {/* Botón Paso 1 */}
             <button
               onClick={handleSimularPedido}
               disabled={loadingPedido}
@@ -182,7 +157,6 @@ export default function SimuladorPage() {
               {loadingPedido ? "Procesando..." : "1️⃣ Simular Pedido (App Seller -> Tu API)"}
             </button>
 
-            {/* ✅ Botón Paso 2: Ya NO tiene la propiedad disabled bloqueante */}
             <button
               onClick={handleSimularPago}
               disabled={loadingPago}
