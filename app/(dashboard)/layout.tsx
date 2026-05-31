@@ -9,7 +9,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!userId) redirect("/");
 
   return (
-      <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background text-on-background">
         <Navbar>
           <RolSwitcher />
         </Navbar>

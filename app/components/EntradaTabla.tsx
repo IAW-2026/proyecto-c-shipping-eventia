@@ -39,16 +39,15 @@ export default function TablaEntradas({
     return `${rutaBase}page=${nuevaPagina}`;
   };
 
-  return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+  return (<div className="card-retro bg-surface-container-lowest overflow-hidden">
       
       {/* Encabezado */}
-      <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+      <div className="p-5 border-b border-primary/10 flex items-center justify-between bg-surface-container-low/40">
         <div>
-          <h2 className="font-bold text-lg text-slate-800">{titulo}</h2>
-          <p className="text-xs text-slate-400">{subtitulo}</p>
+          <h2 className="font-bold text-headline-sm text-black uppercase tracking-tight">{titulo}</h2>
+          <p className="text-label-sm text-on-surface-variant/60">{subtitulo}</p>
         </div>
-        <span className="bg-indigo-50 text-indigo-700 text-xs px-3 py-1 rounded-full font-bold">
+        <span className="chip-retro !py-1">
           Página {paginaActual} de {paginasTotales}
         </span>
       </div>
@@ -57,43 +56,45 @@ export default function TablaEntradas({
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-slate-50 text-slate-500 text-xs uppercase font-bold tracking-wider border-b border-slate-100">
-              {!ocultarIdEntrada && <th className="py-4 px-6">ID Entrada</th>}
-              <th className="py-4 px-6">Pedido</th>
-              <th className="py-4 px-6">Evento</th>
-              <th className="py-4 px-6 text-center">Estado</th>
+            <tr className="bg-surface-container-low/60 text-on-surface-variant text-label-sm font-bold uppercase tracking-wider border-b border-primary/10">
+              {!ocultarIdEntrada && <th className="py-4 px-6 font-label">ID Entrada</th>}
+              <th className="py-4 px-6 font-label">Pedido</th>
+              <th className="py-4 px-6 font-label">Evento</th>
+              <th className="py-4 px-6 font-label text-center">Estado</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 text-sm text-slate-600">
+          <tbody className="divide-y divide-primary/5 text-body-sm text-on-surface-variant font-body">
             {entradas.length === 0 ? (
               <tr>
-                <td colSpan={4} className="text-center py-12 text-slate-400 text-sm">
+                <td colSpan={4} className="text-center py-12 text-on-surface-variant/50 text-body-sm italic">
                   No se encontraron entradas registradas que cumplan con este criterio.
                 </td>
               </tr>
             ) : (
               entradas.map((ticket) => (
-                <tr key={ticket.id_entrada} className="hover:bg-slate-50/80 transition-colors">
+                <tr key={ticket.id_entrada} className="hover:bg-surface-container-low/30 transition-colors">
                   {!ocultarIdEntrada && (
-                    <td className="py-4 px-6 font-mono font-medium text-xs text-slate-900">
+                    <td className="py-4 px-6 font-mono font-medium text-xs text-black">
                       #{ticket.id_entrada}
                     </td>
                   )}
-                  <td className="py-4 px-6 text-xs text-slate-500">
+                  <td className="py-4 px-6 text-xs text-on-surface-variant/80">
                     {ticket.id_pedido?.toString() || 'N/A'}
                   </td>
-                  <td className="py-4 px-6 text-xs text-slate-500">
+                  <td className="py-4 px-6 text-xs text-black font-medium">
                     {ticket.id_evento?.toString() || 'N/A'}
                   </td>
                   <td className="py-4 px-6 text-center">
-                    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
-                      ticket.estado === 'Confirmado' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                      ticket.estado === 'Usado' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 
-                      'bg-rose-50 text-rose-700 border border-rose-200'
+                    <span className={`inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider border ${
+                      ticket.estado === 'Confirmado' 
+                        ? 'bg-primary/5 text-primary border-primary/20' 
+                        : ticket.estado === 'Usado' 
+                        ? 'bg-secondary-container/50 text-on-secondary-container border-secondary-container/60' 
+                        : 'bg-error/5 text-error border-error/20'
                     }`}>
                       <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
-                        ticket.estado === 'Confirmado' ? 'bg-emerald-500' :
-                        ticket.estado === 'Usado' ? 'bg-amber-500' : 'bg-rose-500'
+                        ticket.estado === 'Confirmado' ? 'bg-primary' :
+                        ticket.estado === 'Usado' ? 'bg-on-secondary-container' : 'bg-error'
                       }`} />
                       {ticket.estado}
                     </span>
@@ -106,8 +107,8 @@ export default function TablaEntradas({
       </div>
 
       {/* Controles de Paginación */}
-      <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between sm:flex-row flex-col gap-3">
-        <p className="text-xs text-slate-500 font-medium">
+      <div className="p-4 bg-surface-container-low/40 border-t border-primary/10 flex items-center justify-between sm:flex-row flex-col gap-3">
+        <p className="text-label-sm text-on-surface-variant/60">
           Mostrando {entradas.length} resultados en esta página.
         </p>
         
@@ -115,34 +116,34 @@ export default function TablaEntradas({
           {paginaActual > 1 ? (
             <Link
               href={armarLinkPagina(paginaActual - 1)}
-              className="px-4 py-2 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition-all active:scale-95"
+              className="px-4 py-2 bg-surface-container-lowest border border-primary/15 hover:border-primary/30 text-on-surface text-xs font-bold uppercase tracking-wider rounded-xl shadow-soft-ambient transition-all active:scale-95"
             >
               ← Anterior
             </Link>
           ) : (
-            <button disabled className="px-4 py-2 bg-slate-100 border border-slate-200 text-slate-400 rounded-xl text-xs font-bold cursor-not-allowed opacity-60">
+            <button disabled className="px-4 py-2 bg-surface-container-low/50 border border-primary/5 text-on-surface-variant/30 rounded-xl text-xs font-bold uppercase tracking-wider cursor-not-allowed opacity-50">
               ← Anterior
             </button>
           )}
 
-          <div className="px-3.5 py-2 bg-slate-200/60 rounded-xl text-xs font-black text-slate-700 flex items-center justify-center">
+          <div className="px-3.5 py-2 bg-primary/10 rounded-xl text-xs font-black text-primary flex items-center justify-center min-w-[32px]">
             {paginaActual}
           </div>
 
           {paginaActual < paginasTotales ? (
             <Link
               href={armarLinkPagina(paginaActual + 1)}
-              className="px-4 py-2 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition-all active:scale-95"
+              className="px-4 py-2 bg-surface-container-lowest border border-primary/15 hover:border-primary/30 text-on-surface text-xs font-bold uppercase tracking-wider rounded-xl shadow-soft-ambient transition-all active:scale-95"
             >
               Siguiente →
             </Link>
           ) : (
-            <button disabled className="px-4 py-2 bg-slate-100 border border-slate-200 text-slate-400 rounded-xl text-xs font-bold cursor-not-allowed opacity-60">
+            <button disabled className="px-4 py-2 bg-surface-container-low/50 border border-primary/5 text-on-surface-variant/30 rounded-xl text-xs font-bold uppercase tracking-wider cursor-not-allowed opacity-50">
               Siguiente →
             </button>
           )}
         </div>
       </div>
     </div>
-  );
+    );
 }

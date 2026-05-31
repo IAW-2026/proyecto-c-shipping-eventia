@@ -15,7 +15,7 @@ export const EntradaCard = ({nombre_evento, cantidad, ubicacion, fecha_evento, i
     month: 'long',
     year: 'numeric'
   });
-
+  
   return (
     <div className="card-retro flex flex-col justify-between p-10 bg-gradient-to-br from-secondary-container/20 via-surface-container-high/40 to-transparent">
       

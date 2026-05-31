@@ -3,7 +3,7 @@
 import { useState } from "react";
 import EscanerQR from "../EscanerQR"; 
 import { validarQrAction } from "@/app/actions/validacion"; 
-import { AnyAaaaRecord } from "dns";
+import { CheckCircleIcon, ExclamationTriangleIcon, XCircleIcon, ArrowPathIcon} from "@heroicons/react/24/outline";
 
 type EstadoEntrada = 'escanerActivo' | 'cargando' | 'valido' | 'usado' | 'invalido';
 
@@ -38,47 +38,88 @@ export default function UsuarioSeller(usuarioClerk: any) {
 
   return (
     <div className="p-6 max-w-xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-center text-gray-800">Control de Accesos - Eventia</h1>
-
+      <h1 className="text-headline-md text-center  tracking-tight">
+        Control de Accesos
+      </h1>
       {estado === 'escanerActivo' && (
         <EscanerQR onScanSuccess={handleQrScan} />
       )}
 
       {estado === 'cargando' && (
-        <div className="flex flex-col items-center justify-center py-12 space-y-3">
-          <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-lg font-medium text-gray-600">Validando entrada...</p>
+        <div className="flex flex-col items-center justify-center py-16 space-y-4 card-retro bg-surface-container-lowest">
+          <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          <p className="text-body-md font-medium text-on-surface-variant">
+            Validando entrada...
+          </p>
         </div>
       )}
 
       {estado !== 'escanerActivo' && estado !== 'cargando' && (
-        <div className={`p-8 rounded-2xl text-center space-y-4 shadow-md ${
-          estado === 'valido' ? 'bg-green-100 text-green-900' :
-          estado === 'usado' ? 'bg-yellow-100 text-yellow-900' : 'bg-red-100 text-red-900'
+        <div className={`card-retro p-8 text-center space-y-6 transition-all ${
+          estado === 'valido' ? 'bg-primary/10 border-primary/30' :
+          estado === 'usado' ? 'bg-secondary-container/70 border-secondary-container' : 
+          'bg-error/10 border-error/30'
         }`}>
-          <h2 className="text-2xl font-extrabold tracking-wide">
-            {estado === 'valido' && '✅ ACCESO PERMITIDO'}
-            {estado === 'usado' && '⚠️ ENTRADA YA USADA'}
-            {estado === 'invalido' && '❌ ENTRADA INVÁLIDA O CANCELADA'}
-          </h2>
+          
+          <div className="flex flex-col items-center space-y-3">
+            {estado === 'valido' && (
+              <>
+                <div className="w-14 h-14 bg-primary text-background rounded-2xl flex items-center justify-center shadow-soft-ambient border border-primary/10">
+                  <CheckCircleIcon className="w-9 h-9 stroke-[2.5]" />
+                </div>
+                <h2 className="text-headline-sm text-primary font-black tracking-tight uppercase">
+                  Acceso Permitido
+                </h2>
+              </>
+            )}
+            {estado === 'usado' && (
+              <>
+                <div className="w-14 h-14 bg-on-secondary-container text-secondary-container rounded-2xl flex items-center justify-center shadow-soft-ambient border border-on-secondary-container/15">
+                  <ExclamationTriangleIcon className="w-9 h-9 stroke-[2.5]" />
+                </div>
+                <h2 className="text-headline-sm text-on-secondary-container font-black tracking-tight uppercase">
+                  Entrada Ya Usada
+                </h2>
+              </>
+            )}
+            {estado === 'invalido' && (
+              <>
+                <div className="w-14 h-14 bg-error text-background rounded-2xl flex items-center justify-center shadow-soft-ambient border border-error/10">
+                  <XCircleIcon className="w-9 h-9 stroke-[2.5]" />
+                </div>
+                <h2 className="text-headline-sm text-error font-black tracking-tight uppercase">
+                  Entrada Inválida o Cancelada
+                </h2>
+              </>
+            )}
+          </div>
 
-          {/* Ajustado para mapear tus datos reales de la BD */}
           {ticketInfo && (
-            <div className="bg-white/50 p-4 rounded-xl inline-block min-w-[240px] text-left space-y-1">
-              <p className="text-[10px] uppercase text-gray-500 font-bold tracking-wider text-center border-b border-gray-300/30 pb-1 mb-2">
+            <div className="bg-surface-container-lowest/80 border border-primary/10 p-4 rounded-xl inline-block min-w-[260px] text-left space-y-2 shadow-soft-ambient">
+              <p className="text-label-sm uppercase text-on-surface-variant/60 font-bold tracking-widest text-center border-b border-primary/10 pb-1.5 mb-2">
                 Datos del Ticket
               </p>
-              <p className="text-xs text-gray-700">
-                <span className="font-bold">Ticket ID:</span> <span className="font-mono">{ticketInfo.id_entrada}</span>
+              <p className="text-body-sm text-on-surface-variant flex justify-between gap-4">
+                <span className="font-bold text-black">Ticket ID:</span> 
+                <span className="font-mono text-xs bg-primary/5 px-1.5 py-0.5 rounded border border-primary/10">
+                  #{ticketInfo.id_entrada}
+                </span>
               </p>
-              <p className="text-xs text-gray-700">
-                <span className="font-bold">Evento ID:</span> {ticketInfo.id_evento}
+              <p className="text-body-sm text-on-surface-variant flex justify-between gap-4">
+                <span className="font-bold text-black">Evento ID:</span> 
+                <span className="font-mono text-xs">{ticketInfo.id_evento}</span>
               </p>
-              <p className="text-xs text-gray-700">
-                <span className="font-bold">Pedido ID:</span> {ticketInfo.id_pedido}
+              <p className="text-body-sm text-on-surface-variant flex justify-between gap-4">
+                <span className="font-bold text-black">Pedido ID:</span> 
+                <span className="font-mono text-xs">{ticketInfo.id_pedido}</span>
               </p>
-              <div className="text-center pt-2">
-                <span className="inline-block px-2.5 py-0.5 bg-green-200 text-green-800 rounded-full text-[10px] font-bold uppercase">
+              
+              <div className="text-center pt-2 border-t border-primary/5 mt-2">
+                <span className={`inline-block px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider border ${
+                  estado === 'valido' ? 'bg-primary/10 text-primary border-primary/20' :
+                  estado === 'usado' ? 'bg-secondary-container text-on-secondary-container border-secondary-container/40' :
+                  'bg-error/10 text-error border-error/20'
+                }`}>
                   {ticketInfo.estado}
                 </span>
               </div>
@@ -87,9 +128,10 @@ export default function UsuarioSeller(usuarioClerk: any) {
 
           <button
             onClick={handleReset}
-            className="w-full py-3.5 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-semibold transition-colors shadow-sm"
+            className="btn-retro-primary w-full py-4 text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2"
           >
-            Escanear Siguiente
+            <ArrowPathIcon className="w-4 h-4 stroke-[2.5]" />
+            Escanear Siguiente 
           </button>
         </div>
       )}

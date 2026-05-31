@@ -15,8 +15,9 @@ interface ValidarQrResponse {
   };
 }
 
-export async function validarQrAction(qrData: string, usuarioClerk: string): Promise<ValidarQrResponse> {
+export async function validarQrAction(qrData: string, usuarioObjeto: { usuarioClerk: { id: string } }): Promise<ValidarQrResponse> { 
   try {
+    const idClerk = usuarioObjeto.usuarioClerk?.id;
     const entradaEscaneada = await prisma.entrada.findUnique({
       where: { id_entrada: BigInt(qrData) },
     });
@@ -29,7 +30,7 @@ export async function validarQrAction(qrData: string, usuarioClerk: string): Pro
       };
     }
     
-    if(entradaEscaneada.id_organizador !== usuarioClerk) {
+    if(entradaEscaneada.id_organizador !== idClerk) {
       return {
         success: false, 
         status: 403, 
