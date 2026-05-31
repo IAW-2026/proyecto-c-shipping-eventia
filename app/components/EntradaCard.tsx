@@ -1,17 +1,15 @@
 import Link from "next/link";
 
 interface EntradaProps {
-  id_entrada: bigint | string;
-  id_pedido: number;
+  id_pedido: number | string;
   id_evento: number;
   cantidad: number;
-  estado: string;
   nombre_evento: string
   ubicacion: string;
   fecha_evento: string;
 }
 
-export const EntradaCard = ({ id_entrada, nombre_evento, cantidad, estado, ubicacion, fecha_evento, id_pedido }: EntradaProps) => {
+export const EntradaCard = ({nombre_evento, cantidad, ubicacion, fecha_evento, id_pedido }: EntradaProps) => {
   const fechaFormateada = new Date(fecha_evento).toLocaleDateString('es-AR', {
     day: '2-digit',
     month: 'long',
@@ -34,13 +32,8 @@ export const EntradaCard = ({ id_entrada, nombre_evento, cantidad, estado, ubica
       </div>
 
       <div className="mt-6 flex justify-between items-center">
-        <span className={`text-sm px-3 py-1 rounded-full font-medium ${
-          estado === 'Confirmado' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
-        }`}>
-          {estado}
-        </span>
         <Link 
-          href={`/buyer/${id_entrada}`}
+          href={`/buyer/${id_pedido}`}
           className="text-indigo-600 font-bold hover:underline">
           Ver detalles
         </Link>

@@ -2,9 +2,8 @@ import { EntradaCard } from './EntradaCard';
 
 interface Entrada {
   id_entrada: bigint | string;
-  id_pedido: number;
+  id_pedido: number | string;
   id_evento: number;
-  cantidad: number;
   estado: string;
   nombre_evento?: string
   ubicacion?: string;
@@ -62,12 +61,31 @@ export const EntradaList = async ({ tickets }: { tickets: Entrada[] }) => {
     );
   }
 
+  const entradasPorPedido = tickets.reduce((grupos, ticket) => {
+    const idPedido = ticket.id_pedido.toString();
+    if (!grupos[idPedido]) {
+      grupos[idPedido] = {
+        id_pedido: ticket.id_pedido,
+        id_evento: ticket.id_evento,
+        entradas: []
+      };
+    }
+    grupos[idPedido].entradas.push({
+      id_entrada: ticket.id_entrada.toString(),
+      estado: ticket.estado
+    });
+
+    return grupos;
+  }, {} as Record<string, {id_pedido: number | string; id_evento: number; entradas: {id_entrada: string; estado: string}[]}>);
+
+  const listaPedidos = Object.values(entradasPorPedido);
+
   // Cargar todos los eventos en paralelo
-  const ticketsConEvento = await Promise.all(
-    tickets.map(async (ticket) => {
-      const evento = await getEvento(ticket.id_evento.toString());
+  const pedidosConEvento = await Promise.all(
+    listaPedidos.map(async (pedido) => {
+      const evento = await getEvento(pedido.id_evento.toString());
       return {
-        ...ticket,
+        ...pedido,
         nombre_evento: evento?.nombre || "Evento desconocido",
         ubicacion: evento?.ubicacion || "Ubicación no disponible",
         fecha_evento: evento?.fecha || "Fecha no disponible"
@@ -77,16 +95,14 @@ export const EntradaList = async ({ tickets }: { tickets: Entrada[] }) => {
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {ticketsConEvento.map((ticket) => (
+      {pedidosConEvento.map((pedido) => (
         <EntradaCard 
-          id_entrada={ticket.id_entrada.toString()}
-          id_pedido={ticket.id_pedido}
-          id_evento={ticket.id_evento}
-          cantidad={ticket.cantidad}
-          estado={ticket.estado}
-          nombre_evento={ticket.nombre_evento}
-          ubicacion={ticket.ubicacion}
-          fecha_evento={ticket.fecha_evento}
+          id_pedido={pedido.id_pedido}
+          id_evento={pedido.id_evento}
+          nombre_evento={pedido.nombre_evento}
+          ubicacion={pedido.ubicacion}
+          fecha_evento={pedido.fecha_evento}
+          cantidad={pedido.entradas.length}
         />
       ))}
     </div>

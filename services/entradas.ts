@@ -42,3 +42,21 @@ export async function entradaPorID(idEntrada: string) {
     return null; 
   }
 }
+
+export async function entradasPorPedidoID(idPedido: string) {
+  try {
+    const entradas = await prisma.entrada.findMany({
+      where: {
+        id_pedido: Number(idPedido), 
+      },
+      orderBy: {
+        id_entrada: 'asc',
+      },
+    });
+
+    return entradas;
+  } catch (error) {
+    console.error("Error al obtener entradas por id_pedido:", error);
+    return [];
+  }
+}
