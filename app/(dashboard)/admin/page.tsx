@@ -10,6 +10,7 @@ import {
   XCircleIcon,
   ArrowPathIcon
 } from "@heroicons/react/24/outline";
+import { isAdmin } from "@/lib/util";
 
 // captura filtros y ordenamiento
 interface PageProps {
@@ -21,10 +22,8 @@ interface PageProps {
 }
 
 export default async function AdminPage({ searchParams }: PageProps) {
-  const user = await currentUser();
-  const roles = (user?.publicMetadata?.roles as string[]) || [];
-
-  if (!roles.includes("admin")) {
+  const esAdmin= await isAdmin();
+  if (!esAdmin) {
     return (
       <>
         <div className="fixed inset-0 bg-background -z-10 pointer-events-none" />
@@ -105,7 +104,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
             Panel de Administración Central
           </h1>
           <p className="text-body-md text-on-secondary-container/80 max-w-xl leading-relaxed">
-            Bienvenido, <span className="font-extrabold text-black">{user?.firstName}</span>. Auditoría global del sistema de tickets y accesos descentralizados.
+            Bienvenido<span className="font-extrabold text-black"></span>. Auditoría global del sistema de tickets y accesos descentralizados.
           </p>
         </div>
 

@@ -2,11 +2,42 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import ScanClientContainer from "../../../components/features/ScanClientContainer";
+import { ShieldExclamationIcon } from "@heroicons/react/24/outline";
 
 export default async function ScanPage() {
   const { userId } = await auth.protect();
 
   const user = await currentUser();
+
+  const roles = (user?.publicMetadata?.roles as string[]) || [];
+  
+    if (!roles.includes("seller")) {
+      return (
+        <>
+          <div className="fixed inset-0 bg-background -z-10 pointer-events-none" />
+  
+          <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center selection:bg-primary-container selection:text-background">
+            <div className="card-retro-tonal max-w-md flex flex-col items-center p-8 bg-surface-container-low">
+              <div className="bg-primary-container text-background w-16 h-16 rounded-2xl flex items-center justify-center mb-5 shadow-soft-ambient border border-primary/20">
+                <ShieldExclamationIcon className="w-9 h-9 stroke-[2]" />
+              </div>
+              <h1 className="text-headline-md text-primary mb-2 tracking-tight">
+                Acceso Restringido
+              </h1>
+              <p className="text-body-md text-on-surface-variant max-w-sm mb-6 leading-relaxed">
+                Tu cuenta actual no tiene permisos para acceder al escaner de QR.
+              </p>
+              <Link
+                href="/buyer"
+                className="btn-retro-primary inline-block w-full sm:w-auto px-6 py-2.5 text-sm text-center"
+              >
+                Ir a Mis Entradas
+              </Link>
+            </div>
+          </div>
+        </>
+      );
+    }
 
   return (
     <div className="p-4 max-w-xl mx-auto min-h-[85vh] flex flex-col justify-center pb-12">
