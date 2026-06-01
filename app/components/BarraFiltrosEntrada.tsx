@@ -17,7 +17,7 @@ export function BarraFiltrosEntradas() {
 
   const [busqueda, setBusqueda] = useState(searchParams.get("buscar") || "");
   const estadoActual = searchParams.get("estado") || "todos";
-  const fechaActual = searchParams.get("fecha") || "todos"; // 📅 Nuevo parámetro
+  const fechaActual = searchParams.get("fecha") || "todos"; 
 
   useEffect(() => {
     const inicialEnUrl = paramsRef.current.get("buscar") || "";
@@ -85,6 +85,7 @@ export function BarraFiltrosEntradas() {
           <option value="usado">Usados</option>
           <option value="expirado">Expirados</option>
           <option value="pendiente">Pendientes</option>
+          <option value="cancelado">Cancelados</option>
         </select>
         <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-on-surface-variant/40 text-xs">▼</div>
       </div>

@@ -11,6 +11,10 @@ interface SimularPagoParams{
     estado: string;
 }
 
+interface CancelarPedidoParams {
+  id_pedido: number;
+}
+
 const shippingUrl = process.env.URL_SHIPPING ?? 'http://localhost:3000';
 
 export async function simularPedidoAction({ cantidad, id_evento, id_usuario }: SimularPedidoParams) {
@@ -77,3 +81,28 @@ export async function simularPagoAction({ id_pedido, estado }: SimularPagoParams
       return { success: false, error: "Error de red al conectar con la API de pagos." };
     }
   };
+
+export async function cancelarPedidoAction({ id_pedido }: CancelarPedidoParams) {
+  try {
+    const shippingKey = process.env.SHIPPING_API_KEY;
+    const response = await fetch(`${shippingUrl}/api/shipping/pedidoCancelado`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json", 
+        "x-api-key": shippingKey ?? '' 
+      },
+      body: JSON.stringify({
+        id_pedido: Number(id_pedido),
+      }),
+    });
+    
+    if (response.ok) {
+      return { success: true };
+    } else {
+      const data = await response.json();
+      return { success: false, error: data.error || "Error desconocido" };
+    }
+  } catch (error) {
+    return { success: false, error: "Error de red al conectar con la API de cancelación." };
+  }
+}

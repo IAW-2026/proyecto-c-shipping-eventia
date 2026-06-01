@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { eventos } from "@/data/eventos"; // Ajustá las rutas relativas con @/ si tenés configurados los alias
 import { usuarios } from "@/data/usuarios";  
-import { simularPagoAction, simularPedidoAction } from "@/app/actions/simulacion"; 
+import { simularPagoAction, simularPedidoAction, cancelarPedidoAction } from "@/app/actions/simulacion"; 
 import Link from "next/link";
 import { ArrowLeftIcon, ShieldExclamationIcon } from "@heroicons/react/24/outline";
 
@@ -48,6 +48,7 @@ export default function SimuladorClient({ esAdmin }: SimuladorClientProps) {
   const [pedidoId, setPedidoId] = useState("");
   const [loadingPedido, setLoadingPedido] = useState(false);
   const [loadingPago, setLoadingPago] = useState(false);
+  const [loadingCancelacion, setLoadingCancelacion] = useState(false);
   const [consolaLog, setConsolaLog] = useState<string[]>([]);
 
   const registrarLog = (mensaje: string) => {
@@ -105,6 +106,31 @@ export default function SimuladorClient({ esAdmin }: SimuladorClientProps) {
       console.error(error);
     } finally {
       setLoadingPago(false);
+    }
+  };
+
+  const handleSimularCancelacion = async () => {
+    if (!pedidoId) {
+      registrarLog("Error: No hay un ID de pedido para cancelar.");
+      return;
+    }
+    setLoadingCancelacion(true);
+    registrarLog(`Simulando cancelación de pedido ID: "${pedidoId}"...`);
+
+    try {
+      const resultado = await cancelarPedidoAction({
+        id_pedido: Number(pedidoId),
+      });
+
+      if (resultado.success) {
+        registrarLog("Pedido cancelado exitosamente en Shipping API");
+      } else {
+        registrarLog(`Error en API /pedidoCancelado: ${resultado.error || "Error desconocido"}`);
+      }
+    } catch (error) {
+      registrarLog("Error de red al conectar con la API de cancelación.");
+    } finally {
+      setLoadingCancelacion(false);
     }
   };
 
@@ -218,6 +244,14 @@ export default function SimuladorClient({ esAdmin }: SimuladorClientProps) {
               className="w-full btn-retro-secondary inline-flex justify-center items-center text-center font-bold tracking-wide transition-all shadow-md active:scale-[0.98] disabled:opacity-40 cursor-pointer hover:scale-[1.01] hover:opacity-90"
             >
               {loadingPago ? "Confirmando..." : "Simular Pago "}
+            </button>
+
+            <button
+              onClick={handleSimularCancelacion}
+              disabled={loadingCancelacion}
+              className="w-full py-3 bg-error/10 text-error border-2 border-error/20 hover:bg-error/20 rounded-xl inline-flex justify-center items-center text-center font-bold tracking-wide transition-all shadow-md active:scale-[0.98] disabled:opacity-40 cursor-pointer hover:scale-[1.01] uppercase text-xs"
+            >
+              {loadingCancelacion ? "Cancelando..." : "Simular Cancelación ✕"}
             </button>
           </div>
         </div>
