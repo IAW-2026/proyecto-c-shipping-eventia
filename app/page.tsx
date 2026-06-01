@@ -1,9 +1,17 @@
 // src/app/page.tsx
+import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import Image from "next/image";
 import { QrCodeIcon, ChartBarIcon, TicketIcon } from "@heroicons/react/24/outline";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const { userId } = await auth();
+
+  // Definimos las rutas dinámicamente según si el usuario está logueado o no
+  const buyerHref = userId ? "/buyer" : "/sign-in?redirect_url=/buyer";
+  const sellerHref = userId ? "/seller" : "/sign-in?redirect_url=/seller";
+  const adminHref = userId ? "/admin" : "/sign-in?redirect_url=/admin";
+
   return (
     <div className="min-h-screen bg-background flex flex-col selection:bg-primary-container selection:text-background">
 
@@ -26,7 +34,7 @@ export default function LandingPage() {
           </p>
           <div className="pt-2">
             <a href="#modos" className="btn-retro-primary inline-block w-full sm:w-auto text-center py-2.5 px-8 text-sm">
-              Ingresar ↓
+              Comenzar ↓
             </a>
           </div>
         </div>
@@ -72,7 +80,7 @@ export default function LandingPage() {
               Ingresá para ver tus códigos QR troquelados y gestionar tus accesos en puerta de forma inmediata.
             </p>
             <div className="pt-4 flex justify-center">
-              <Link href="/buyer" className="btn-retro-primary px-8">
+              <Link href={buyerHref} className="btn-retro-primary px-8">
                 Ingresar como Comprador
               </Link>
             </div>
@@ -92,7 +100,7 @@ export default function LandingPage() {
               Monitoreá tus ventas y accedé al escáner de entradas en tiempo real.
             </p>
             <div className="pt-4 flex justify-center">
-              <Link href="/seller" className="btn-retro-secondary px-8">
+              <Link href={sellerHref} className="btn-retro-secondary px-8">
                 Ingresar como Organizador
               </Link>
             </div>
@@ -178,9 +186,9 @@ export default function LandingPage() {
             <div className="space-y-3">
               <span className="text-label-lg text-primary block uppercase tracking-wider">Plataforma</span>
               <ul className="space-y-2 text-body-md text-on-surface-variant">
-                <li><Link href="/buyer" className="hover:text-primary transition-colors">Portal Comprador</Link></li>
-                <li><Link href="/seller" className="hover:text-primary transition-colors">Portal Organizador</Link></li>
-                <li><Link href="/admin" className="hover:text-primary transition-colors">Administrador</Link></li>
+                <li><Link href={buyerHref} className="hover:text-primary transition-colors">Portal Comprador</Link></li>
+                <li><Link href={sellerHref} className="hover:text-primary transition-colors">Portal Organizador</Link></li>
+                <li><Link href={adminHref} className="hover:text-primary transition-colors">Administrador</Link></li>
               </ul>
             </div>
           </div>

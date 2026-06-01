@@ -24,7 +24,6 @@ export default async function AdminPage({ searchParams }: PageProps) {
   const user = await currentUser();
   const roles = (user?.publicMetadata?.roles as string[]) || [];
 
-  // PANTALLA RESTRINGIDA: ESTILO IDÉNTICO A SELLER
   if (!roles.includes("admin")) {
     return (
       <>

@@ -52,6 +52,8 @@ interface EntradaListProps {
 }
 
 export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual, rutaBase }: EntradaListProps) => {
+  const ahora = new Date();
+
   if (tickets.length === 0) {
     return (
       <div className="text-center py-20 bg-surface-container-lowest rounded-2xl border border-dashed border-primary/20">
@@ -126,7 +128,6 @@ export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual
     }).catch(err => console.error("Error actualizando expirados:", err));
   }
 
-  const ahora = new Date();
   const pedidosFiltrados = pedidosProcesados.filter(pedido => {
     // Verificamos si al menos un ticket del pedido coincide con el estado buscado
     const coincideEstado = estado === "todos" || pedido.entradas.some(t => t.estado.toLowerCase() === estado.toLowerCase());
