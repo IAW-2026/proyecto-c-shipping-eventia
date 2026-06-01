@@ -1,8 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-
-const UsuarioSeller = dynamic(() => import("../../../components/features/usuarioSeller"), { ssr: false });
+import ScanClientContainer from "../../../components/features/ScanClientContainer";
 
 export default async function ScanPage() {
   const { userId } = await auth.protect();
@@ -24,7 +23,7 @@ export default async function ScanPage() {
       {/* CONTENEDOR DEL ESCÁNER */}
       <div className="card-retro p-2 md:p-4 bg-surface-container-lowest overflow-hidden">
         <div className="rounded-2xl overflow-hidden border border-primary/5 bg-black/5">
-          <UsuarioSeller usuarioClerk={{ id: user?.id || "" }} />
+          <ScanClientContainer usuarioId={user?.id || ""} />
         </div>
       </div>
 
