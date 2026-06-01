@@ -26,7 +26,7 @@ async function getEvento(id: string) {
 
   try {
     const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`, {
-      cache: 'no-store',
+      next: {revalidate:300},
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': sellerKey ?? ''

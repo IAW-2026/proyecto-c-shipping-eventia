@@ -135,10 +135,8 @@ export default async function SellerPage({ searchParams }: PageProps) {
   return (
     <div className="w-full space-y-10 pb-12 pt-6">
 
-      {/* 🎫 BANNER PRINCIPAL: ESTILO POSTER RETRO-FLOW */}
       <div className="card-retro p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden bg-secondary-container/70 border-secondary-container/60 shadow-soft-ambient">
 
-        {/* Elemento de Diseño: Ícono gigante de fondo sutil con tinte rosa oscuro */}
         <div className="absolute right-6 -bottom-6 text-on-secondary-container/10 pointer-events-none hidden md:block select-none">
           <TicketIcon className="w-44 h-44 rotate-12 stroke-[1.5]" />
         </div>
@@ -156,14 +154,13 @@ export default async function SellerPage({ searchParams }: PageProps) {
           href="/seller/scan"
           className="btn-retro-primary w-full sm:w-auto text-center py-3.5 px-8 text-sm font-bold uppercase tracking-wider whitespace-nowrap"
         >
-          Abrir Escáner QR ↓
+          Abrir Escáner QR 
         </Link>
       </div>
 
-      {/* 📊 CONTENEDORES DE MÉTRICAS */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
-        {/* Tarjeta 1: Total Emitidas */}
+
         <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest">
           <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
             <TicketIcon className="w-6 h-6 stroke-[2]" />
@@ -176,7 +173,7 @@ export default async function SellerPage({ searchParams }: PageProps) {
           </div>
         </div>
 
-        {/* Tarjeta 2: Check-in (Variante Tonal) */}
+        
         <div className="card-retro-tonal p-5 flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
             <CheckCircleIcon className="w-6 h-6 stroke-[2]" />
@@ -191,7 +188,7 @@ export default async function SellerPage({ searchParams }: PageProps) {
           </div>
         </div>
 
-        {/* Tarjeta 3: Porcentaje Asistencia */}
+      
         <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest">
           <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
             <UsersIcon className="w-6 h-6 stroke-[2]" />
@@ -215,7 +212,7 @@ export default async function SellerPage({ searchParams }: PageProps) {
 
       </div>
 
-      {/* 📋 HISTORIAL / TABLA COMPONENTE */}
+   
       <div className="pt-2">
         <TablaEntradas
           entradas={entradasConvertidas}

@@ -2,12 +2,20 @@ import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import TablaEntradas from "../../components/EntradaTabla";
+import {
+  ShieldExclamationIcon,
+  CommandLineIcon,
+  TicketIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  ArrowPathIcon
+} from "@heroicons/react/24/outline";
 
 // captura filtros y ordenamiento
 interface PageProps {
-  searchParams: Promise<{ 
-    page?: string; 
-    estado?: string; 
+  searchParams: Promise<{
+    page?: string;
+    estado?: string;
     orden?: 'asc' | 'desc';
   }>;
 }
@@ -16,23 +24,32 @@ export default async function AdminPage({ searchParams }: PageProps) {
   const user = await currentUser();
   const roles = (user?.publicMetadata?.roles as string[]) || [];
 
+  // PANTALLA RESTRINGIDA: ESTILO IDÉNTICO A SELLER
   if (!roles.includes("admin")) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center min-h-[70vh]">
-        <div className="bg-amber-50 text-amber-600 w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4 font-bold shadow-sm border border-amber-200">
-          !
+      <>
+        <div className="fixed inset-0 bg-background -z-10 pointer-events-none" />
+
+        <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center selection:bg-primary-container selection:text-background font-body">
+          <div className="card-retro-tonal max-w-md flex flex-col items-center p-8 bg-surface-container-low">
+            <div className="bg-primary-container text-background w-16 h-16 rounded-2xl flex items-center justify-center mb-5 shadow-soft-ambient border border-primary/20">
+              <ShieldExclamationIcon className="w-9 h-9 stroke-[2]" />
+            </div>
+            <h1 className="text-headline-md text-primary mb-2 tracking-tight uppercase font-black">
+              Acceso Restringido
+            </h1>
+            <p className="text-body-md text-on-surface-variant max-w-sm mb-6 leading-relaxed">
+              Este módulo está reservado exclusivamente para el personal de administración central de Eventia.
+            </p>
+            <Link
+              href="/buyer"
+              className="btn-retro-primary inline-block w-full sm:w-auto px-6 py-2.5 text-sm text-center font-bold uppercase tracking-wider"
+            >
+              Volver al Inicio
+            </Link>
+          </div>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Área Restringida</h1>
-        <p className="text-gray-500 max-w-sm mb-6 text-sm leading-relaxed">
-          Este módulo está reservado exclusivamente para el personal de administración central de Eventia.
-        </p>
-        <Link 
-          href="/buyer" 
-          className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-800 transition-all active:scale-95 shadow-md"
-        >
-          Volver al Inicio
-        </Link>
-      </div>
+      </>
     );
   }
 
@@ -40,21 +57,18 @@ export default async function AdminPage({ searchParams }: PageProps) {
   const TAMANIO_PAGINA = 10;
   const paginaActual = Number(params.page) || 1;
   const saltarElementos = (paginaActual - 1) * TAMANIO_PAGINA;
-  
-  // Filtro y orden por defecto
-  const filtroEstado = params.estado || undefined; // Si no hay filtro, trae todos
-  const direccionOrden = params.orden || 'desc'; // Por defecto, los más nuevos primero
 
- 
+  // Filtro y orden por defecto
+  const filtroEstado = params.estado || undefined;
+  const direccionOrden = params.orden || 'desc';
+
   const totalEntradas = await prisma.entrada.count();
   const entradasDisponibles = await prisma.entrada.count({ where: { estado: "Confirmado" } });
   const entradasUsadas = await prisma.entrada.count({ where: { estado: "Usado" } });
   const entradasCanceladas = await prisma.entrada.count({ where: { estado: "Cancelada" } });
 
-
   const condicionesWhere = filtroEstado ? { estado: filtroEstado } : {};
 
- 
   const totalFiltrados = await prisma.entrada.count({ where: condicionesWhere });
   const totalPaginas = Math.ceil(totalFiltrados / TAMANIO_PAGINA);
 
@@ -65,7 +79,6 @@ export default async function AdminPage({ searchParams }: PageProps) {
     skip: saltarElementos,
   });
 
- 
   const entradas = entradasDb.map(e => ({
     ...e,
     id_entrada: e.id_entrada.toString(),
@@ -73,98 +86,174 @@ export default async function AdminPage({ searchParams }: PageProps) {
     id_evento: e.id_evento?.toString(),
   }));
 
+  // Porcentaje de efectividad/uso global en la plataforma
+  const porcentajeAsistencia = totalEntradas > 0
+    ? Math.round((entradasUsadas / totalEntradas) * 100)
+    : 0;
+
   return (
-    <div className="space-y-8 p-6 max-w-7xl mx-auto animate-fadeIn">
-      
-      {/* Encabezado */}
-      <div className="border-b border-slate-200 pb-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900">Panel de Administración Central</h1>
-          <p className="text-sm text-slate-500 mt-1">Bienvenido, {user?.firstName}.</p>
+    <div className="w-full space-y-10 pb-12 pt-6 font-body">
+
+        {/* PANEL DE BIENVENIDA Y ACCESO RÁPIDO */}
+      <div className="card-retro p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden bg-secondary-container/70 border-secondary-container/60 shadow-soft-ambient">
+
+        <div className="absolute right-6 -bottom-6 text-on-secondary-container/10 pointer-events-none hidden md:block select-none">
+          <TicketIcon className="w-44 h-44 rotate-12 stroke-[1.5]" />
         </div>
-        <Link href="admin/simulacionCompra" className="text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-4 py-2.5 rounded-xl hover:bg-indigo-100 transition-all shadow-sm">
-          Simular Compra
+
+        <div className="text-left space-y-1 z-10">
+          <h1 className="text-headline-md text-on-secondary-container font-black tracking-tight">
+            Panel de Administración Central
+          </h1>
+          <p className="text-body-md text-on-secondary-container/80 max-w-xl leading-relaxed">
+            Bienvenido, <span className="font-extrabold text-black">{user?.firstName}</span>. Auditoría global del sistema de tickets y accesos descentralizados.
+          </p>
+        </div>
+
+        <Link
+          href="admin/simulacionCompra"
+          className="btn-retro-primary w-full sm:w-auto text-center py-3.5 px-8 text-sm font-bold uppercase tracking-wider whitespace-nowrap z-10 inline-flex items-center justify-center gap-2"
+        >
+          <CommandLineIcon className="w-4 h-4 stroke-[2.5]" />
+          Simular Compra 
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Emitidas</p>
-          <p className="text-3xl font-black text-slate-900 mt-2">{totalEntradas}</p>
+      {/* METRICAS:*/}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        
+        <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
+          <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
+            <TicketIcon className="w-6 h-6 stroke-[2]" />
+          </div>
+          <div>
+            <span className="text-label-sm text-on-surface-variant/60 uppercase tracking-widest block font-bold">
+              Total Emitidas
+            </span>
+            <span className="text-2xl font-black text-black text-body-md">{totalEntradas}</span>
+          </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-xs font-bold text-emerald-500 uppercase tracking-wider">Confirmadas</p>
-          <p className="text-3xl font-black text-emerald-600 mt-2">{entradasDisponibles}</p>
+      
+        <div className="card-retro-tonal p-5 flex items-center gap-4 border border-primary/20 bg-surface-container-low">
+          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+            <CheckCircleIcon className="w-6 h-6 stroke-[2]" />
+          </div>
+          <div>
+            <span className="text-label-sm text-primary uppercase tracking-widest block font-bold">
+              Confirmadas
+            </span>
+            <span className="text-2xl font-black text-black text-body-md">
+              {entradasDisponibles}
+            </span>
+          </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-xs font-bold text-amber-500 uppercase tracking-wider">Usadas</p>
-          <p className="text-3xl font-black text-amber-600 mt-2">{entradasUsadas}</p>
+        
+        <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
+          <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
+            <ArrowPathIcon className="w-6 h-6 stroke-[2]" />
+          </div>
+          <div>
+            <span className="text-label-sm text-on-surface-variant/60 uppercase tracking-widest block font-bold">
+              Entradas Usadas
+            </span>
+            <span className="text-2xl font-black text-black text-body-md">
+              {entradasUsadas} <span className="text-sm text-on-surface-variant/60">/ {totalEntradas}</span>
+            </span>
+          </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <p className="text-xs font-bold text-rose-500 uppercase tracking-wider">Canceladas</p>
-          <p className="text-3xl font-black text-rose-600 mt-2">{entradasCanceladas}</p>
+       
+        <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
+          <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
+            <XCircleIcon className="w-6 h-6 stroke-[2]" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <span className="text-label-sm text-on-surface-variant/60 uppercase tracking-widest block font-bold">
+              Canceladas | Uso %
+            </span>
+            <div className="flex items-center gap-3 mt-1">
+              <span className="text-2xl font-black text-black text-body-md">
+                {entradasCanceladas} <span className="text-xs text-on-surface-variant/50 font-normal">({porcentajeAsistencia}%)</span>
+              </span>
+              <div className="flex-1 bg-primary/10 h-2.5 rounded-full overflow-hidden border border-primary/5 hidden sm:block">
+                <div
+                  className="bg-primary h-full transition-all duration-500"
+                  style={{ width: `${porcentajeAsistencia}%` }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
 
-      <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-wrap gap-4 items-center justify-between">
+      <div className="bg-surface-container-low border-2 border-primary/15 rounded-2xl p-5 flex flex-col lg:flex-row gap-5 items-start lg:items-center justify-between shadow-inner">
+
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-bold text-slate-500 uppercase mr-2">Filtrar por Estado:</span>
-          <Link 
+          <span className="text-label-sm font-extrabold text-on-surface-variant/80 uppercase mr-2 tracking-wide">
+            Filtrar por Estado:
+          </span>
+          <Link
             href="/admin?page=1"
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${!filtroEstado ? 'bg-slate-900 text-white border-slate-900 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'}`}
+            className={`px-4 py-2 rounded-xl text-label-sm font-bold border-2 transition-all uppercase tracking-wider ${!filtroEstado ? 'bg-black text-white border-black shadow-md' : 'bg-surface-container-high text-on-surface-variant border-primary/10 hover:border-primary/30'}`}
           >
             Todos
           </Link>
-          <Link 
+          <Link
             href={`/admin?page=1&estado=Confirmado&orden=${direccionOrden}`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${filtroEstado === 'Confirmado' ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'}`}
+            className={`px-4 py-2 rounded-xl text-label-sm font-bold border-2 transition-all uppercase tracking-wider ${filtroEstado === 'Confirmado' ? 'bg-emerald-600 text-white border-emerald-700 shadow-md' : 'bg-surface-container-high text-emerald-600/90 border-primary/10 hover:border-emerald-500/30'}`}
           >
             Confirmado
           </Link>
-          <Link 
+          <Link
             href={`/admin?page=1&estado=Usado&orden=${direccionOrden}`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${filtroEstado === 'Usado' ? 'bg-amber-600 text-white border-amber-600 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'}`}
+            className={`px-4 py-2 rounded-xl text-label-sm font-bold border-2 transition-all uppercase tracking-wider ${filtroEstado === 'Usado' ? 'bg-amber-500 text-black border-amber-600 shadow-md' : 'bg-surface-container-high text-amber-600 border-primary/10 hover:border-amber-500/30'}`}
           >
             Usado
           </Link>
-          <Link 
+          <Link
             href={`/admin?page=1&estado=Cancelada&orden=${direccionOrden}`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${filtroEstado === 'Cancelada' ? 'bg-rose-600 text-white border-rose-600 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'}`}
+            className={`px-4 py-2 rounded-xl text-label-sm font-bold border-2 transition-all uppercase tracking-wider ${filtroEstado === 'Cancelada' ? 'bg-rose-600 text-white border-rose-700 shadow-md' : 'bg-surface-container-high text-rose-600 border-primary/10 hover:border-rose-500/30'}`}
           >
             Cancelada
           </Link>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-500 uppercase">Orden ID:</span>
-          <Link
-            href={`/admin?page=1${filtroEstado ? `&estado=${filtroEstado}` : ''}&orden=desc`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${direccionOrden === 'desc' ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'}`}
-          >
-            Nuevos primero ↓
-          </Link>
-          <Link
-            href={`/admin?page=1${filtroEstado ? `&estado=${filtroEstado}` : ''}&orden=asc`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${direccionOrden === 'asc' ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'}`}
-          >
-            Viejos primero ↑
-          </Link>
+        {/* Dirección de Orden */}
+        <div className="flex items-center gap-2 w-full lg:w-auto border-t lg:border-t-0 border-primary/10 pt-4 lg:pt-0">
+          <span className="text-label-sm font-extrabold text-on-surface-variant/80 uppercase tracking-wide mr-1">
+            Orden ID:
+          </span>
+          <div className="grid grid-cols-2 gap-2 w-full lg:w-auto">
+            <Link
+              href={`/admin?page=1${filtroEstado ? `&estado=${filtroEstado}` : ''}&orden=desc`}
+              className={`px-4 py-2 rounded-xl text-[11px] font-bold border-2 text-center transition-all uppercase tracking-wider ${direccionOrden === 'desc' ? 'bg-surface-container-highest text-black border-primary/40 shadow-sm' : 'bg-surface-container-high text-on-surface-variant border-primary/10 hover:border-primary/20'}`}
+            >
+              Nuevos ↓
+            </Link>
+            <Link
+              href={`/admin?page=1${filtroEstado ? `&estado=${filtroEstado}` : ''}&orden=asc`}
+              className={`px-4 py-2 rounded-xl text-[11px] font-bold border-2 text-center transition-all uppercase tracking-wider ${direccionOrden === 'asc' ? 'bg-surface-container-highest text-black border-primary/40 shadow-sm' : 'bg-surface-container-high text-on-surface-variant border-primary/10 hover:border-primary/20'}`}
+            >
+              Viejos ↑
+            </Link>
+          </div>
         </div>
       </div>
 
-      <TablaEntradas 
-        entradas={entradas} 
-        titulo={filtroEstado ? `Entradas con estado: ${filtroEstado}` : "Registro Global de Entradas"}
-        subtitulo="Auditoría y control de emisión de tickets en tiempo real"
-        paginaActual={paginaActual}
-        totalPaginas={totalPaginas}
-        rutaBase={`/admin${filtroEstado ? `?estado=${filtroEstado}` : '?'}${direccionOrden ? `&orden=${direccionOrden}` : ''}`} 
-      />
+      <div className="pt-2">
+        <TablaEntradas
+          entradas={entradas}
+          titulo={filtroEstado ? `Entradas con estado: ${filtroEstado}` : "Registro Global de Entradas"}
+          subtitulo="Auditoría y control de emisión de tickets en tiempo real"
+          paginaActual={paginaActual}
+          totalPaginas={totalPaginas}
+          rutaBase={`/admin${filtroEstado ? `?estado=${filtroEstado}` : '?'}${direccionOrden ? `&orden=${direccionOrden}` : ''}`}
+        />
+      </div>
     </div>
   );
 }
-
-
