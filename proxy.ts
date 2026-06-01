@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 
 //Rutas publicas
 const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/', '/api(.*)'])
+const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/buyer(.*)', '/seller(.*)'])
 
 //Rutas con roles
 const esRutaVendedor = createRouteMatcher(["/seller(.*)"]);

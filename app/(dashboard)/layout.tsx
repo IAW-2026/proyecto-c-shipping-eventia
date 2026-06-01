@@ -1,15 +1,15 @@
 import Navbar from "../components/NavBar";
 import RolSwitcher from "../components/RolSwitcher";
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { ClerkProvider } from "@clerk/nextjs";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { userId } = await auth();
+  const userId  = await currentUser();
   if (!userId) redirect("/");
 
   return (
-      <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background text-on-background">
         <Navbar>
           <RolSwitcher />
         </Navbar>

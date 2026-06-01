@@ -13,7 +13,6 @@ export default function Navbar({children}: NavbarProps) {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-primary/15 backdrop-blur-md bg-surface/90 shadow-soft-ambient">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
 
-        {/* Logo mitigado con font-display controlado para que no rompa */}
         <Link href="/" className="text-xl font-normal text-primary-container tracking-tight transition-opacity hover:opacity-90 font-display">
           Eventia
         </Link>

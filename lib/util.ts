@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { currentUser } from "@clerk/nextjs/server";
 
 export function generarIdEntrada(): bigint {
 
@@ -18,4 +19,13 @@ export function validarApiKey(request: Request, expectedKey: string | undefined)
     }
     const apiKeyProporcionada = request.headers.get('x-api-key');
     return apiKeyProporcionada === expectedKey;
+}
+
+export async function isAdmin(){
+    const user = await currentUser();
+    if (!user) {
+        return false;
+    }
+    const rolesAdmin = (user?.publicMetadata?.rolesAdmin as string[]) || [];
+    return rolesAdmin.includes('adminShipping');
 }

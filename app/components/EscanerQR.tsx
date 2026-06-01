@@ -34,9 +34,11 @@ export default function QrScanner({ onScanSuccess }: QrScannerProps) {
 
     // 3. Limpieza al desmontar el componente
     return () => {
-      if (scannerRef.current && scannerRef.current.isScanning) {
-        scannerRef.current.stop()
-          .then(() => scannerRef.current?.clear())
+      const scanner = scannerRef.current;
+      if (scanner) {
+        const stopPromise = scanner.isScanning ? scanner.stop() : Promise.resolve();
+        stopPromise
+          .then(() => scanner.clear())
           .catch((err) => console.error("Error al detener:", err));
       }
     };
