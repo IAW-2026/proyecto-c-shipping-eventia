@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { QRCodeSVG } from 'qrcode.react';
 import { ChevronLeftIcon, ChevronRightIcon, ClockIcon, NoSymbolIcon } from "@heroicons/react/24/outline";
+import dynamic from 'next/dynamic';
+
+const QRCodeSVG = dynamic(() => import('qrcode.react').then(mod => mod.QRCodeSVG), { ssr: false });
 
 interface EntradaIndividual {
   id_entrada: bigint | string;

@@ -1,8 +1,12 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import UsuarioSeller from "../../../components/features/usuarioSeller";
+import dynamic from "next/dynamic";
+
+const UsuarioSeller = dynamic(() => import("../../../components/features/usuarioSeller"), { ssr: false });
 
 export default async function ScanPage() {
+  const { userId } = await auth.protect();
+
   const user = await currentUser();
 
   return (

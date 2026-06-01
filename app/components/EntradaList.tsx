@@ -2,6 +2,7 @@ import { EntradaCard } from './EntradaCard';
 import { TicketIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
+import { cache } from 'react';
 
 interface Entrada {
   id_entrada: bigint | string;
@@ -12,7 +13,7 @@ interface Entrada {
 
 interface Evento {
   idEvento: number;
-  nombre: string;
+  nombreEvento: string;
   descripcion: string;
   fecha: string;
   ubicacion: string;
@@ -20,14 +21,14 @@ interface Evento {
   stock: number;
 }
 
-// Mantenemos tus interfaces y fetch idénticos
-async function getEvento(id: string) {
+
+const getEvento = cache(async (id: string) => {
   const sellerUrl = process.env.URL_SELLER ?? 'http://localhost:3000';
   const sellerKey = process.env.SELLER_API_KEY;
 
   try {
     const res = await fetch(`${sellerUrl}/api/seller/eventos/${id}`, {
-      next: {revalidate:300},
+      next: { revalidate: 60 }, // Cacheamos 60 segundos el resultado del evento
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': sellerKey ?? ''
@@ -36,10 +37,10 @@ async function getEvento(id: string) {
     if (!res.ok) return null;
     return (await res.json()) as Evento;
   } catch (error) {
-    console.error("Error al traer evento:", error);
+    console.error(`Error al traer evento ID ${id}:`, error);
     return null;
   }
-}
+});
 
 interface EntradaListProps {
   tickets: Entrada[];
@@ -76,48 +77,56 @@ export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual
   }, {} as Record<string, { id_pedido: number | string; id_evento: number; entradas: { id_entrada: string; estado: string }[] }>);
 
   const listaPedidos = Object.values(entradasPorPedido);
+ 
+  const idsEventosUnicos = Array.from(new Set(listaPedidos.map(p => p.id_evento.toString())));
+  const eventosData = await Promise.all(idsEventosUnicos.map(id => getEvento(id)));
+  
+  // Mapeamos los resultados para acceso rápido
+  const mapaEventos = new Map(
+    eventosData
+      .filter((e): e is Evento => e !== null)
+      .map(e => [e.idEvento, e])
+  );
 
   const pedidosConEvento = await Promise.all(
     listaPedidos.map(async (pedido) => {
-      const evento = await getEvento(pedido.id_evento.toString());
+      const evento = mapaEventos.get(pedido.id_evento);
+      const fechaEventoObj = evento?.fecha ? new Date(evento.fecha) : null;
       return {
         ...pedido,
-        nombre_evento: evento?.nombre || "Evento desconocido",
+        nombre_evento: evento?.nombreEvento || "Evento desconocido",
         ubicacion: evento?.ubicacion || "Ubicación no disponible",
-        fecha_evento: evento?.fecha || "Fecha no disponible"
+        fecha_evento: evento?.fecha || "Fecha no disponible",
+        // Guardamos si el evento ya expiró para la lógica posterior
+        yaPaso: fechaEventoObj ? fechaEventoObj < ahora : false
       };
     })
   );
-
-  const ahora = new Date();
 
   // IDs para actualizar en la DB en un solo paso
   const idsAExpirar: bigint[] = [];
 
   const pedidosProcesados = pedidosConEvento.map(pedido => {
-    // Si el evento ya pasó, marcamos las entradas como expiradas localmente
-    if (pedido.fecha_evento && pedido.fecha_evento !== "Fecha no disponible") {
-      const fechaEventoObj = new Date(pedido.fecha_evento);
-      if (fechaEventoObj < ahora) {
+    if (pedido.yaPaso) {
         pedido.entradas.forEach(entrada => {
           if (entrada.estado === 'Confirmado') {
             entrada.estado = 'Expirado';
             idsAExpirar.push(BigInt(entrada.id_entrada));
           }
         });
-      }
     }
     return pedido;
   });
 
   // Actualización en segundo plano de la base de datos 
   if (idsAExpirar.length > 0) {
-    await prisma.entrada.updateMany({
+    prisma.entrada.updateMany({
       where: { id_entrada: { in: idsAExpirar } },
       data: { estado: 'Expirado' }
-    });
+    }).catch(err => console.error("Error actualizando expirados:", err));
   }
 
+  const ahora = new Date();
   const pedidosFiltrados = pedidosProcesados.filter(pedido => {
     // Verificamos si al menos un ticket del pedido coincide con el estado buscado
     const coincideEstado = estado === "todos" || pedido.entradas.some(t => t.estado.toLowerCase() === estado.toLowerCase());

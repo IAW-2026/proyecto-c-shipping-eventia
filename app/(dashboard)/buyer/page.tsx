@@ -16,13 +16,10 @@ interface PageProps {
 }
 
 export default async function EntradasPage({ searchParams }: PageProps) {
+  const { userId } = await auth.protect();
+
   const user = await currentUser();
   const roles = (user?.publicMetadata?.roles as string[]) || [];
-  const userId = user?.id;
-
-  if (!userId) {
-    redirect('/sign-in');
-  }
 
   // Vista de Acceso Restringido adaptada al estilo Retro Tonal con Heroicon
   if (!roles.includes("buyer")) {

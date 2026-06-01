@@ -8,9 +8,9 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function SimuladorPage() {
-  const [eventoSeleccionado, setEventoSeleccionado] = useState(eventos[0]?.idEvento || "");
+  const [eventoSeleccionado, setEventoSeleccionado] = useState(eventos[0]?.idEvento?.toString() || "");
   const [cantidad, setCantidad] = useState(1);
-  const [clerkKey, setClerkKey] = useState("");
+  const [clerkKey, setClerkKey] = useState(usuarios[0]?.id || "");
 
   const [pedidoId, setPedidoId] = useState("");
   const [loadingPedido, setLoadingPedido] = useState(false);
@@ -180,7 +180,7 @@ export default function SimuladorPage() {
             <button
               onClick={handleSimularPedido}
               disabled={loadingPedido}
-              className="w-full btn-retro inline-flex justify-center items-center text-center font-bold tracking-wide transition-all shadow-md active:scale-[0.98] disabled:opacity-40"
+              className="w-full btn-retro-primary inline-flex justify-center items-center text-center font-bold tracking-wide transition-all shadow-md active:scale-[0.98] disabled:opacity-40 cursor-pointer hover:scale-[1.01] hover:opacity-90 transition-all"
             >
               {loadingPedido ? "Procesando..." : "Simular Pedido "}
             </button>
@@ -189,7 +189,7 @@ export default function SimuladorPage() {
             <button
               onClick={handleSimularPago}
               disabled={loadingPago}
-              className="w-full btn-retro-secondary inline-flex justify-center items-center text-center font-bold tracking-wide transition-all shadow-md active:scale-[0.98] disabled:opacity-40"
+              className="w-full btn-retro-secondary inline-flex justify-center items-center text-center font-bold tracking-wide transition-all shadow-md active:scale-[0.98] disabled:opacity-40 cursor-pointer hover:scale-[1.01] hover:opacity-90 transition-all"
             >
               {loadingPago ? "Confirmando..." : "Simular Pago "}
             </button>
