@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
-import { ChevronLeftIcon, ChevronRightIcon, ClockIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon, ClockIcon, NoSymbolIcon } from "@heroicons/react/24/outline";
 
 interface EntradaIndividual {
   id_entrada: bigint | string;
@@ -26,6 +26,7 @@ export const EntradaDetalle = ({ id_pedido, entradas }: EntradaDetalleProps) => 
   const estaConfirmada = entradaActual.estado === 'Confirmado';
   const estaUsada = entradaActual.estado === 'Usado';
   const estaPendiente = entradaActual.estado === 'Pendiente';
+  const estaExpirada = entradaActual.estado === 'Expirado';
 
   return (
     <div className="max-w-md mx-auto py-8 px-4 font-body">
@@ -112,6 +113,21 @@ export const EntradaDetalle = ({ id_pedido, entradas }: EntradaDetalleProps) => 
                 ID: {String(entradaActual.id_entrada)}
               </p>
             </>
+          ) : estaExpirada ? (
+            /* ENTRADA EXPIRADA */
+            <>
+              <div className="flex flex-col items-center justify-center p-6 text-center bg-on-surface-variant/5 rounded-2xl border border-on-surface-variant/10 max-w-xs w-full py-8 grayscale opacity-60">
+                <div className="w-10 h-10 bg-on-surface-variant/10 text-on-surface-variant rounded-xl flex items-center justify-center mb-3">
+                  <NoSymbolIcon className="w-5 h-5 stroke-[2]" />
+                </div>
+                <div className="opacity-20 blur-[0.5px]">
+                  <QRCodeSVG value={String(entradaActual.id_entrada)} size={140} level="M" />
+                </div>
+              </div>
+              <p className="text-[10px] font-mono text-on-surface-variant/50 uppercase tracking-widest select-all bg-surface-container-low px-2 py-0.5 rounded border border-primary/5">
+                ID: {String(entradaActual.id_entrada)}
+              </p>
+            </>
           ) : (
             /* ENTRADA PENDIENTE O CANCELADA */
             <div className="flex flex-col items-center justify-center p-6 text-center bg-secondary-container/40 rounded-2xl border border-secondary-container max-w-xs w-full py-8">
@@ -143,6 +159,8 @@ export const EntradaDetalle = ({ id_pedido, entradas }: EntradaDetalleProps) => 
                 ? 'bg-primary/5 text-primary border-primary/20' 
                 : estaUsada 
                 ? 'bg-surface-container-low text-on-surface-variant/40 line-through border-primary/10' 
+                : estaExpirada
+                ? 'bg-on-surface-variant/10 text-on-surface-variant/60 border-on-surface-variant/20'
                 : 'bg-secondary-container text-on-secondary-container border-secondary-container/60'
             }`}>
               {entradaActual.estado}
@@ -152,6 +170,7 @@ export const EntradaDetalle = ({ id_pedido, entradas }: EntradaDetalleProps) => 
           <div className="pt-3 text-center text-[11px] text-on-surface-variant/50 border-t border-primary/10 font-medium leading-normal">
             {estaConfirmada && "Presentá este código QR desde tu celular al ingresar al establecimiento."}
             {estaUsada && "Entrada inválida para reingresos sin autorización del staff."}
+            {estaExpirada && "Este pase ha expirado porque la fecha del evento ya pasó."}
             {estaPendiente && "Si ya realizaste el pago y el estado no cambia, por favor contactá al soporte."}
           </div>
         </div>

@@ -90,11 +90,14 @@ export default function TablaEntradas({
                         ? 'bg-primary/5 text-primary border-primary/20' 
                         : ticket.estado === 'Usado' 
                         ? 'bg-secondary-container/50 text-on-secondary-container border-secondary-container/60' 
+                        : ticket.estado === 'Expirado'
+                        ? 'bg-on-surface-variant/10 text-on-surface-variant/70 border-on-surface-variant/20'
                         : 'bg-error/5 text-error border-error/20'
                     }`}>
                       <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
                         ticket.estado === 'Confirmado' ? 'bg-primary' :
-                        ticket.estado === 'Usado' ? 'bg-on-secondary-container' : 'bg-error'
+                        ticket.estado === 'Usado' ? 'bg-on-secondary-container' : 
+                        ticket.estado === 'Expirado' ? 'bg-on-surface-variant/40' : 'bg-error'
                       }`} />
                       {ticket.estado}
                     </span>

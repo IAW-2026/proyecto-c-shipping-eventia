@@ -3,9 +3,9 @@
 import { useState } from "react";
 import EscanerQR from "../EscanerQR"; 
 import { validarQrAction } from "@/app/actions/validacion"; 
-import { CheckCircleIcon, ExclamationTriangleIcon, XCircleIcon, ArrowPathIcon} from "@heroicons/react/24/outline";
+import { CheckCircleIcon, ExclamationTriangleIcon, XCircleIcon, ArrowPathIcon, ClockIcon} from "@heroicons/react/24/outline";
 
-type EstadoEntrada = 'escanerActivo' | 'cargando' | 'valido' | 'usado' | 'invalido';
+type EstadoEntrada = 'escanerActivo' | 'cargando' | 'valido' | 'usado' | 'expirado' | 'invalido';
 
 export default function UsuarioSeller(usuarioClerk: any) {
   const [estado, setEstado] = useState<EstadoEntrada>('escanerActivo');
@@ -21,6 +21,8 @@ export default function UsuarioSeller(usuarioClerk: any) {
         setTicketInfo(resultado.entrada); // Guarda tu entradaConvertida
       } else if (resultado.status === 409) {
         setEstado('usado');
+      } else if (resultado.status === 410) {
+        setEstado('expirado');
       } else {
         // Acá maneja tanto el 404 (No encontrada) como el 403 (Cancelada) o fallos de catch
         setEstado('invalido');
@@ -58,6 +60,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
         <div className={`card-retro p-8 text-center space-y-6 transition-all ${
           estado === 'valido' ? 'bg-primary/10 border-primary/30' :
           estado === 'usado' ? 'bg-secondary-container/70 border-secondary-container' : 
+          estado === 'expirado' ? 'bg-on-surface-variant/10 border-on-surface-variant/30' :
           'bg-error/10 border-error/30'
         }`}>
           
@@ -79,6 +82,16 @@ export default function UsuarioSeller(usuarioClerk: any) {
                 </div>
                 <h2 className="text-headline-sm text-on-secondary-container font-black tracking-tight uppercase">
                   Entrada Ya Usada
+                </h2>
+              </>
+            )}
+            {estado === 'expirado' && (
+              <>
+                <div className="w-14 h-14 bg-on-surface-variant/20 text-on-surface-variant rounded-2xl flex items-center justify-center shadow-soft-ambient border border-on-surface-variant/15">
+                  <ClockIcon className="w-9 h-9 stroke-[2.5]" />
+                </div>
+                <h2 className="text-headline-sm text-on-surface-variant font-black tracking-tight uppercase">
+                  Entrada Expirada
                 </h2>
               </>
             )}

@@ -38,6 +38,14 @@ export async function validarQrAction(qrData: string, usuarioObjeto: { usuarioCl
       };
     }
 
+    if (entradaEscaneada.estado === 'Expirado') {
+      return {
+        success: false,
+        status: 410,
+        message: 'Esta entrada ha expirado'
+      };
+    }
+
     if (entradaEscaneada.estado === 'Usado') {
       return {
         success: false,

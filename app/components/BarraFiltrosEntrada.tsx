@@ -83,6 +83,7 @@ export function BarraFiltrosEntradas() {
           <option value="todos">Todos los estados</option>
           <option value="confirmado">Confirmados</option>
           <option value="usado">Usados</option>
+          <option value="expirado">Expirados</option>
           <option value="pendiente">Pendientes</option>
         </select>
         <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-on-surface-variant/40 text-xs">▼</div>

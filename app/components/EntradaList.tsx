@@ -1,6 +1,7 @@
 import { EntradaCard } from './EntradaCard';
 import { TicketIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import prisma from "@/lib/prisma";
 
 interface Entrada {
   id_entrada: bigint | string;
@@ -58,7 +59,6 @@ export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual
     );
   }
 
-  // 1. Tu lógica original: Agrupar pases por ID de pedido
   const entradasPorPedido = tickets.reduce((grupos, ticket) => {
     const idPedido = ticket.id_pedido.toString();
     if (!grupos[idPedido]) {
@@ -77,7 +77,6 @@ export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual
 
   const listaPedidos = Object.values(entradasPorPedido);
 
-  // 2. Tu lógica original: Cargar todos los eventos en paralelo desde el microservicio
   const pedidosConEvento = await Promise.all(
     listaPedidos.map(async (pedido) => {
       const evento = await getEvento(pedido.id_evento.toString());
@@ -92,8 +91,34 @@ export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual
 
   const ahora = new Date();
 
-  // 3. ✨ NUEVO: Ahora que tenemos toda la data de la API, filtramos de forma precisa
-  const pedidosFiltrados = pedidosConEvento.filter(pedido => {
+  // IDs para actualizar en la DB en un solo paso
+  const idsAExpirar: bigint[] = [];
+
+  const pedidosProcesados = pedidosConEvento.map(pedido => {
+    // Si el evento ya pasó, marcamos las entradas como expiradas localmente
+    if (pedido.fecha_evento && pedido.fecha_evento !== "Fecha no disponible") {
+      const fechaEventoObj = new Date(pedido.fecha_evento);
+      if (fechaEventoObj < ahora) {
+        pedido.entradas.forEach(entrada => {
+          if (entrada.estado === 'Confirmado') {
+            entrada.estado = 'Expirado';
+            idsAExpirar.push(BigInt(entrada.id_entrada));
+          }
+        });
+      }
+    }
+    return pedido;
+  });
+
+  // Actualización en segundo plano de la base de datos 
+  if (idsAExpirar.length > 0) {
+    await prisma.entrada.updateMany({
+      where: { id_entrada: { in: idsAExpirar } },
+      data: { estado: 'Expirado' }
+    });
+  }
+
+  const pedidosFiltrados = pedidosProcesados.filter(pedido => {
     // Verificamos si al menos un ticket del pedido coincide con el estado buscado
     const coincideEstado = estado === "todos" || pedido.entradas.some(t => t.estado.toLowerCase() === estado.toLowerCase());
 
@@ -139,7 +164,6 @@ export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual
 
   return (
     <div className="space-y-8">
-      {/* Información de cantidad de resultados */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-body-md text-black font-bold tracking-tight uppercase font-body">
           {estado === 'todos' ? 'Tus órdenes de compra' : `Órdenes en estado: ${estado}`}
@@ -149,7 +173,7 @@ export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual
         </span>
       </div>
 
-      {/* Grid Final de Renderizado */}
+    
       {pedidosPaginados.length === 0 ? (
         <div className="card-retro bg-surface-container-lowest p-12 text-center flex flex-col items-center justify-center max-w-md mx-auto space-y-4">
           <div className="w-12 h-12 bg-surface-container-low text-on-surface-variant/40 rounded-xl flex items-center justify-center border border-primary/10">
@@ -175,7 +199,7 @@ export const EntradaList = async ({ tickets, buscar, estado, fecha, paginaActual
         </div>
       )}
 
-      {/* Controles de Paginación Integrados */}
+     
       {paginasTotales > 1 && (
         <div className="pt-6 border-t border-primary/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-label-sm text-on-surface-variant/60 font-body">
