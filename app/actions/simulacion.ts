@@ -19,7 +19,7 @@ export async function simularPedidoAction({ cantidad, id_evento, id_usuario }: S
     
     const id_pedido = Math.floor(Date.now() / 1000); 
 
-    const response = await fetch(`${shippingUrl}/api/pedido`, {
+    const response = await fetch(`${shippingUrl}/api/shipping/nuevaEntrada`, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json", 
@@ -58,7 +58,7 @@ export async function simularPedidoAction({ cantidad, id_evento, id_usuario }: S
 export async function simularPagoAction({ id_pedido, estado }: SimularPagoParams) {
     try {
         const shippingKey = process.env.SHIPPING_API_KEY;
-      const response = await fetch(`${shippingUrl}/api/entrada`, {
+      const response = await fetch(`${shippingUrl}/api/shipping/estadoTransaccion`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-api-key": shippingKey ?? '' },
         body: JSON.stringify({
