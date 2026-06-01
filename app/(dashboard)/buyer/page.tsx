@@ -71,14 +71,18 @@ export default async function EntradasPage({ searchParams }: PageProps) {
     <div className="min-h-screen bg-background text-on-background selection:bg-primary-container selection:text-background pb-16">
       <main className="layout-container pt-10 px-4 max-w-7xl mx-auto space-y-8">
         
-        {/* Header */}
-        <div className="border-b border-primary/15 pb-8">
-          <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary uppercase tracking-tight font-black">
-            Mis Entradas
-          </h1>
-          <p className="text-body-md text-on-surface-variant mt-2 max-w-2xl">
-            Gestioná tus tickets y accedé a los códigos QR de ingreso.
-          </p>
+        {/* Header*/}
+        <div className="card-retro p-8 md:p-12 bg-gradient-to-br from-primary/10 via-surface-container-low to-transparent border-primary/20 relative overflow-hidden shadow-soft-ambient">
+          <div className="absolute top-0 right-0 -mt-8 -mr-8 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10">
+            <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary uppercase tracking-tight font-black">
+              Mis Entradas
+            </h1>
+            <p className="text-body-md text-on-surface-variant mt-3 max-w-2xl font-medium leading-relaxed">
+              Gestioná tus tickets y accedé a los códigos QR de ingreso para tus eventos.
+            </p>
+          </div>
         </div>
 
         {/* Componente Cliente de Input de Búsqueda y Filtros */}

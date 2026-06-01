@@ -6,7 +6,7 @@ export const eventos = [
         "fecha": "2026-06-11 00:00:00",
         "ubicacion": "panama 1045, bahia blanca",
         "stock": 30,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 8500,
         "categoria": "Musica y espectáculos",
         "imagenes": [
@@ -22,7 +22,7 @@ export const eventos = [
         "fecha": "2026-06-22 20:15:00",
         "ubicacion": "sarmiento 505, bahia blanca",
         "stock": 15,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 12000,
         "categoria": "Arte y manualidades",
         "imagenes": [
@@ -39,7 +39,7 @@ export const eventos = [
         "fecha": "2026-06-12 12:30:00",
         "ubicacion": "Castelli 1255, Bahía Blanca",
         "stock": 10,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 10500,
         "categoria": "Movimiento",
         "imagenes": [
@@ -56,7 +56,7 @@ export const eventos = [
         "fecha": "2026-06-08 21:00:00",
         "ubicacion": "Honduras 3717, CABA",
         "stock": 15,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 25000,
         "categoria": "Arte y manualidades",
         "imagenes": [
@@ -73,7 +73,7 @@ export const eventos = [
         "fecha": "2026-07-02 21:30:00",
         "ubicacion": "Gorriti 5176, Palermo",
         "stock": 20,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 32000,
         "categoria": "Gastronomía",
         "imagenes": [
@@ -90,7 +90,7 @@ export const eventos = [
         "fecha": "2026-07-17 18:40:00",
         "ubicacion": "junin 1930, Caba",
         "stock": 8,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 6000,
         "categoria": "Social",
         "imagenes": [
@@ -105,7 +105,7 @@ export const eventos = [
         "fecha": "2026-06-04 07:00:00",
         "ubicacion": "Fuerte Argentino 717, bahia blanca",
         "stock": 50,
-        "idOrganizador": "user_3DawdnXBGBN0C1woaae28gpDyJr",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 18000,
         "categoria": "Musica y espectáculos",
         "imagenes": [
@@ -122,7 +122,7 @@ export const eventos = [
         "fecha": "2026-06-03 18:00:00",
         "ubicacion": "Sarmiento 1551, CABA",
         "stock": 12,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 28000,
         "categoria": "Arte y manualidades",
         "imagenes": [
@@ -139,7 +139,7 @@ export const eventos = [
         "fecha": "2026-08-03 03:00:00",
         "ubicacion": "Adolfo Alsina 894, CABA",
         "stock": 20,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 35000,
         "categoria": "Gastronomía",
         "imagenes": [
@@ -154,7 +154,7 @@ export const eventos = [
         "fecha": "2026-08-19 00:00:00",
         "ubicacion": "Avenida Alem 1346, Bahia blanca",
         "stock": 25,
-        "idOrganizador": "user_3DawdnXBGBN0C1woaae28gpDyJr",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 40000,
         "categoria": "Gastronomía",
         "imagenes": [
@@ -169,7 +169,7 @@ export const eventos = [
         "fecha": "2026-06-05 17:20:00",
         "ubicacion": "Lavalle 501, Bahia Blanca",
         "stock": 12,
-        "idOrganizador": "user_3DawdnXBGBN0C1woaae28gpDyJr",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 15000,
         "categoria": "Gastronomía",
         "imagenes": [
@@ -185,7 +185,7 @@ export const eventos = [
         "fecha": "2026-06-02 12:00:00",
         "ubicacion": "Mendoza 451, bahia blanca",
         "stock": 8,
-        "idOrganizador": "user_3ERzkG2kkASTqEL4SGLR6H9ThAP",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 25000,
         "categoria": "Arte y manualidades",
         "imagenes": [
@@ -200,7 +200,7 @@ export const eventos = [
         "fecha": "2026-08-14 22:30:00",
         "ubicacion": "Yerbal 1617, Caballito",
         "stock": 35,
-        "idOrganizador": "user_3DawdnXBGBN0C1woaae28gpDyJr",
+        "idOrganizador": "user_3EXYfszJveqNrQVJFEz6WlZXIW8",
         "precio": 10000,
         "categoria": "Movimiento",
         "imagenes": [

@@ -39,8 +39,8 @@ export default function UsuarioSeller(usuarioClerk: any) {
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto space-y-6">
-      <h1 className="text-headline-md text-center  tracking-tight">
+    <div className="px-4 py-6 md:p-6 max-w-xl mx-auto space-y-6">
+      <h1 className="text-headline-sm md:text-headline-md text-center tracking-tight uppercase font-black">
         Control de Accesos
       </h1>
       {estado === 'escanerActivo' && (
@@ -48,7 +48,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
       )}
 
       {estado === 'cargando' && (
-        <div className="flex flex-col items-center justify-center py-16 space-y-4 card-retro bg-surface-container-lowest">
+        <div className="flex flex-col items-center justify-center py-12 md:py-16 space-y-4 card-retro bg-surface-container-lowest">
           <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
           <p className="text-body-md font-medium text-on-surface-variant">
             Validando entrada...
@@ -57,7 +57,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
       )}
 
       {estado !== 'escanerActivo' && estado !== 'cargando' && (
-        <div className={`card-retro p-8 text-center space-y-6 transition-all ${
+        <div className={`card-retro p-6 md:p-8 text-center space-y-6 transition-all ${
           estado === 'valido' ? 'bg-primary/10 border-primary/30' :
           estado === 'usado' ? 'bg-secondary-container/70 border-secondary-container' : 
           estado === 'expirado' ? 'bg-on-surface-variant/10 border-on-surface-variant/30' :
@@ -70,7 +70,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
                 <div className="w-14 h-14 bg-primary text-background rounded-2xl flex items-center justify-center shadow-soft-ambient border border-primary/10">
                   <CheckCircleIcon className="w-9 h-9 stroke-[2.5]" />
                 </div>
-                <h2 className="text-headline-sm text-primary font-black tracking-tight uppercase">
+                <h2 className="text-xl md:text-headline-sm text-primary font-black tracking-tight uppercase">
                   Acceso Permitido
                 </h2>
               </>
@@ -80,7 +80,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
                 <div className="w-14 h-14 bg-on-secondary-container text-secondary-container rounded-2xl flex items-center justify-center shadow-soft-ambient border border-on-secondary-container/15">
                   <ExclamationTriangleIcon className="w-9 h-9 stroke-[2.5]" />
                 </div>
-                <h2 className="text-headline-sm text-on-secondary-container font-black tracking-tight uppercase">
+                <h2 className="text-xl md:text-headline-sm text-on-secondary-container font-black tracking-tight uppercase">
                   Entrada Ya Usada
                 </h2>
               </>
@@ -90,7 +90,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
                 <div className="w-14 h-14 bg-on-surface-variant/20 text-on-surface-variant rounded-2xl flex items-center justify-center shadow-soft-ambient border border-on-surface-variant/15">
                   <ClockIcon className="w-9 h-9 stroke-[2.5]" />
                 </div>
-                <h2 className="text-headline-sm text-on-surface-variant font-black tracking-tight uppercase">
+                <h2 className="text-xl md:text-headline-sm text-on-surface-variant font-black tracking-tight uppercase">
                   Entrada Expirada
                 </h2>
               </>
@@ -100,7 +100,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
                 <div className="w-14 h-14 bg-error text-background rounded-2xl flex items-center justify-center shadow-soft-ambient border border-error/10">
                   <XCircleIcon className="w-9 h-9 stroke-[2.5]" />
                 </div>
-                <h2 className="text-headline-sm text-error font-black tracking-tight uppercase">
+                <h2 className="text-xl md:text-headline-sm text-error font-black tracking-tight uppercase">
                   Entrada Inválida o Cancelada
                 </h2>
               </>
@@ -108,7 +108,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
           </div>
 
           {ticketInfo && (
-            <div className="bg-surface-container-lowest/80 border border-primary/10 p-4 rounded-xl inline-block min-w-[260px] text-left space-y-2 shadow-soft-ambient">
+            <div className="bg-surface-container-lowest/80 border border-primary/10 p-4 rounded-xl block w-full max-w-xs mx-auto text-left space-y-2 shadow-soft-ambient">
               <p className="text-label-sm uppercase text-on-surface-variant/60 font-bold tracking-widest text-center border-b border-primary/10 pb-1.5 mb-2">
                 Datos del Ticket
               </p>
