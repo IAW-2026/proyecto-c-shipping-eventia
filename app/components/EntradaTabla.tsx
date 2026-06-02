@@ -5,6 +5,8 @@ export interface TicketData {
   id_pedido?: string | number | null;
   id_evento?: string | number | null;
   estado: string;
+  id_usuario?: string | null;
+  id_organizador?: string | null;
 }
 
 interface TablaEntradasProps {
@@ -15,6 +17,7 @@ interface TablaEntradasProps {
   totalPaginas: number;
   rutaBase: string; 
   ocultarIdEntrada?: boolean;
+  mostrarCamposAdmin?: boolean;
 }
 
 export default function TablaEntradas({
@@ -24,7 +27,8 @@ export default function TablaEntradas({
   paginaActual,
   totalPaginas,
   rutaBase,
-  ocultarIdEntrada = false
+  ocultarIdEntrada = false,
+  mostrarCamposAdmin = false
 }: TablaEntradasProps) {
   
   const paginasTotales = Math.max(totalPaginas, 1);
@@ -60,13 +64,15 @@ export default function TablaEntradas({
               {!ocultarIdEntrada && <th className="py-4 px-6 font-label">ID Entrada</th>}
               <th className="py-4 px-6 font-label">Pedido</th>
               <th className="py-4 px-6 font-label">Evento</th>
+              {mostrarCamposAdmin && <th className="py-4 px-6 font-label">Usuario</th>}
+              {mostrarCamposAdmin && <th className="py-4 px-6 font-label">Organizador</th>}
               <th className="py-4 px-6 font-label text-center">Estado</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-primary/5 text-body-sm text-on-surface-variant font-body">
             {entradas.length === 0 ? (
               <tr>
-                <td colSpan={4} className="text-center py-12 text-on-surface-variant/50 text-body-sm italic">
+                <td colSpan={(!ocultarIdEntrada ? 1 : 0) + 3 + (mostrarCamposAdmin ? 2 : 0)} className="text-center py-12 text-on-surface-variant/50 text-body-sm italic">
                   No se encontraron entradas registradas que cumplan con este criterio.
                 </td>
               </tr>
@@ -84,6 +90,16 @@ export default function TablaEntradas({
                   <td className="py-4 px-6 text-xs text-black font-medium">
                     {ticket.id_evento?.toString() || 'N/A'}
                   </td>
+                  {mostrarCamposAdmin && (
+                    <td className="py-4 px-6 text-[10px] font-mono opacity-70">
+                      {ticket.id_usuario || 'N/A'}
+                    </td>
+                  )}
+                  {mostrarCamposAdmin && (
+                    <td className="py-4 px-6 text-[10px] font-mono opacity-70">
+                      {ticket.id_organizador || 'N/A'}
+                    </td>
+                  )}
                   <td className="py-4 px-6 text-center">
                     <span className={`inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider border ${
                       ticket.estado === 'Confirmado' 

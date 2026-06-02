@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)
 
-## Getting Started
+# Shipping — Eventia 
 
-First, run the development server:
+Deploy
+------
+URL: https://proyecto-c-shipping-eventia.vercel.app/
+-----------------
+Listado usuarios
+------------------------------
+- Usuario buyer: Email: buyer+clerk-test@iaw.com Contraseña: iawuser
+- Usuario seller: Email: seller+clerk-test@iaw.com Contraseña: iawuser#
+- Administrador: admin+clerk-test@iaw.com Contraseña: iawuser#
+  Este usuario podrá acceder a `/admin`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-----------------
+Necesario para evaluar la aplicación
+------------------------------
+- La forma de acceder a el modo de usuario admin es deslizando hasta el último bloque de la pagina de bienvenida, sellecionando "Administrador" en el apartado "Plataforma"
+- Para utilizar el simulador de APIs se debe seleccionar un evento (extraídos de un mock) y seleccionar "Usuario Buyer". Existe también un "Usuario Extra" al que se le pueden asignar entradas. En el mock está seteado como organizador del evento el usuario brindado como Buyer, entonces todos los eventos le pertenecerán. Para simular el pago y la cancelación basta con completar el campo ID pedido, sin necesidad de seleccionar en el desplegable. 
+-----------------
+Descripción app
+------------------------------
+Shipping Eventia administra las entradas a los eventos. Genera las entradas y sus QR y permite escanearlos. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Funcionalidades - Usuario Buyer
+--------
+- Panel Mis entradas: muestra las entradas de un usuario pudiendo filtrar por estado de la entrada y por fecha. Permite ver el detalle de la entrada seleccionada.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-----------------
+Funcionalidades - Usuario Seller
+--------
+- Panel administrativo: muestra las entradas asociadas a ese vendedor con el ID del pedido y diferentes métricas.
+- Escaneo QR: permite escanear QRs que pertenecen a los eventos que organizó, controlando los distintos estados que puede tener la entrada.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+-----------------
+Funcionalidades - Usuario Admin
+--------
+- Panel administrativo: muestra un panel completo con los ID de entrada, pedido, comprador y organizador.
+- Simulación de APIS: permite simular un nuevo pedido, su confirmación y su cancelación.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-----------------
+Notas
+-------------------------
+- En el panel "Mis entradas" de Buyer las entradas se juntan por pedido, es decir, si un usuario compra 3 entradas a un evento en un único pedido estas van a estar agrupadas en una sola en ésta sección, con el fin de facilitar el ingreso a un usuario. Luego, al momento de ver el detalle de la entrada se puede navegar entre las diferentes entradas, que todas tienen distinto ID y estado, pero pertenecen a un mismo usuario y a un mismo pedido. Por este motivo desde la vista general de "Mis entradas" no puede verse el estado; una entrada del pedido podría estar usada y otra no, entonces sería inconsistente mostrar el estado desde afuera. El filtro por estados tiene éste inconveniente, pero en el detalle se ven los estados correctamente.
+- Al momento de escanear una entrada el estado no se actualiza instataneamente del lado del usuario Buyer, es necesario refrescar la página. Como la base de datos sí se actualiza, del lado del Seller es imposible escanear un mismo QR más de una vez, proque ya figura usado, así que es únicamente un inconveniente visual. 

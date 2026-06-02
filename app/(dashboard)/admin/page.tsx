@@ -8,7 +8,8 @@ import {
   TicketIcon,
   CheckCircleIcon,
   XCircleIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  ClockIcon
 } from "@heroicons/react/24/outline";
 import { isAdmin } from "@/lib/util";
 
@@ -63,7 +64,8 @@ export default async function AdminPage({ searchParams }: PageProps) {
   const totalEntradas = await prisma.entrada.count();
   const entradasDisponibles = await prisma.entrada.count({ where: { estado: "Confirmado" } });
   const entradasUsadas = await prisma.entrada.count({ where: { estado: "Usado" } });
-  const entradasCanceladas = await prisma.entrada.count({ where: { estado: "Cancelada" } });
+  const entradasCanceladas = await prisma.entrada.count({ where: { estado: "Cancelado" } });
+  const entradasPendientes = await prisma.entrada.count({ where: { estado: "Pendiente" } });
 
   const condicionesWhere = filtroEstado ? { estado: filtroEstado } : {};
 
@@ -163,6 +165,21 @@ export default async function AdminPage({ searchParams }: PageProps) {
           </div>
         </div>
 
+        {/* Métrica de Pendientes */}
+        <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
+          <div className="w-12 h-12 rounded-xl bg-on-surface-variant/5 flex items-center justify-center text-on-surface-variant/60 border border-primary/10">
+            <ClockIcon className="w-6 h-6 stroke-[2]" />
+          </div>
+          <div>
+            <span className="text-label-sm text-on-surface-variant/60 uppercase tracking-widest block font-bold">
+              Pendientes
+            </span>
+            <span className="text-2xl font-black text-black text-body-md">
+              {entradasPendientes}
+            </span>
+          </div>
+        </div>
+
        
         <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
           <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
@@ -213,10 +230,16 @@ export default async function AdminPage({ searchParams }: PageProps) {
             Usado
           </Link>
           <Link
-            href={`/admin?page=1&estado=Cancelada&orden=${direccionOrden}`}
-            className={`px-4 py-2 rounded-xl text-label-sm font-bold border-2 transition-all uppercase tracking-wider ${filtroEstado === 'Cancelada' ? 'bg-rose-600 text-white border-rose-700 shadow-md' : 'bg-surface-container-high text-rose-600 border-primary/10 hover:border-rose-500/30'}`}
+            href={`/admin?page=1&estado=Pendiente&orden=${direccionOrden}`}
+            className={`px-4 py-2 rounded-xl text-label-sm font-bold border-2 transition-all uppercase tracking-wider ${filtroEstado === 'Pendiente' ? 'bg-on-surface-variant text-white border-on-surface-variant shadow-md' : 'bg-surface-container-high text-on-surface-variant border-primary/10 hover:border-primary/30'}`}
           >
-            Cancelada
+            Pendiente
+          </Link>
+          <Link
+            href={`/admin?page=1&estado=Cancelado&orden=${direccionOrden}`}
+            className={`px-4 py-2 rounded-xl text-label-sm font-bold border-2 transition-all uppercase tracking-wider ${filtroEstado === 'Cancelado' ? 'bg-rose-600 text-white border-rose-700 shadow-md' : 'bg-surface-container-high text-rose-600 border-primary/10 hover:border-rose-500/30'}`}
+          >
+            Cancelado
           </Link>
         </div>
 
@@ -250,6 +273,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
           paginaActual={paginaActual}
           totalPaginas={totalPaginas}
           rutaBase={`/admin${filtroEstado ? `?estado=${filtroEstado}` : '?'}${direccionOrden ? `&orden=${direccionOrden}` : ''}`}
+          mostrarCamposAdmin={true}
         />
       </div>
     </div>

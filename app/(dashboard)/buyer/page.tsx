@@ -89,7 +89,7 @@ export default async function EntradasPage({ searchParams }: PageProps) {
         <BarraFiltrosEntradas />
 
         {/* Tu Componente original de Listado que ahora encapsula el fetch y el paginado */}
-        <div className="mt-6">
+        <div className="mt-6 p-6 md:p-10 bg-surface-container-lowest/50 rounded-[32px] border border-primary/5 shadow-inner">
           <EntradaList 
             tickets={misEntradas} 
             buscar={buscar}
