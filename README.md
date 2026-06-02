@@ -8,7 +8,7 @@ URL: https://proyecto-c-shipping-eventia.vercel.app/
 -----------------
 Listado usuarios
 ------------------------------
-- Usuario buyer: Email: buyer+clerk-test@iaw.com Contraseña: iawuser
+- Usuario buyer: Email: buyer+clerk-test@iaw.com Contraseña: iawuser#
 - Usuario seller: Email: seller+clerk-test@iaw.com Contraseña: iawuser#
 - Administrador: admin+clerk-test@iaw.com Contraseña: iawuser#
   Este usuario podrá acceder a `/admin`.
