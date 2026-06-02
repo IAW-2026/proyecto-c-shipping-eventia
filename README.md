@@ -17,7 +17,8 @@ Listado usuarios
 Necesario para evaluar la aplicación
 ------------------------------
 - La forma de acceder a el modo de usuario admin es deslizando hasta el último bloque de la pagina de bienvenida, sellecionando "Administrador" en el apartado "Plataforma"
-- Para utilizar el simulador de APIs se debe seleccionar un evento (extraídos de un mock) y seleccionar "Usuario Buyer". Existe también un "Usuario Extra" al que se le pueden asignar entradas. En el mock está seteado como organizador del evento el usuario brindado como Buyer, entonces todos los eventos le pertenecerán. Para simular el pago y la cancelación basta con completar el campo ID pedido, sin necesidad de seleccionar en el desplegable. 
+- Para utilizar el simulador de APIs se debe seleccionar un evento (extraídos de un mock) y seleccionar "Usuario Buyer". Existe también un "Usuario Extra" al que se le pueden asignar entradas. En el mock está seteado como organizador del evento el usuario brindado como Buyer, entonces todos los eventos le pertenecerán. Para simular el pago y la cancelación basta con completar el campo ID pedido, sin necesidad de seleccionar en el desplegable.
+- El usuario Buyer tiene cargadas entradas de otro organizador diferente al del mock de la simulación, así puede chequearse que un organizador no puede escanear entradas que no le pertenecen. 
 -----------------
 Descripción app
 ------------------------------
