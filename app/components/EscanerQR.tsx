@@ -10,7 +10,7 @@ export default function QrScanner({ onScanSuccess }: QrScannerProps) {
   const scannerRef = useRef<Html5Qrcode | null>(null);
 
   useEffect(() => {
-    // 1. Inicializar el objeto del escáner apuntando al ID del div
+    // Inicializar el objeto del escáner apuntando al ID del div
     scannerRef.current = new Html5Qrcode("scanner-container");
 
     const config = { 
@@ -18,7 +18,7 @@ export default function QrScanner({ onScanSuccess }: QrScannerProps) {
       qrbox: { width: 280, height: 280 } 
     };
 
-    // 2. Encender la cámara trasera (environment)
+    // Encender la cámara trasera (environment)
     scannerRef.current.start(
       { facingMode: "environment" },
       config,
@@ -32,7 +32,7 @@ export default function QrScanner({ onScanSuccess }: QrScannerProps) {
       }
     ).catch((err) => console.error("Error al iniciar cámara:", err));
 
-    // 3. Limpieza al desmontar el componente
+    // Limpieza al desmontar el componente
     return () => {
       const scanner = scannerRef.current;
       if (scanner) {
@@ -45,7 +45,6 @@ export default function QrScanner({ onScanSuccess }: QrScannerProps) {
   }, [onScanSuccess]);
 
   // Función pública para reanudar el escáner desde el padre
-  // (La llamaremos cuando cerremos el modal de estado del ticket)
   return (
     <div className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl bg-black aspect-square">
       <div id="scanner-container" className="w-full h-full" />

@@ -15,15 +15,12 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col selection:bg-primary-container selection:text-background">
 
-      {/* ==========================================================================
-          BLOQUE 1: HERO - IMPACTO REDUCIDO Y EFECTO PEEK (85vh)
-          ========================================================================== */}
-      <section className="min-h-screen w-full flex flex-col md:flex-row items-center justify-start md:justify-between px-0 md:px-16 pt-20 md:pt-0 pb-8 gap-0 md:gap-12 relative border-b border-primary/10">
+      {/* BLOQUE 1:*/}
+      <section className="min-h-screen w-full flex flex-col md:flex-row items-center justify-start md:justify-between px-0 md:px-16 pt-20 md:pt-0 pb-8 gap-0 md:gap-12 relative border-b border-primary/10 bg-gradient-to-b from-primary/5 via-background to-background">
 
-        {/* Lado Izquierdo (Texto): Siempre alineado a la izquierda */}
         <div className="flex-1 w-full flex flex-col justify-center max-w-xl z-10 space-y-4 order-2 md:order-1 text-left mt-6 md:mt-0 px-6 md:px-0">
-          <span className="text-label-sm text-primary tracking-widest uppercase block font-bold">
-            Bienvenidos a Eventia
+          <span className="label-retro tracking-widest uppercase block font-bold">
+            Bienvenido a Eventia
           </span>
           <h1 className="text-headline-lg-mobile md:text-headline-lg text-black font-black tracking-tighter leading-[1.1]">
             <span className="block mb-1">Descubrí,</span>
@@ -52,15 +49,12 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ==========================================================================
-          BLOQUE 2: MODOS DE USUARIO - ACCESO INTUITIVO (Aparece parcialmente arriba)
-          ========================================================================== */}
+      {/*BLOQUE 2: MODOS DE USUARIO */}
       <section id="modos" className="min-h-screen w-full flex flex-col md:flex-row border-b border-primary/10">
 
-        {/* Columna Comprador (Izquierda) */}
+        {/* Columna Comprador */}
         <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative border-b md:border-b-0 md:border-r border-primary/10 min-h-[50vh] md:min-h-screen bg-transparent overflow-hidden">
-          {/* Fondo muy tenue para garantizar contraste */}
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-multiply">
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-50 mix-blend-multiply bg-primary/10">
             <Image
               src="/imgHome.jpeg"
               alt="Fondo sección compradores"
@@ -88,7 +82,7 @@ export default async function LandingPage() {
         </div>
 
         {/* Columna Vendedor (Derecha) */}
-        <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative min-h-[50vh] md:min-h-screen bg-surface-container-low">
+        <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-16 relative min-h-[50vh] md:min-h-screen bg-gradient-to-br from-secondary-container/30 to-surface-container-low">
           <div className="max-w-sm text-center space-y-4">
             <span className="chip-retro" style={{ backgroundColor: 'var(--color-primary-container)', color: 'var(--color-background)' }}>
               Organizadores
@@ -108,9 +102,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ==========================================================================
-          BLOQUE 3: INFORMACIÓN / BENEFICIOS DEL SISTEMA
-          ========================================================================== */}
+      {/*BLOQUE 3: INFORMACIÓN*/}
       <section id="info" className="py-20 px-6 md:px-16 max-w-6xl mx-auto w-full space-y-12 border-b border-primary/10">
 
         {/* Encabezado adaptado a las características reales */}
@@ -125,9 +117,9 @@ export default async function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
           {/* Tarjeta 1: Escáner */}
-          <div className="card-retro flex flex-col justify-between space-y-4">
+          <div className="card-retro flex flex-col justify-between space-y-4 bg-surface-container-low/50 hover:bg-primary/5 transition-colors">
             <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
                 <QrCodeIcon className="w-6 h-6" />
               </div>
               <div className="text-xl font-bold text-primary">Escáner Preciso</div>
@@ -137,10 +129,10 @@ export default async function LandingPage() {
             </div>
           </div>
 
-          {/* Tarjeta 2: Capacidad (Tonal para generar contraste) */}
-          <div className="card-retro-tonal flex flex-col justify-between space-y-4">
+          {/* Tarjeta 2: Capacidad  */}
+          <div className="card-retro-tonal flex flex-col justify-between space-y-4 bg-secondary-container/20 border-secondary-container/30">
             <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+              <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-primary border border-primary/20 shadow-sm">
                 <ChartBarIcon className="w-6 h-6" />
               </div>
               <div className="text-xl font-bold text-primary">Control de capacidad</div>
@@ -151,9 +143,9 @@ export default async function LandingPage() {
           </div>
 
           {/* Tarjeta 3: Entradas */}
-          <div className="card-retro flex flex-col justify-between space-y-4">
+          <div className="card-retro flex flex-col justify-between space-y-4 bg-surface-container-low/50 hover:bg-primary/5 transition-colors">
             <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
                 <TicketIcon className="w-6 h-6" />
               </div>
               <div className="text-xl font-bold text-primary">Entradas únicas</div>
@@ -166,9 +158,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ==========================================================================
-          BLOQUE 4: FOOTER DE NAVEGACIÓN COMPLETA
-          ========================================================================== */}
+      {/*BLOQUE 4: FOOTER DE NAVEGACIÓN COMPLETA*/}
       <footer className="bg-surface-container-highest border-t border-primary/10 px-6 md:px-16 py-12">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start justify-between gap-8">
 

@@ -33,13 +33,10 @@ export default function TablaEntradas({
   
   const paginasTotales = Math.max(totalPaginas, 1);
   
-  // Función auxiliar para armar los links de paginación de forma limpia sin romper los query strings existentes
   const armarLinkPagina = (nuevaPagina: number) => {
     if (rutaBase.includes('?')) {
-      // Si la rutaBase ya trae filtros (ej: /admin?estado=Usado), concatenamos con &
       return `${rutaBase}&page=${nuevaPagina}`;
     }
-    // Si está limpia (ej: /admin?), le ponemos el page directo
     return `${rutaBase}page=${nuevaPagina}`;
   };
 

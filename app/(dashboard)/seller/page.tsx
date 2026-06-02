@@ -1,9 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import UsuarioSeller from '../../components/features/usuarioSeller';
 import prisma from "@/lib/prisma";
 import TablaEntradas from "@/app/components/EntradaTabla";
-import { CheckCircle2, Ticket, Users2 } from "lucide-react";
 import { ShieldExclamationIcon, TicketIcon, CheckCircleIcon, UsersIcon } from "@heroicons/react/24/outline";
 
 interface PageProps {
@@ -67,7 +65,6 @@ export default async function SellerPage({ searchParams }: PageProps) {
     prisma.entrada.count({
       where: { id_organizador: user?.id },
     }),
-    // Consulta agrupada: nos da los totales de cada estado
     prisma.entrada.groupBy({
       by: ['estado'],
       where: { id_organizador: user?.id },
@@ -78,7 +75,6 @@ export default async function SellerPage({ searchParams }: PageProps) {
   const totalUsadas = conteoPorEstado.find(c => c.estado === 'Usado')?._count._all || 0;
   const totalConfirmadas = conteoPorEstado.find(c => c.estado === 'Confirmado')?._count._all || 0;
 
-  // Porcentaje de asistencia actual en puerta
   const porcentajeAsistencia = totalEntradas > 0
     ? Math.round((totalUsadas / totalEntradas) * 100)
     : 0;
@@ -102,14 +98,14 @@ export default async function SellerPage({ searchParams }: PageProps) {
         });
         if (!res.ok) return { id, nombre: null };
         const data = await res.json();
-        return { id, nombre: data.nombre }; // Ajustá 'data.nombre' según lo que devuelva tu API
+        return { id, nombre: data.nombre }; 
       } catch {
         return { id, nombre: null };
       }
     })
   );
 
-  // 4. Mapeamos las respuestas a un diccionario rápido de leer
+
   const mapaEventos = new Map<string, string>();
   eventosResueltos.forEach((evt) => {
     if (evt.nombre) {
@@ -117,7 +113,7 @@ export default async function SellerPage({ searchParams }: PageProps) {
     }
   });
 
-  // 5. Transformamos las entradas cruzando el nombre obtenido
+ 
   const entradasConvertidas = entradasSeller.map((entrada) => {
     const idEventoString = entrada.id_evento?.toString() || "";
     return {

@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { EntradaDetalle } from "../../../components/EntradaDetalle";
 import { entradasPorPedidoID } from "@/services/entradas"; 
 import { ShieldExclamationIcon } from "@heroicons/react/24/outline";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 
@@ -11,12 +11,10 @@ interface PageProps {
 }
 
 export default async function TicketDetailPage({ params }: PageProps) {
-  const { userId } = await auth.protect();
   
     const user = await currentUser();
     const roles = (user?.publicMetadata?.roles as string[]) || [];
-  
-    // Vista de Acceso Restringido adaptada al estilo Retro Tonal con Heroicon
+
     if (!roles.includes("buyer")) {
       return (
         <>

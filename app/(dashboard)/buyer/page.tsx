@@ -1,5 +1,4 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import {EntradaList} from '../../components/EntradaList';
 import { BarraFiltrosEntradas } from '../../components/BarraFiltrosEntrada';
 import { entradasUsuarioID } from "@/services/entradas";
@@ -21,7 +20,6 @@ export default async function EntradasPage({ searchParams }: PageProps) {
   const user = await currentUser();
   const roles = (user?.publicMetadata?.roles as string[]) || [];
 
-  // Vista de Acceso Restringido adaptada al estilo Retro Tonal con Heroicon
   if (!roles.includes("buyer")) {
     return (
       <>
@@ -56,10 +54,8 @@ export default async function EntradasPage({ searchParams }: PageProps) {
   const fecha = params.fecha || "todos";
   const paginaActual = Number(params.pagina) || 1;
 
-  // Traemos los pases del usuario tal cual lo hacías al principio
   const misEntradas = await entradasUsuarioID(userId);
 
-  // Construimos el query string dinámico para los botones de las páginas
   const queryUrlProps = new URLSearchParams();
   if (buscar) queryUrlProps.set("buscar", buscar);
   if (estado !== "todos") queryUrlProps.set("estado", estado);
@@ -84,11 +80,9 @@ export default async function EntradasPage({ searchParams }: PageProps) {
             </p>
           </div>
         </div>
-
-        {/* Componente Cliente de Input de Búsqueda y Filtros */}
+ 
         <BarraFiltrosEntradas />
 
-        {/* Tu Componente original de Listado que ahora encapsula el fetch y el paginado */}
         <div className="mt-6 p-6 md:p-10 bg-surface-container-lowest/50 rounded-[32px] border border-primary/5 shadow-inner">
           <EntradaList 
             tickets={misEntradas} 

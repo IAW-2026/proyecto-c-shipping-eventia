@@ -11,6 +11,7 @@ export default function RolSwitcher() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { user, isLoaded } = useUser();
   const roles = (user?.publicMetadata?.roles as string[]) || [];
+  const rolesAdmin =  (user?.publicMetadata?.rolesAdmin as string[]) || [];
 
   const isSellerMode = pathname.startsWith("/seller") || pathname.includes("/seller");
   const isAdminMode = pathname.startsWith("/admin") || pathname.includes("/admin");
@@ -49,7 +50,6 @@ export default function RolSwitcher() {
     if (isSellerMode) {
       return "bg-primary-container text-background border-primary-container hover:scale-[1.02]";
     }
-    // Caso Comprador: Replica de forma estricta el estilo de tu utilidad ".chip-retro"
     return "bg-secondary-container text-on-secondary-container border-transparent hover:scale-[1.02]";
   };
 
@@ -77,7 +77,7 @@ export default function RolSwitcher() {
         </svg>
       </button>
 
-      {/* MENÚ DESPLEGABLE (Contenedores Retro Tonal) */}
+      {/* MENÚ DESPLEGABLE */}
       {isOpen && (
         <div className="absolute right-0 z-50 w-48 mt-2 origin-top-right bg-surface-container-lowest border border-primary/15 rounded-xl shadow-soft-ambient focus:outline-none overflow-hidden transition-all">
           <div className="py-1.5">
@@ -112,7 +112,7 @@ export default function RolSwitcher() {
             </button>
 
             {/* Opción Administrador */}
-            {roles.includes("adminShipping") && (
+            {rolesAdmin.includes("adminShipping") && (
               <button
                 onClick={() => handleModeChange("/admin")}
                 className={`w-full text-left px-4 py-2 text-label-sm flex flex-col transition-colors cursor-pointer ${

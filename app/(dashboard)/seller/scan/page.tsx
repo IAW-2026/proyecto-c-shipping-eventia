@@ -1,6 +1,5 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import ScanClientContainer from "../../../components/features/ScanClientContainer";
 import { ShieldExclamationIcon } from "@heroicons/react/24/outline";
 

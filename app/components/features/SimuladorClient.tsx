@@ -136,7 +136,6 @@ export default function SimuladorClient({ esAdmin }: SimuladorClientProps) {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto p-4">
-      {/* ... Todo tu bloque de JSX que renderiza el formulario y la consola de logs queda exactamente igual ... */}
       <div className="flex items-center">
         <Link
           href="/admin"

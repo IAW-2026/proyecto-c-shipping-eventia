@@ -90,7 +90,7 @@ export function BarraFiltrosEntradas() {
         <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-on-surface-variant/40 text-xs">▼</div>
       </div>
 
-      {/* 📅 Selector de Fecha */}
+      {/* Selector de Fecha */}
       <div className="relative w-full md:col-span-3">
         <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-on-surface-variant/40">
           <CalendarDaysIcon className="w-4 h-4 stroke-[2.5]" />

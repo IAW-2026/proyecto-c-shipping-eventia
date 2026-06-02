@@ -11,7 +11,7 @@ interface ValidarQrResponse {
     id_pedido: number;
     id_evento: number;
     estado: string;
-    [key: string]: any; // Permite cualquier otra propiedad que tenga tu modelo Entrada
+    [key: string]: any; 
   };
 }
 
@@ -84,7 +84,7 @@ export async function validarQrAction(qrData: string, usuarioObjeto: { usuarioCl
     };
 
   } catch (error) {
-    console.error("🚨 Error interno en validarQrAction:", error);
+    console.error("Error interno en validarQrAction:", error);
     return { 
       success: false, 
       status: 500, 
