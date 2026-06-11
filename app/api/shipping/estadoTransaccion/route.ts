@@ -11,12 +11,12 @@ export async function POST(request: Request) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
     try {
-        const { id_pedido, estado } = await request.json();
+        const { id_pedido, estadoTransaccion } = await request.json();
         let estadoFinal: string;
 
-        if (estado === "APROBADA") {
+        if (estadoTransaccion === 'APROBADA') {
             estadoFinal = "Confirmado";
-        } else if (estado === "FALLIDA" || estado === "CANCELADA") {
+        } else if (estadoTransaccion === 'FALLIDA' || estadoTransaccion === 'CANCELADA') {
             estadoFinal = "Cancelado";
         } else {
             return new NextResponse("Estado no válido", { status: 400 });
