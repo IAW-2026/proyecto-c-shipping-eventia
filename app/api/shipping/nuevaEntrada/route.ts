@@ -11,13 +11,13 @@ export async function POST(request: Request) {
     }
 
     try {
-        const { id_pedido, cantidad, id_evento, id_usuario } = await request.json();
+        const { idPedido, idEvento, cantidad, idUsuario } = await request.json();
         const cantidadEntradas= Number(cantidad);
 
         const sellerUrl = process.env.URL_SELLER ?? 'http://localhost:3000';
         const sellerKey = process.env.SELLER_API_KEY;
 
-        const res = await fetch(`${sellerUrl}/api/seller/eventos/${id_evento}`, {
+        const res = await fetch(`${sellerUrl}/api/seller/eventos/${idEvento}`, {
             cache: 'no-store',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,15 +33,11 @@ export async function POST(request: Request) {
 
         const idOrganizador = evento.idOrganizador;
 
-        if (!idOrganizador) {
-            return NextResponse.json({ error: "El evento no posee un organizador asignado" }, { status: 400 });
-        }
-
         const datosEntradas = Array.from({ length: cantidadEntradas }, () => ({
             id_entrada: generarIdEntrada(),
-            id_pedido,
-            id_evento,
-            id_usuario,
+            id_pedido: idPedido,
+            id_evento: idEvento,
+            id_usuario: idUsuario,
             id_organizador: idOrganizador,
             estado: "Pendiente",
         }));
