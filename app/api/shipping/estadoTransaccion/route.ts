@@ -11,7 +11,7 @@ export async function POST(request: Request) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
     try {
-        const { id_pedido, estadoTransaccion } = await request.json();
+        const { idPedido, estadoTransaccion } = await request.json();
         let estadoFinal: string;
 
         if (estadoTransaccion === 'APROBADA') {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         }
 
         const entradaPendiente = await prisma.entrada.updateMany({
-            where: { id_pedido: Number(id_pedido) },
+            where: { id_pedido: Number(idPedido) },
             data: { estado: estadoFinal }
         })
 

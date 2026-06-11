@@ -11,10 +11,10 @@ export async function POST(request: Request) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
     try {
-        const { id_pedido} = await request.json();
+        const { idPedido} = await request.json();
 
         const entradaPendiente = await prisma.entrada.updateMany({
-            where: { id_pedido: Number(id_pedido) },
+            where: { id_pedido: Number(idPedido) },
             data: { estado: "Cancelado" }
         })
 
