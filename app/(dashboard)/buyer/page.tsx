@@ -1,9 +1,10 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import {EntradaList} from '../../components/EntradaList';
+import { EntradaList } from '../../components/EntradaList';
 import { BarraFiltrosEntradas } from '../../components/BarraFiltrosEntrada';
 import { entradasUsuarioID } from "@/services/entradas";
 import Link from "next/link";
 import { ShieldExclamationIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 interface PageProps {
   searchParams: Promise<{
@@ -66,26 +67,27 @@ export default async function EntradasPage({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen bg-background text-on-background selection:bg-primary-container selection:text-background pb-16">
       <main className="layout-container pt-10 px-4 max-w-7xl mx-auto space-y-8">
-        
-        {/* Header*/}
-        <div className="card-retro p-8 md:p-12 bg-gradient-to-br from-primary/10 via-surface-container-low to-transparent border-primary/20 relative overflow-hidden shadow-soft-ambient">
-          <div className="absolute top-0 right-0 -mt-8 -mr-8 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="relative z-10">
-            <h1 className="text-headline-lg-mobile md:text-headline-lg text-primary uppercase tracking-tight font-black">
+
+        <div
+          className="relative overflow-hidden rounded-3xl border border-primary/20 shadow-soft-ambient bg-cover bg-center text-background p-8 md:p-12 min-h-[220px] flex items-center"
+          style={{ backgroundImage: `url('/imgHome.jpeg')` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-tr from-primary-container/40 via-secondary-container/20 to-transparent mix-blend-color-linear-dodge pointer-events-none" />
+          <div className="relative z-10 max-w-md flex flex-col gap-1">
+            <h1 className="font-display text-3xl md:text-5xl text-primary leading-none mt-3">
               Mis Entradas
             </h1>
-            <p className="text-body-md text-on-surface-variant mt-3 max-w-2xl font-medium leading-relaxed">
+            <p className="text-primary/90 text-sm font-body font-medium max-w-sm mt-1">
               Gestioná tus tickets y accedé a los códigos QR de ingreso para tus eventos.
             </p>
           </div>
         </div>
- 
+
         <BarraFiltrosEntradas />
 
         <div className="mt-6 p-6 md:p-10 bg-surface-container-lowest/50 rounded-[32px] border border-primary/5 shadow-inner">
-          <EntradaList 
-            tickets={misEntradas} 
+          <EntradaList
+            tickets={misEntradas}
             buscar={buscar}
             estado={estado}
             fecha={fecha}
