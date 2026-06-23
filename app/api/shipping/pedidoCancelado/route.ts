@@ -18,7 +18,7 @@ export async function POST(request: Request) {
             data: { estado: "Cancelado" }
         })
 
-        return new NextResponse(null, { status: 204 });
+        return new NextResponse(null, { status: 200 });
     } catch (error: any) {
         console.error("Error cancelando entrada:", error);
 
