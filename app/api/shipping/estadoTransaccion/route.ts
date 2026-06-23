@@ -27,7 +27,7 @@ export async function POST(request: Request) {
             data: { estado: estadoFinal }
         })
 
-        return new NextResponse("Estado de transacción actualizado", { status: 204 });
+        return new NextResponse("Estado de transacción actualizado", { status: 200 });
     } catch (error: any) {
         console.error("Error actualizando entrada:", error);
 
