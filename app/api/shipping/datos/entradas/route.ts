@@ -13,8 +13,12 @@ export async function GET(request: Request) {
         const entradas = await prisma.entrada.findMany();
         return NextResponse.json(entradas);
     }
-    catch (error) {
-        return NextResponse.json({error }, { status: 500 });
+   catch (error) {
+        console.error("Error en la API de entradas:", error); 
+        const mensaje = error instanceof Error ? error.message : "Error desconocido";
+        return NextResponse.json(
+            { error: "Internal Server Error", detalle: mensaje }, 
+            { status: 500 }
+        );
     }
-
 }
