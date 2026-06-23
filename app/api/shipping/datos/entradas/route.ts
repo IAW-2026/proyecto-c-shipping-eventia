@@ -20,7 +20,7 @@ export async function GET(request: Request) {
         return NextResponse.json(entradas);
     }
     catch (error) {
-        return NextResponse.json({error: "Error devolviendo datos de entradas" }, { status: 500 });
+        return NextResponse.json({error }, { status: 500 });
     }
 
 }
