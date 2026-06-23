@@ -11,7 +11,11 @@ export async function GET(request: Request) {
 
     try{ 
         const entradas = await prisma.entrada.findMany();
-        return NextResponse.json(entradas);
+        const entradasSerializadas = entradas.map(entrada => ({
+            ...entrada,
+            id_entrada: entrada.id_entrada.toString()
+       }));
+     return NextResponse.json(entradasSerializadas);
     }
    catch (error) {
         console.error("Error en la API de entradas:", error); 
