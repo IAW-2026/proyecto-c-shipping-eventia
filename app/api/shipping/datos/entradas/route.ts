@@ -2,12 +2,6 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from 'next/server';
 import { validarApiKey } from "@/lib/util";
 
-type Params = {
-    params: Promise<{
-        id: string;
-    }>;
-};
-
 export async function GET(request: Request) {
 
     const shippingKey = process.env.SHIPPING_API_KEY;
