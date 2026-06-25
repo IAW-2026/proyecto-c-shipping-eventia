@@ -22,7 +22,7 @@ interface PageProps {
 }
 
 export default async function AdminPage({ searchParams }: PageProps) {
-  const esAdmin= await isAdmin();
+  const esAdmin = await isAdmin();
   if (!esAdmin) {
     return (
       <>
@@ -93,7 +93,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
   return (
     <div className="w-full space-y-10 pb-12 pt-6 font-body">
 
-        {/* PANEL DE BIENVENIDA Y ACCESO RÁPIDO */}
+      {/* PANEL DE BIENVENIDA Y ACCESO RÁPIDO */}
       <div className="card-retro p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden bg-secondary-container/70 border-secondary-container/60 shadow-soft-ambient">
 
         <div className="absolute right-6 -bottom-6 text-on-secondary-container/10 pointer-events-none hidden md:block select-none">
@@ -101,27 +101,19 @@ export default async function AdminPage({ searchParams }: PageProps) {
         </div>
 
         <div className="text-left space-y-1 z-10">
-          <h1 className="text-headline-md text-on-secondary-container font-black tracking-tight">
+          <h1 className="text-headline-md text-on-secondary-container tracking-tight">
             Panel de Administración Central
           </h1>
           <p className="text-body-md text-on-secondary-container/80 max-w-xl leading-relaxed">
             Bienvenido<span className="font-extrabold text-black"></span>. Auditoría global del sistema de tickets y accesos descentralizados.
           </p>
         </div>
-
-        <Link
-          href="admin/simulacionCompra"
-          className="btn-retro-primary w-full sm:w-auto text-center py-3.5 px-8 text-sm font-bold uppercase tracking-wider whitespace-nowrap z-10 inline-flex items-center justify-center gap-2"
-        >
-          <CommandLineIcon className="w-4 h-4 stroke-[2.5]" />
-          Simular Compra 
-        </Link>
       </div>
 
       {/* METRICAS:*/}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        
+
         <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
           <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
             <TicketIcon className="w-6 h-6 stroke-[2]" />
@@ -134,13 +126,13 @@ export default async function AdminPage({ searchParams }: PageProps) {
           </div>
         </div>
 
-      
-        <div className="card-retro-tonal p-5 flex items-center gap-4 border border-primary/20 bg-surface-container-low">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+
+        <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
+          <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
             <CheckCircleIcon className="w-6 h-6 stroke-[2]" />
           </div>
           <div>
-            <span className="text-label-sm text-primary uppercase tracking-widest block font-bold">
+            <span className="text-label-sm text-on-surface-variant/60 uppercase tracking-widest block font-bold">
               Confirmadas
             </span>
             <span className="text-2xl font-black text-black text-body-md">
@@ -149,20 +141,8 @@ export default async function AdminPage({ searchParams }: PageProps) {
           </div>
         </div>
 
-        
-        <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
-          <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
-            <ArrowPathIcon className="w-6 h-6 stroke-[2]" />
-          </div>
-          <div>
-            <span className="text-label-sm text-on-surface-variant/60 uppercase tracking-widest block font-bold">
-              Entradas Usadas
-            </span>
-            <span className="text-2xl font-black text-black text-body-md">
-              {entradasUsadas} <span className="text-sm text-on-surface-variant/60">/ {totalEntradas}</span>
-            </span>
-          </div>
-        </div>
+
+
 
         {/* Métrica de Pendientes */}
         <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
@@ -179,29 +159,36 @@ export default async function AdminPage({ searchParams }: PageProps) {
           </div>
         </div>
 
-       
+
         <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
           <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
             <XCircleIcon className="w-6 h-6 stroke-[2]" />
           </div>
           <div className="flex-1 min-w-0">
             <span className="text-label-sm text-on-surface-variant/60 uppercase tracking-widest block font-bold">
-              Canceladas | Uso %
+              Canceladas
             </span>
             <div className="flex items-center gap-3 mt-1">
               <span className="text-2xl font-black text-black text-body-md">
-                {entradasCanceladas} <span className="text-xs text-on-surface-variant/50 font-normal">({porcentajeAsistencia}%)</span>
+                {entradasCanceladas}
               </span>
-              <div className="flex-1 bg-primary/10 h-2.5 rounded-full overflow-hidden border border-primary/5 hidden sm:block">
-                <div
-                  className="bg-primary h-full transition-all duration-500"
-                  style={{ width: `${porcentajeAsistencia}%` }}
-                />
-              </div>
             </div>
           </div>
         </div>
-
+        
+        <div className="card-retro p-5 flex items-center gap-4 bg-surface-container-lowest border border-primary/10">
+          <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
+            <ArrowPathIcon className="w-6 h-6 stroke-[2]" />
+          </div>
+          <div>
+            <span className="text-label-sm text-on-surface-variant/60 uppercase tracking-widest block font-bold">
+              Entradas Usadas
+            </span>
+            <span className="text-2xl font-black text-black text-body-md">
+              {entradasUsadas} <span className="text-sm text-on-surface-variant/60">/ {totalEntradas}</span>
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="bg-surface-container-low border-2 border-primary/15 rounded-2xl p-5 flex flex-col lg:flex-row gap-5 items-start lg:items-center justify-between shadow-inner">
