@@ -36,8 +36,6 @@ Funcionalidades - Usuario Seller
 Funcionalidades - Usuario Admin
 --------
 - Panel administrativo: muestra un panel completo con los ID de entrada, pedido, comprador y organizador.
-- Simulación de APIS: permite simular un nuevo pedido, su confirmación y su cancelación.
-
 
 -----------------
 Notas
