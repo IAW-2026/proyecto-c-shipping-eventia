@@ -18,13 +18,12 @@ export default function UsuarioSeller(usuarioClerk: any) {
 
       if (resultado.status === 200 && resultado.entrada) {
         setEstado('valido');
-        setTicketInfo(resultado.entrada); // Guarda tu entradaConvertida
+        setTicketInfo(resultado.entrada); 
       } else if (resultado.status === 409) {
         setEstado('usado');
       } else if (resultado.status === 410) {
         setEstado('expirado');
       } else {
-        // Acá maneja tanto el 404 (No encontrada) como el 403 (Cancelada) o fallos de catch
         setEstado('invalido');
       }
     } catch (error) {
@@ -40,7 +39,7 @@ export default function UsuarioSeller(usuarioClerk: any) {
 
   return (
     <div className="px-4 py-6 md:p-6 max-w-xl mx-auto space-y-6">
-      <h1 className="text-headline-sm md:text-headline-md text-center tracking-tight uppercase font-black">
+      <h1 className="text-headline-sm md:text-headline-md text-center tracking-tight uppercase">
         Control de Accesos
       </h1>
       {estado === 'escanerActivo' && (
