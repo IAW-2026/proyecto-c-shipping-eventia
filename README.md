@@ -16,9 +16,7 @@ Listado usuarios
 -----------------
 Necesario para evaluar la aplicación
 ------------------------------
-- La forma de acceder a el modo de usuario admin es deslizando hasta el último bloque de la pagina de bienvenida, sellecionando "Administrador" en el apartado "Plataforma"
-- Para utilizar el simulador de APIs se debe seleccionar un evento (extraídos de un mock) y seleccionar "Usuario Buyer". Existe también un "Usuario Extra" al que se le pueden asignar entradas. En el mock está seteado como organizador del evento el usuario brindado como Buyer, entonces todos los eventos le pertenecerán. Para simular el pago y la cancelación basta con completar el campo ID pedido, sin necesidad de seleccionar en el desplegable.
-- El usuario Buyer tiene cargadas entradas de otro organizador diferente al del mock de la simulación, así puede chequearse que un organizador no puede escanear entradas que no le pertenecen. 
+- La forma de acceder a el modo de usuario admin es deslizando hasta el último bloque de la pagina de bienvenida, sellecionando "Administrador" en el apartado "Plataforma" 
 -----------------
 Descripción app
 ------------------------------
@@ -45,4 +43,4 @@ Funcionalidades - Usuario Admin
 Notas
 -------------------------
 - En el panel "Mis entradas" de Buyer las entradas se juntan por pedido, es decir, si un usuario compra 3 entradas a un evento en un único pedido estas van a estar agrupadas en una sola en ésta sección, con el fin de facilitar el ingreso a un usuario. Luego, al momento de ver el detalle de la entrada se puede navegar entre las diferentes entradas, que todas tienen distinto ID y estado, pero pertenecen a un mismo usuario y a un mismo pedido. Por este motivo desde la vista general de "Mis entradas" no puede verse el estado; una entrada del pedido podría estar usada y otra no, entonces sería inconsistente mostrar el estado desde afuera. El filtro por estados tiene éste inconveniente, pero en el detalle se ven los estados correctamente.
-- Al momento de escanear una entrada el estado no se actualiza instataneamente del lado del usuario Buyer, es necesario refrescar la página. Como la base de datos sí se actualiza, del lado del Seller es imposible escanear un mismo QR más de una vez, proque ya figura usado, así que es únicamente un inconveniente visual. 
+- Al momento de escanear una entrada el estado no se actualiza instataneamente del lado del usuario Buyer, es necesario refrescar la página. Como la base de datos sí se actualiza, del lado del Seller es imposible escanear un mismo QR más de una vez, porque ya figura usado, así que es únicamente un inconveniente visual. 
