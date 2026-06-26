@@ -11,6 +11,12 @@ import {
   ClockIcon
 } from "@heroicons/react/24/outline";
 import { isAdmin } from "@/lib/util";
+import {Metadata} from 'next';
+
+export const metadata: Metadata = {
+  title: ' Eventia - Estadísticas Administrador',
+  description: 'Panel de administrador de Eventia.',
+};
 
 // captura filtros y ordenamiento
 interface PageProps {

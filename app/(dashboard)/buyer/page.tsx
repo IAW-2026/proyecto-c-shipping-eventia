@@ -4,7 +4,7 @@ import { BarraFiltrosEntradas } from '../../components/BarraFiltrosEntrada';
 import { entradasUsuarioID } from "@/services/entradas";
 import Link from "next/link";
 import { ShieldExclamationIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
+import {Metadata} from 'next';
 
 interface PageProps {
   searchParams: Promise<{
@@ -14,6 +14,11 @@ interface PageProps {
     pagina?: string;
   }>;
 }
+
+export const metadata: Metadata = {
+  title: ' Eventia - Mis Entradas',
+  description: 'Panel de entradas de Eventia',
+};
 
 export default async function EntradasPage({ searchParams }: PageProps) {
   const { userId } = await auth.protect();
