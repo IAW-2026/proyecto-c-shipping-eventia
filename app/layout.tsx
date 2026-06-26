@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Climate_Crisis, Bricolage_Grotesque, Manrope } from 'next/font/google';
 import { ClerkProvider } from "@clerk/nextjs";
+import Footer from "./components/Footer";
 
 const climateCrisis = Climate_Crisis({
   weight: '400',
@@ -50,6 +51,7 @@ export default function RootLayout({
         <body className="min-h-full flex flex-col">
           {children}</body>
            </html>
+           <Footer />
     </ClerkProvider > 
   );
 }

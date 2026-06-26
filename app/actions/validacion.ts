@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import {revalidatePath} from 'next/cache'
 
 interface ValidarQrResponse {
   success: boolean;
@@ -68,6 +69,9 @@ export async function validarQrAction(qrData: string, usuarioObjeto: { usuarioCl
         estado: 'Usado',
       },
     });
+
+    const id_pedido=entradaActualizada.id_pedido.toString();
+    revalidatePath(`/buyer/${id_pedido}`, 'page');
 
     const entradaConvertida = {
       ...entradaActualizada,

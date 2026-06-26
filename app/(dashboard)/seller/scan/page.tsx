@@ -2,6 +2,12 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import ScanClientContainer from "../../../components/features/ScanClientContainer";
 import { ShieldExclamationIcon } from "@heroicons/react/24/outline";
+import {Metadata} from 'next';
+
+export const metadata: Metadata = {
+  title: ' Eventia - Escaner de Entradas',
+  description: 'Escaner de entradas para organizadores de Eventia.',
+};
 
 export default async function ScanPage() {
   const { userId } = await auth.protect();

@@ -3,11 +3,16 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 import TablaEntradas from "@/app/components/EntradaTabla";
 import { ShieldExclamationIcon, TicketIcon, CheckCircleIcon, UsersIcon } from "@heroicons/react/24/outline";
+import {Metadata} from 'next';
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+export const metadata: Metadata = {
+  title: ' Eventia - Panel Organizador',
+  description: 'Panel de organizador de Eventia.',
+};
 export default async function SellerPage({ searchParams }: PageProps) {
   const user = await currentUser();
   const roles = (user?.publicMetadata?.roles as string[]) || [];
