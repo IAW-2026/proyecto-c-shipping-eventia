@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Entrada {
+  id_entrada    BigInt   @id
+  id_pedido     Int      
+  id_evento     Int
+  estado        String
+  creado        DateTime @default(now())
+  id_usuario    String
+  id_organizador String
+}
